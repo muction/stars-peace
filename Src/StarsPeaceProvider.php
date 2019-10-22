@@ -1,0 +1,78 @@
+<?php
+
+namespace Stars\Peace;
+
+use Illuminate\Support\ServiceProvider;
+
+class StarsPeaceProvider extends ServiceProvider
+{
+    /**
+     * 支持命令
+     * @var array
+     */
+    protected $commands = [
+        Console\Commands\EntityMake::class,
+        Console\Commands\ServiceMake::class,
+        Console\Commands\SheetInit::class,
+        Console\Commands\SheetMake::class,
+        Console\Commands\StarsInit::class,
+        Console\Commands\StarsForge::class,
+    ];
+
+    /**
+     * 路由中间件
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'stars.peace.auth' => Middleware\PeaceMiddleware::class
+    ];
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+
+        if($this->app->runningInConsole()){
+            $this->commands( $this->commands );
+        }
+
+        $this->app->shouldSkipMiddleware();
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+        $this->mergeConfigFrom( __DIR__.'/Config/stars.php' , 'StarsPeace' );
+
+        $this->loadViewsFrom( __DIR__ .'/Views' , 'StarsPeace' );
+        $this->loadRoutesFrom( __DIR__. "/Route/route.php" );
+        $this->publishes([
+            //__DIR__ .'/views'=> base_path( "resources/views/vendor/stars/peace" ),
+
+            __DIR__ .'/Asset/stars' => public_path( "static/stars/" )  ,
+
+        ], 'public');
+
+        //注册路由中间件
+        $this->registryRouteMiddleware();
+
+    }
+
+    /**
+     * 注册中间件
+     */
+    protected function registryRouteMiddleware(){
+
+        foreach ( $this->routeMiddleware as $alias=>$class){
+            app('router')->aliasMiddleware( $alias , $class);
+        }
+    }
+}
