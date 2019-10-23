@@ -9,9 +9,10 @@ class OptionController extends PeaceController
 {
     //
 
-    public function site(){
+    public function site( OptionService $optionService ){
 
-        return $this->view ( "option.site") ;
+        $options = $optionService->items();
+        return $this->view ( "option.site" , ['options'=> $options]) ;
     }
 
     /**
@@ -24,4 +25,6 @@ class OptionController extends PeaceController
         $optionService->option( $request );
         return redirect( route( 'rotate.option.site' ));
     }
+
+
 }
