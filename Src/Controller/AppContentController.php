@@ -68,10 +68,10 @@ abstract class AppContentController extends Controller
     protected $crumbs = null;
 
     /**
-     * 所有绑定数据输出
+     * 所有绑定数据
      * @var null
      */
-    protected $pageData = [];
+    protected $bindData = [];
 
     /**
      * 地区，语言标识
@@ -132,6 +132,7 @@ abstract class AppContentController extends Controller
      */
     private function initAppData(){
 
+        //服务者设定
         $this->appContentService = new AppContentService();
         $this->navMenuService = new NavMenuService();
         $this->locale = checkSiteUrlLangEnv() ;
@@ -147,6 +148,7 @@ abstract class AppContentController extends Controller
         //加载必须信息
         $this->crumbs = $this->navMenuService->crumbs( $this->activeMenuInfo['id'] );
 
+        //TODO 优化点
         if(!$this->isAjaxRequest ){
             //导航数据，缓存有效期见 stars.cache.navMenu
             $cacheNavMenusKey = $this->locale.'_navMenus' ;
@@ -160,14 +162,15 @@ abstract class AppContentController extends Controller
 
             //获取页面所有数据
             $appContentService = new AppContentService() ;
-            $pageData = $appContentService->menuDatas( $this->activeMenuInfo['id'] , (isset($this->activeMenuInfo['inner']) ? $this->activeMenuInfo['inner'] : []) );
-            $this->appendPageData( $pageData );
-        }
+            $bindData = $appContentService->menuDatas( $this->activeMenuInfo['id'] , (isset($this->activeMenuInfo['inner']) ? $this->activeMenuInfo['inner'] : []) );
+            $this->appendBindData( $bindData );
 
-        //输出内容
-        $this->assign['activeMenuInfo'] = $this->activeMenuInfo;
-        $this->assign['navMenus'] = $this->navMenus;
-        $this->assign['crumbs'] = $this->crumbs;
+            $this->assign['baseInfo']=[
+                'activeMenuInfo' => $this->activeMenuInfo ,
+                'navMenus' => $this->navMenus ,
+                'crumbs' => $this->crumbs
+            ] ;
+        }
 
     }
 
@@ -178,15 +181,22 @@ abstract class AppContentController extends Controller
      * @param array $data
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function view( $template ="", $data=[] ){
+    public function view( $template ="", array $data=[] ){
 
+        $this->templateName = $template;
+
+        if($data && is_array($data)){
+            $this->assign = array_merge($this->assign , $data ) ;
+        }
+
+        //TODO 优化点
         if( $this->isAjaxRequest ){
             $appContentService = new AppContentService();
             $bindId=  \request('bindId', 0);
             $bindAlias= \request('bindAlias') ;
             if($bindId && $bindAlias){
                 $bindData[str_replace('.','_', $bindAlias )] = $appContentService->findBindPaginateData($bindId , $bindAlias);
-                $this->appendPageData( $bindData );
+                $this->appendBindData( $bindData );
             }
             return $this->responseSuccess( $this->assign );
         }
@@ -196,8 +206,6 @@ abstract class AppContentController extends Controller
                 isset($this->activeMenuInfo['inner']['templateName']) ?
                 $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
                 $this->activeMenuInfo['template_name'] ;
-        }else{
-            $this->templateName = $template;
         }
 
         return view(  $this->templateName , $this->assign  );
@@ -225,19 +233,6 @@ abstract class AppContentController extends Controller
     }
 
     /**
-     * 富文本编辑器上传
-     * @param $error
-     * @param $url
-     * @return array
-     */
-    public function responseKindUpload( $error, $url ){
-        return [
-            'error'=> $error ,
-            'url' => $url
-        ];
-    }
-
-    /**
      * 响应API结构体
      * @param $statusCode
      * @param $errorCode
@@ -255,50 +250,24 @@ abstract class AppContentController extends Controller
     }
 
     /**
-     * 解析内页参数
-     * @param $innerString
-     * @return array
-     */
-    private function parseInnerParams( $innerString ){
-
-        if( substr_count( $innerString , '.' ) == config('stars.inner.count') ){
-            try{
-                $explode = explode( config('stars.inner.delimiter' ,'.')  , $innerString );
-                array_map(function( $v){
-                    if(!is_numeric($v) || !$v){
-                        throw new Exception('空值');
-                    }
-                }, $explode);
-
-                return ['inner'=> [ 'templateName'=> config('stars.inner.templateName')  , 'bindId'=>$explode[0] , 'infoId'=>$explode[1] ] ];
-
-            }catch (Exception $exception){
-
-            }
-        }
-
-        return [];
-    }
-
-    /**
      * 合并模板变量
      * @return array
      */
     protected function mergerAssignData(){
-        $this->assign['pageData'] = $this->pageData;
+        $this->assign['bindData'] = $this->bindData;
         return $this->assign;
     }
 
     /**
-     * 向pageData变量增加数据
+     * 向bindData变量增加数据
      * @param array $data
      * @return array
      */
-    protected function appendPageData(array $data ){
+    protected function appendBindData(array $data ){
 
-        $this->pageData = array_merge( $this->pageData , $data );
+        $this->bindData = array_merge( $this->bindData , $data );
         $this->mergerAssignData();
-        return $this->pageData;
+        return $this->bindData;
     }
 
     /**

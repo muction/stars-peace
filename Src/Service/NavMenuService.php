@@ -119,7 +119,7 @@ class NavMenuService extends ServiceService
     /**
      * @param $navId
      * @param bool $withMenuBind
-     * @return
+     * @return mixed
      */
     public function navMenus( $navId , $withMenuBind=false ){
         $navMenu = new NavMenu();
@@ -128,6 +128,8 @@ class NavMenuService extends ServiceService
 
     /**
      * 路径导航
+     * @param $menuId
+     * @return array
      */
     public function crumbs( $menuId ){
 
@@ -139,7 +141,8 @@ class NavMenuService extends ServiceService
      * @return mixed
      */
     public function findByRouterName( $routerName ){
-        return NavMenu::where( 'route_name' ,'=' ,$routerName )->first();
+        $info= NavMenu::where( 'route_name' ,'=' ,$routerName )->first();
+        return $info ? $info->toArray() : [];
     }
 
 }

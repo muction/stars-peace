@@ -1,6 +1,8 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
 use Stars\Peace\Entity\MenuBind;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -173,7 +175,7 @@ class AppContentService
      * 获取绑定信息
      * @param $bindId
      * @param string $bindAlias
-     * @return  |null
+     * @return  null
      */
     public function bindInfo( $bindId , $bindAlias ='' ){
 
@@ -193,6 +195,7 @@ class AppContentService
         if(!$activeMenuInfo){
             return [];
         }
+
         $activeMenuInfo['template_name'] = $activeMenuInfo['template_name']  &&  $activeMenuInfo['template_name'] ?
             str_replace( [ '/', 'zh.' ,'en.' ,'.blade.php'] , ['.', '' ], $activeMenuInfo['template_name'] )
             : '' ;
