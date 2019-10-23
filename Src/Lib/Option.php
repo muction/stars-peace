@@ -24,4 +24,7 @@ class Option
     /** 分页 **/
     const ARTICLE_PAGE_SIZE =15 ;
     const USER_PAGE_SIZE = 15;
+
+    /** 系统类别设置 **/
+    const OPTION_TYPE_SYS = 1;
 }

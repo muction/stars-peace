@@ -26,7 +26,7 @@ class Options extends SheetSheet
     protected function sheetColumn()
     {
         $this->addVarCharColumn( "类别" ,'type' , 20 );
-        $this->addVarCharColumn( "键名" ,'name' , 255 );
+        $this->addVarCharColumn( "键名" ,'key' , 255 );
         $this->addVarCharColumn( "值" , 'value' , 255 );
     }
 

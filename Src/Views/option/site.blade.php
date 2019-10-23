@@ -8,22 +8,25 @@
 @endsection
 
 @section('car-body')
-    <form class="form-inline" method="post" action="{{ route( 'rotate.role.storage' ,['infoId'=> isset($info['id']) ? $info['id'] : null ] ) }}">
+    <form class="form-inline" method="post" action="{{ route( 'rotate.option.sites.storage') }}">
         @csrf
         <div class="" style="margin-bottom: 10px;">
-            <button type="submit" class="btn btn-default">保存</button>
+            <button type="submit" class="btn btn-success">保存</button>
             <button type="button" class="btn btn-default stars-create-new-customer">新增</button>
         </div>
 
         <div class="system-item">
+
+            @foreach( $options as $key=>$value )
             <div class="">
                 <div class="form-group input-group m-b-10">
-                    <input class="form-control" type="text" name="key[]"  placeholder="Key">
+                    <input class="form-control" type="text" name="key[]" value="{{$value['key']}}"  placeholder="Key">
                 </div>
                 <div class="form-group input-group m-b-10" style="margin-left: 6px;">
-                    <input class="form-control" type="text" name="value[]" placeholder="Value">
+                    <input class="form-control" type="text" name="value[]" value="{{$value['value']}}" placeholder="Value">
                 </div>
             </div>
+            @endforeach
         </div>
 
         <div class="customer-item">

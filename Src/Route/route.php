@@ -101,7 +101,11 @@ Route::group(['prefix'=>"rotate" ,'middleware'=>['web'] , 'namespace'=> "Stars\P
         Route::post('/articles/{navId}/menus/{menuId}/{bindId}/{action}' , 'ArticleController@menus')->name( 'rotate.article.articles.storage' );
 
         //系统设置
-        Route::get('/option' , 'OptionController@index')->name( 'rotate.option.index' );
+        Route::get('/option/attachments' , 'OptionController@index')->name( 'rotate.option.index' );
+        Route::get('/option/sites' , 'OptionController@site')->name( 'rotate.option.sites' );
+        Route::post('/option/sites' , 'OptionController@storage')->name( 'rotate.option.sites.storage' );
+
+
         //附件管理
         Route::get('/attachment' , 'DashboardController@main')->name( 'rotate.attachment.index' );
         //网站设置
