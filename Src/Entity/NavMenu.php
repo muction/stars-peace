@@ -11,6 +11,8 @@ class NavMenu extends EntityEntity
     use TraitCategory;
 
     protected $with =  [ 'image'] ;
+
+    protected static $pathMenus=[];
     
     /**
      * 批量添加
@@ -140,5 +142,21 @@ class NavMenu extends EntityEntity
      */
     public function image(){
         return $this->hasOne( AttachmentEntity::class , 'id' ,'image_id' );
+    }
+
+    /**
+     * 获取path
+     * @param $lastItemId
+     * @return array
+     */
+    public static function pathMenus($lastItemId){
+        $item = self::where('id', $lastItemId)
+            ->first()
+            ->toArray();
+        array_unshift(self::$pathMenus , $item);
+        if(isset($item['parent_id']) && $item['parent_id'] > 0){
+            self::pathMenus($item['parent_id']);
+        }
+        return self::$pathMenus;
     }
 }
