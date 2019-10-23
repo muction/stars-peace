@@ -71,7 +71,7 @@ abstract class AppContentController extends Controller
      * 所有绑定数据输出
      * @var null
      */
-    protected $pageData = null;
+    protected $pageData = [];
 
     /**
      * 地区，语言标识
@@ -172,14 +172,12 @@ abstract class AppContentController extends Controller
         }
 
         if(!$template){
-            $this->template =
+            $this->templateName =
                 isset($this->activeMenuInfo['inner']['templateName']) ?
                 $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
                 $this->activeMenuInfo['template_name'] ;
         }
 
-
-        $this->templateName = app()->getLocale().'.'. $template ;
 
         return view(  $this->templateName , $this->assign  );
     }

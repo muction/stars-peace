@@ -97,7 +97,7 @@ class AppContentService
         }
 
         if(!is_array($data)){
-            $data = tdClass2Array($data);
+            $data = stdClass2Array($data);
         }
 
         return $data;
