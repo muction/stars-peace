@@ -85,6 +85,40 @@
 
 ##### SheetWidget 契约  
    
+### 使用
+    
+    1、控制器： 继承控制器 Stars\Peace\Controller\AppContentController 实现 page custom两个抽象方法
+     
+     //如果不需要特殊处理，page方法只需这样既可
+     public function page(){
+     
+        return $this->view();
+     }
+
+     //如果有单独处理的页面请求，需在 custom 方法中解决
+     public function custom(){
+        $templateName = '';
+        
+            // 其他逻辑代码
+            // ... 
+        
+        
+        $this->appendPageData ( $newCustomData ) ;
+        
+        return $this->view( $templateName ' );
+     }
+     
+     2、页面获取变量数据
+    
+     您可以在模板中这样获取变量值
+        $paegData[ 您在后台操作绑定时的别名 ] 
+        
+     3、"您在后台操作绑定时的别名" 推荐命名规则
+        3.1 单条最新数据命名： single.xxx.xxx
+        3.2 全部获取数据命名： list.xxx.xx
+        3.3 分页获取数据命名： paginate.xxx.xx
+   
+   
 ### 感谢
 
 [笔下光年](http://lyear.itshubao.com/)
