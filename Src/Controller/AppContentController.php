@@ -176,9 +176,11 @@ abstract class AppContentController extends Controller
                 isset($this->activeMenuInfo['inner']['templateName']) ?
                 $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
                 $this->activeMenuInfo['template_name'] ;
+        }else{
+            $this->templateName = $template;
         }
 
-
+        dd($this->templateName);
         return view(  $this->templateName , $this->assign  );
     }
 
