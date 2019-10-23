@@ -126,6 +126,12 @@ class NavMenuService extends ServiceService
         return $navMenu->getNodes( $navId ,$withMenuBind)->toArray();
     }
 
+    /**
+     * 路径导航
+     */
+    public function crumbs( $menuId ){
 
+        return NavMenu::pathMenus( $menuId );
+    }
 
 }

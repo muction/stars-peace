@@ -55,9 +55,9 @@ class StarsPeaceProvider extends ServiceProvider
         $this->loadViewsFrom( __DIR__ .'/Views' , 'StarsPeace' );
         $this->loadRoutesFrom( __DIR__. "/Route/route.php" );
         $this->publishes([
-            //__DIR__ .'/views'=> base_path( "resources/views/vendor/stars/peace" ),
 
             __DIR__ .'/Asset/stars' => public_path( "static/stars/" )  ,
+            __DIR__.'/Config/stars.php' => config_path('stars.php'),
 
         ], 'public');
 
