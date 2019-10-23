@@ -113,7 +113,7 @@ if( !function_exists( 'parseInnerParams' ) ){
 
     function parseInnerParams( $innerString ){
 
-        if( substr_count( $innerString , '.' ) == config('stars.inner.count') ){
+        if($innerString && substr_count( $innerString , '.' ) == config('stars.inner.count') ){
             try{
                 $explode = explode( config('stars.inner.delimiter')  , $innerString );
                 array_map(function( $v){

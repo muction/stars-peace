@@ -134,4 +134,12 @@ class NavMenuService extends ServiceService
         return NavMenu::pathMenus( $menuId );
     }
 
+    /**
+     * @param $routerName
+     * @return mixed
+     */
+    public function findByRouterName( $routerName ){
+        return NavMenu::where( 'route_name' ,'=' ,$routerName )->first();
+    }
+
 }

@@ -79,7 +79,23 @@ abstract class AppContentController extends Controller
      */
     protected $locale = null;
 
+    /**
+     * appContentService
+     * @var null
+     */
     protected $appContentService = null;
+
+    /**
+     * navMenuService
+     * @var null
+     */
+    protected $navMenuService = null;
+
+    /**
+     * inner 参数
+     * @var null
+     */
+    protected $inner = null;
 
     /**
      * 构造
@@ -117,38 +133,42 @@ abstract class AppContentController extends Controller
     private function initAppData(){
 
         $this->appContentService = new AppContentService();
+        $this->navMenuService = new NavMenuService();
         $this->locale = checkSiteUrlLangEnv() ;
-
         $this->activeRouterName = \request()->route()->getName()  ;
-        $this->activeMenuInfo = NavMenu::where( 'route_name' ,'=' , $this->activeRouterName )->first();
+        $this->inner = \request()->get('inner') ;
+
+        $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner ) ;
+
         if(! $this->activeMenuInfo){
-            throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" );
-        }
-
-        $this->activeMenuInfo = $this->activeMenuInfo->toArray();
-
-        $inner = \request()->get('inner') ;
-        if( $inner ){
-            $this->activeMenuInfo = array_merge( $this->activeMenuInfo, $this->parseInnerParams( $inner ) );
+            throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" , 500);
         }
 
         //加载必须信息
-        $navMenuService = new NavMenuService();
-        $this->crumbs = $navMenuService->crumbs( $this->activeMenuInfo['id'] );
+        $this->crumbs = $this->navMenuService->crumbs( $this->activeMenuInfo['id'] );
 
         if(!$this->isAjaxRequest ){
             //导航数据，缓存有效期见 stars.cache.navMenu
-            $this->navMenus  = Cache::get( '_navMenus' ) ;
+            $cacheNavMenusKey = $this->locale.'_navMenus' ;
+            $this->navMenus  = Cache::get( $cacheNavMenusKey ) ;
+
             if(!$this->navMenus ){
                 $peaceNavMenuService = new NavMenuService();
                 $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale() ) );
-                Cache::put( '_navMenus', $this->navMenus  , config('stars.cache.navMenu') );
+                Cache::put( $cacheNavMenusKey , $this->navMenus  , config('stars.cache.navMenu' , 0) );
             }
+
             //获取页面所有数据
             $appContentService = new AppContentService() ;
             $pageData = $appContentService->menuDatas( $this->activeMenuInfo['id'] , (isset($this->activeMenuInfo['inner']) ? $this->activeMenuInfo['inner'] : []) );
             $this->appendPageData( $pageData );
         }
+
+        //输出内容
+        $this->assign['activeMenuInfo'] = $this->activeMenuInfo;
+        $this->assign['navMenus'] = $this->navMenus;
+        $this->assign['crumbs'] = $this->crumbs;
+
     }
 
 
@@ -180,7 +200,6 @@ abstract class AppContentController extends Controller
             $this->templateName = $template;
         }
 
-        dd($this->templateName);
         return view(  $this->templateName , $this->assign  );
     }
 

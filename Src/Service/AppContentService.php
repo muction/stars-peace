@@ -180,4 +180,24 @@ class AppContentService
         return MenuBind::info( $bindId ,$bindAlias );
     }
 
+    /**
+     * 格式化当前激活导航的信息
+     * @param $routerName
+     * @param string $inner
+     * @return array|mixed
+     */
+    public function formatActiveMenuInfo( $routerName , $inner = ''){
+
+        $navMenuService = new NavMenuService() ;
+        $activeMenuInfo = $navMenuService->findByRouterName( $routerName );
+        if(!$activeMenuInfo){
+            return [];
+        }
+        $activeMenuInfo['template_name'] = $activeMenuInfo['template_name']  &&  $activeMenuInfo['template_name'] ?
+            str_replace( [ '/', 'zh.' ,'en.' ,'.blade.php'] , ['.', '' ], $activeMenuInfo['template_name'] )
+            : '' ;
+        $activeMenuInfo = array_merge ( $activeMenuInfo , parseInnerParams( $inner ) );
+
+        return $activeMenuInfo;
+    }
 }
