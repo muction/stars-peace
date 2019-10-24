@@ -22,7 +22,7 @@ class AppContentService
 
         if( $bindInfos ){
 
-            $paginateConfig = config( 'stars.paginate');
+            $paginateConfig = configApp( 'stars.paginate');
             $innerBindId = isset( $inner['bindId']) ? $inner['bindId'] : 0;
             $innerInfoId = isset( $inner['infoId']) ? $inner['infoId'] : 0;
 
