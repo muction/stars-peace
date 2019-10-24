@@ -203,9 +203,9 @@ abstract class AppContentController extends Controller
 
         if(!$template){
             $this->templateName =
-                isset($this->activeMenuInfo['inner']['templateName']) ?
-                $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
-                $this->activeMenuInfo['template_name'] ;
+                isset( $this->activeMenuInfo['inner']['templateName'] ) ?
+                $this->locale.'.'. $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
+                    $this->locale.'.'. $this->activeMenuInfo['template_name'] ;
         }
 
         return view(  $this->templateName , $this->assign  );
