@@ -156,8 +156,8 @@ abstract class AppContentController extends Controller
 
             if(!$this->navMenus ){
                 $peaceNavMenuService = new NavMenuService();
-                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale() ) );
-                Cache::put( $cacheNavMenusKey , $this->navMenus  , config('stars.cache.navMenu' , 0) );
+                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale() ,App::getLocale() ) );
+                Cache::put( $cacheNavMenusKey , $this->navMenus  , configApp('stars.cache.navMenu' , 60) );
             }
 
             //获取页面所有数据

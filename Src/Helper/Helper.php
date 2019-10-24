@@ -113,16 +113,16 @@ if( !function_exists( 'parseInnerParams' ) ){
 
     function parseInnerParams( $innerString ){
 
-        if($innerString && substr_count( $innerString , '.' ) == config('stars.inner.count') ){
+        if($innerString && substr_count( $innerString , '.' ) == configApp('stars.inner.count') ){
             try{
-                $explode = explode( config('stars.inner.delimiter')  , $innerString );
+                $explode = explode( configApp('stars.inner.delimiter')  , $innerString );
                 array_map(function( $v){
                     if(!is_numeric($v) || !$v){
                         throw new Exception('空值');
                     }
                 }, $explode);
 
-                return ['inner'=> [ 'templateName'=> config('stars.inner.templateName')  , 'bindId'=>$explode[0] , 'infoId'=>$explode[1] ] ];
+                return ['inner'=> [ 'templateName'=> configApp('stars.inner.templateName')  , 'bindId'=>$explode[0] , 'infoId'=>$explode[1] ] ];
 
             }catch (Exception $exception){
 
