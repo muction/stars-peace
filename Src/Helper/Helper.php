@@ -160,14 +160,10 @@ if( !function_exists( 'stdClass2Array' ) ){
  */
 if( !function_exists( 'configApp' ) ){
 
-    function configApp( $value , $origin =false ){
-
-        if($origin === true){
-            return config( $value );
-        }
+    function configApp( $value , $default=null ){
 
         $newKey = substrAppFront($value ).'.'.app()->getLocale(). substrAppAfter( $value );
-        return config( $newKey );
+        return config( $newKey ,$default );
     }
 }
 
