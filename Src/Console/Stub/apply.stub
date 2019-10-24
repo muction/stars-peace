@@ -1,0 +1,13 @@
+<?php
+namespace App\Entity;
+use Stars\Peace\Entity\ApplyContentEntity;
+
+class __APPLYENTITY__ extends ApplyContentEntity
+{
+    /**
+     * 表名称
+     * @var string
+     */
+    protected $table = '';
+
+}

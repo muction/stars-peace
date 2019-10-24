@@ -55,12 +55,11 @@ abstract class PeacePeace extends Command
     /**
      * 获取模板文件
      * @return string
-     * @throws \Exception
      */
-    final protected function subTemplateContent()
+    final protected function subTemplateContent( $stub='' )
     {
         return $this->files->get(
-            __DIR__ .'/../Stub/'.  strtolower($this->type) .'.stub'
+            __DIR__ .'/../Stub/'.  ($stub ? $stub : strtolower($this->type) ) .'.stub'
         );
     }
 
@@ -112,12 +111,14 @@ abstract class PeacePeace extends Command
      * 目标文件是否存在
      * @return bool
      */
-    final private function hasFile(){
+    final private function hasFile( $filePathName ='' ){
 
-        if($this->files->exists($this->savePathName())){
-            $this->error('Create '.$this->type.':'.(  $this->entityName  ).' File Error , File Exists !');
+        $filePathName = $filePathName ? $filePathName : $this->savePathName();
+        if($this->files->exists( $filePathName )){
+            $this->error('Create '.( $filePathName ).' File Error , File Exists !');
             return false;
         }
+        return true;
     }
 
     /**
@@ -126,8 +127,10 @@ abstract class PeacePeace extends Command
      * @return mixed
      */
     final public function saveFileContent( $content ){
-        $this->hasFile() ;
-        return $this->files->put( $this->savePathName() , $content );
+        if($this->hasFile() ) {
+            return $this->files->put( $this->savePathName() , $content );
+        }
+        return false;
     }
 
     /**
