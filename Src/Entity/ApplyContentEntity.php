@@ -3,11 +3,11 @@ namespace Stars\Peace\Entity;
 
 use Illuminate\Database\Eloquent\Model;
 /**
- * App 网站内容抽象类
+ * App内容抽象类
  * Class AppContent
  * @package App\Entity
  */
-class AppContentEntity extends Model
+class ApplyContentEntity extends Model
 {
     /**
      * @param $bindId
