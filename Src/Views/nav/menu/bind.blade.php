@@ -51,7 +51,8 @@
                         <span >绑定名称 <input class="form-control" type="text" name="bind-name-{{$_sheetName}}" style="width: 200px" value=""> </span>
                     </li>
                     <li class="list-group-item">
-                        <span >绑定别名 <input class="form-control" type="text" name="bind-alias-{{$_sheetName}}" style="width: 200px" value=""> </span>
+                        <span >绑定别名(例如：最新单条数据：single.xxx  ， 所有：list.xxx ，分页：paginate.xxx) <input class="form-control" type="text" name="bind-alias-{{$_sheetName}}" style="width: 200px" value="">
+                        </span>
                     </li>
                     <li class="list-group-item">
                         <p> <b>列表字段 </b> </p>
