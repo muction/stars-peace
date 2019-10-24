@@ -166,7 +166,8 @@ if( !function_exists( 'configApp' ) ){
             return config( $value );
         }
 
-        return config( substrAppFront($value ).'.'.app()->getLocale(). substrAppAfter( $value ) );
+        $newKey = substrAppFront($value ).'.'.app()->getLocale(). substrAppAfter( $value );
+        return config( $newKey );
     }
 }
 
@@ -179,8 +180,7 @@ if( !function_exists( 'configApp' ) ){
 if( !function_exists('substrAppFront') ){
 
     function substrAppFront( $string , $explode='.' ){
-
-        return substr( $string , strstr( $string , $explode ) );
+        return substr( $string , 0,strpos( $string , $explode ) );
     }
 }
 
@@ -194,6 +194,6 @@ if( !function_exists('substrAppAfter') ){
 
     function substrAppAfter( $string , $explode='.' ){
 
-        return ltrim( $string , substrAppFront( $string , $explode ) );
+        return stristr( $string , $explode );
     }
 }
