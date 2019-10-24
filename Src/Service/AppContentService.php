@@ -80,7 +80,10 @@ class AppContentService
                 );
             }elseif ( $type == 'paginate')
             {
-                $data =  $className::paginate( $bind['id'], $bind['alias_name'] , $paginate);
+                $paginate =  $className::paginate( $bind['id'], $bind['alias_name'] , $paginate);
+
+                $data['paginate'] = $paginate->links();
+                $data['data'] = $paginate;
             }
 
         }else{
