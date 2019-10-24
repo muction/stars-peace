@@ -13,7 +13,7 @@ class ApplyContentEntity extends Model
      * @param $bindId
      * @return mixed
      */
-    final public static function last( $bindId ){
+    protected static function last( $bindId ){
         return self::where( 'bind_id', '=', $bindId )
             ->orderByDesc('order')
             ->orderBy('id')
@@ -26,7 +26,7 @@ class ApplyContentEntity extends Model
      * @param $infoId
      * @return mixed
      */
-    final public static function info($bindId, $infoId)
+    protected static function info($bindId, $infoId)
     {
         return self::where( 'bind_id', '=', $bindId )
             ->where('id', '=', $infoId )
@@ -37,7 +37,7 @@ class ApplyContentEntity extends Model
      * @param $bindId
      * @return mixed
      */
-    final public static function items( $bindId ){
+    protected static function items( $bindId ){
         return self::where( 'bind_id', '=', $bindId )
             ->orderByDesc('order')
             ->orderBy('id')
@@ -52,7 +52,7 @@ class ApplyContentEntity extends Model
      * @param int $pageSize
      * @return mixed
      */
-    final public static function paginate( $bindId , $aliasName , $pageSize=15 ){
+    protected static function paginate( $bindId , $aliasName , $pageSize=15 ){
 
         return self::where( 'bind_id', '=', $bindId )
             ->orderByDesc('order')
