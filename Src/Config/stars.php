@@ -27,6 +27,13 @@ return [
             'navMenu' => 300
         ],
 
+        'paginate'=>[
+            'default'=>20 ,
+            'single.about.speech'=>15 ,
+            'paginate.join.society'=>1,
+            'paginate.news.paginate'=>3,
+        ] ,
+
         'options'=>[
             'default'=>[
                 ''
