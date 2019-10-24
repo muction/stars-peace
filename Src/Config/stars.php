@@ -1,34 +1,42 @@
 <?php
 return [
+
+    //后台百度地图key
     'map'=>[
         'key'=>[
-            'baidu'=> 'giDYbzwfnfeIxGrGIdFjMuNiIMSkP8K1',
+            'baidu'=> '',
         ]
     ],
-    'options'=>[
-        'default'=>[
-            ''
-        ]
-    ] ,
 
-    'langs' => ['en', 'zh'] ,
+
+    //以下是每个nav对应的配置
+
     'nav'=> [
         'en' => 7,
         'zh' => 2
     ],
 
-    'cache'=> [
-        'navMenu' => 4
+
+    'zh'=>[
+        'inner'=> [
+            'templateName' => 'detail' ,
+            'delimiter'=> '.',
+            'count' => 1
+        ],
+        'cache'=> [
+            'navMenu' => 300
+        ],
+
+        'options'=>[
+            'default'=>[
+                ''
+            ]
+        ] ,
+
     ],
 
-    'paginate'=>[
-        'default'=>20 ,
-        'single.about.speech'=>15 ,
-        'paginate.join.society'=>1
-    ] ,
-    'inner'=> [
-        'templateName' => 'detail' ,
-        'delimiter'=> '.',
-        'count' => 1
+    // 所有配置项与 zh 一样...
+    'en'=>[
+
     ]
 ];

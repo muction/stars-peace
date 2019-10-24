@@ -45,7 +45,7 @@ class AppContentService
 
         $bindInfo =$this->bindInfo($bindId);
         if($bindInfo && $bindAlias== $bindInfo['alias_name']){
-            $paginateConfig = config( 'stars.paginate');
+            $paginateConfig = configApp( 'stars.paginate');
             $paginate = isset($paginateConfig[$bindInfo['alias_name']]) ? $paginateConfig[$bindInfo['alias_name']] : $paginateConfig['default'] ;
             return  $this->findMenuData( $bindInfo , 0 , 0, $paginate ) ;
         }
@@ -76,8 +76,7 @@ class AppContentService
 
             }elseif ($type == 'list')
             {
-                $data =  $className::items( $bind['id'], $bind['alias_name'] , $paginate
-                );
+                $data =  $className::items( $bind['id'], $bind['alias_name'] , $paginate );
             }elseif ( $type == 'paginate')
             {
                 $paginate =  $className::paginate( $bind['id'], $bind['alias_name'] , $paginate);

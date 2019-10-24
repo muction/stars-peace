@@ -16,7 +16,7 @@ if( !function_exists( 'checkSiteUrlLangEnv' ) ){
 
         $path = request()->path();
         $export =  $path ? explode('/',  $path) : [] ;
-        if(isset($export[0]) && in_array($export[0] , config('stars.langs' , []) ) ){
+        if(isset($export[0]) && in_array($export[0] , array_keys( config('stars.nav' , []) ) ) ){
             return $export[0];
         }
         return app()->getLocale();
