@@ -59,7 +59,7 @@ class StarsPeaceProvider extends ServiceProvider
             __DIR__ .'/Asset/stars' => public_path( "static/stars/" )  ,
             __DIR__.'/Config/stars.php' => config_path('stars.php'),
 
-        ], 'public');
+        ], 'stars-peace');
 
         //注册路由中间件
         $this->registryRouteMiddleware();
