@@ -278,13 +278,19 @@ class StarsForge extends PeacePeace
                         $value = 10;
                     }else if($columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_TEXT ){
                         $value = $this->makeChars() ;
-                    }else if($columnInfo['plug'] == SheetSheet::SUPPORT_COLUMN_DATETIME ){
+                    }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_COLUMN_DATETIME ){
+                        $value= date('Y-m-d H:i:s');
+                    }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_TIME ){
                         $value= date('Y-m-d H:i:s');
                     }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_TEXTAREA ){
+                        $value = $this->makeChars();
+                    }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_EDITOR ){
                         $value = $this->makeChars();
                     }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_UPLOAD  ){
                         $value = 1;
                     }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_CROPPER ){
+                        $value = 1;
+                    }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_RADIOS ){
                         $value = 1;
                     }else{
                         $value = '';

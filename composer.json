@@ -11,7 +11,10 @@
     "autoload": {
         "psr-4": {
             "Stars\\Peace\\" : "Src/"
-        }
+        },
+        "files": [
+            "./Src/Helper/Helper.php"
+        ]
     },
     "require": {
         "php": "^7.0",

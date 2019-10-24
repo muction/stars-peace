@@ -40,7 +40,11 @@ class SheetMake extends PeacePeace
      */
     public function handleCommand()
     {
+        //创建 sheet 文件
         $this->saveFileContent( $this->replaceStubContent() );
+
+        //非Core模式下，自动生成entity
+        $this->autoMakeApplyEntity() ;
         $this->info('Create '.$this->entityName.' Sheet Success !');
     }
 
@@ -56,5 +60,27 @@ class SheetMake extends PeacePeace
             [$this->entityValue , $this->nameSpaceName ],
             $this->subTemplateContent()
         );
+    }
+
+    /**
+     * 非core模式下自动生成Entity
+     */
+    protected function autoMakeApplyEntity(){
+
+        if($this->isCore){
+           return null;
+        }
+
+        $this->type = 'entity';
+        $this->entityValue =  str_replace(['Sheet'] ,'Entity', $this->entityValue);
+
+        $templateContent = str_replace(
+            ['__APPLYENTITY__' ],
+            [  $this->entityValue ],
+            $this->subTemplateContent( 'apply' )
+        );
+
+        return $this->saveFileContent( $templateContent );
+
     }
 }
