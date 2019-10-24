@@ -154,3 +154,46 @@ if( !function_exists( 'stdClass2Array' ) ){
         return json_decode( json_encode($items) , true ) ;
     }
 }
+
+/**
+ * 按语言版本获取配置
+ */
+if( !function_exists( 'configApp' ) ){
+
+    function configApp( $value , $origin =false ){
+
+        if($origin === true){
+            return config( $value );
+        }
+
+        return config( substrAppFront($value ).'.'.app()->getLocale(). substrAppAfter( $value ) );
+    }
+}
+
+/**
+ * 截取到指定位置结束的内容
+ *
+ * xxx.yy.sss.ggg
+ * return xxx
+ */
+if( !function_exists('substrAppFront') ){
+
+    function substrAppFront( $string , $explode='.' ){
+
+        return substr( $string , strstr( $string , $explode ) );
+    }
+}
+
+/**
+ * 返回结束部分
+ * xxx.yy.sss.ggg
+ * return .yy.sss.ggg
+ *
+ */
+if( !function_exists('substrAppAfter') ){
+
+    function substrAppAfter( $string , $explode='.' ){
+
+        return ltrim( $string , substrAppFront( $string , $explode ) );
+    }
+}
