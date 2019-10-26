@@ -1,20 +1,18 @@
 @extends("StarsPeace::iframe")
 
 @section('car-head')
-
 @endsection
 
 @section('car-body')
 
-
     <div style="height: 100%;" >
-        <div style="width: 180px;float:left;height: 100%;" >
+        <div style="width: 180px;float:left;height: 100%;overflow-y: scroll; " >
             <nav class="article-sidebar-main" >
                 <ul id="treeDemo" class="ztree"></ul>
             </nav>
         </div>
         <div style="margin-left: 190px;height: 100%;" >
-            <iframe name="articleContent" id="articleContent" src="{{ route('rotate.help') }}" style="width: 100% ;height: 99%; border: 0px"></iframe>
+            <iframe name="articleContent" id="articleContent" onload="lightyear.loading('hide')" src="{{ route('rotate.help') }}" style="width: 100% ;height: 99%; border: 0px"></iframe>
         </div>
     </div>
 @endsection
@@ -24,23 +22,41 @@
     <link href="{{asset("static/stars/plugs/zTree/css/zTreeStyle/zTreeStyle.css")}}" rel="stylesheet">
 
     <SCRIPT type="text/javascript">
-        function treeClick(e,treeId, treeNode) {
-            return false;
+
+        var iniNavMenUrl =0;
+        function getFontConfig( treeId, node ) {
+            if( node.url && iniNavMenUrl==0 ){
+                iniNavMenUrl =2;
+                $('#articleContent').attr( 'src', node.url );
+                lightyear.loading('hide');
+            }
+            return node.url ? {color:'#333' , 'size': '15px'} : {color:'#8b95a5'} ;
         }
+
+        // 点击
+        function clickMenu(){
+            lightyear.loading('show');  // 显示
+           // lightyear.loading('hide');
+        }
+
         $(document).ready(function(){
+
             let zTree=$.fn.zTree.init($("#treeDemo"), {
                 data: {
                     key:{
                         name : "title",
                         title : "title",
                         children : "nodes"
-                    },
-                    view:{
-                        fontCss : { 'font-weight':'bold'}
                     }
                 },
+                view:{
+                    //fontCss : { 'font-size':'15px'},
+                    fontCss: getFontConfig,
+                    //showLine: false ,
+                        showIcon: false
+                },
                 callback: {
-                    onClick: treeClick
+                    onClick: clickMenu
                 }
             }, @json( $sides ) );
             zTree.expandAll( true );

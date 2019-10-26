@@ -1,4 +1,5 @@
-@extends("StarsPeace::iframe")
+@extends("StarsPeace::article.index.layout")
+
 
 @section('car-head')
 

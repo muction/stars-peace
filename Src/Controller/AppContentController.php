@@ -5,6 +5,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use phpDocumentor\Reflection\Types\Parent_;
 use Stars\Peace\Entity\NavMenu;
 use Stars\Peace\Service\AppContentService;
 use App\Http\Controllers\Controller;
@@ -103,14 +104,19 @@ abstract class AppContentController extends Controller
      */
     public function __construct()
     {
-        //行为前钩子
-        $this->hookStart();
 
-        //进行中钩子
-        $this->initAppData();
+        if(! \app()->runningInConsole() ){
+            //行为前钩子
+            $this->hookStart();
 
-        //完成钩子
-        $this->hookComplete();
+            //进行中钩子
+            $this->initAppData();
+
+            //完成钩子
+            $this->hookComplete();
+        }
+
+
     }
 
     /**

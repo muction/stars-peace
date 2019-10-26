@@ -1,4 +1,5 @@
-@extends("StarsPeace::iframe")
+@extends("StarsPeace::article.index.layout")
+
 
 @section("page-head")
 
@@ -24,12 +25,12 @@
 @endsection
 
 @section('car-body')
-
+<div style="margin-top: 5px;">
     @include("StarsPeace::article.index.inc")
 
-    <div class="tab-content">
+    <div class="" style="">
 
-        <form action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post" class="row">
+        <form action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post" >
 
             @csrf
             @foreach( $bindSheetInfo['sheet']['columns'] as $column )
@@ -129,6 +130,6 @@
             });
         });
     </script>
-
+</div>
 @endsection
 
