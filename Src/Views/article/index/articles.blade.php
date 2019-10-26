@@ -8,6 +8,7 @@
 
 @section('car-body')
 
+<div style="margin-top: 5px;">
     @include("StarsPeace::article.index.inc")
 
     <div class="tab-content">
@@ -96,4 +97,6 @@
 
         @include( "StarsPeace::inc.pagination" )
     </div>
+
+</div>
 @endsection

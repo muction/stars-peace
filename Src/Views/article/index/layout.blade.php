@@ -24,7 +24,7 @@
 <body style="height: 100%;">
 
 <div class="container-fluid" style="height: 100%;overflow-y: hidden; ">
-    <div class="row" style="height: 100%;background-color: #ffff;padding:5px">
+    <div class="row" style="height: 100%;background-color: #ffff;">
         @yield('car-body')
     </div>
 </div>

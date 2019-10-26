@@ -1,11 +1,9 @@
 @extends("StarsPeace::iframe")
 
 @section('car-head')
-
 @endsection
 
 @section('car-body')
-
 
     <div style="height: 100%;" >
         <div style="width: 180px;float:left;height: 100%;overflow-y: scroll; " >
@@ -14,7 +12,7 @@
             </nav>
         </div>
         <div style="margin-left: 190px;height: 100%;" >
-            <iframe name="articleContent" id="articleContent" src="{{ route('rotate.help') }}" style="width: 100% ;height: 99%; border: 0px"></iframe>
+            <iframe name="articleContent" id="articleContent" onload="lightyear.loading('hide')" src="{{ route('rotate.help') }}" style="width: 100% ;height: 99%; border: 0px"></iframe>
         </div>
     </div>
 @endsection
@@ -30,11 +28,19 @@
             if( node.url && iniNavMenUrl==0 ){
                 iniNavMenUrl =2;
                 $('#articleContent').attr( 'src', node.url );
-
+                lightyear.loading('hide');
             }
-            return node.url ? {color:'#333'} : {color:'#8b95a5'} ;
+            return node.url ? {color:'#333' , 'size': '15px'} : {color:'#8b95a5'} ;
         }
+
+        // 点击
+        function clickMenu(){
+            lightyear.loading('show');  // 显示
+           // lightyear.loading('hide');
+        }
+
         $(document).ready(function(){
+
             let zTree=$.fn.zTree.init($("#treeDemo"), {
                 data: {
                     key:{
@@ -50,7 +56,7 @@
                         showIcon: false
                 },
                 callback: {
-                   // onClick: treeClick
+                    onClick: clickMenu
                 }
             }, @json( $sides ) );
             zTree.expandAll( true );

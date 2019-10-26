@@ -22,7 +22,7 @@
         <div class="col-lg-12" style="height: 100%;">
             <div class="card" style="height: 100%;">
                 @yield('car-head')
-                <div class="card-body" style="height: 98%;padding: 0px">
+                <div class="card-body" style="height: 100%;padding: 0px">
                     <div  style="overflow-x: hidden;height: 100%;">
                         @yield('car-body')
                     </div>
@@ -56,6 +56,7 @@
 
 <script type="text/javascript">
     $(function(){
+
         $('.act-stars-remove').click(function(){
             let href = $(this).attr('href');
             parent.$.confirm({
