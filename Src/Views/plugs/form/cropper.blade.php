@@ -6,7 +6,7 @@
             <input type="hidden" id="save_attachment_id_{{$column['db_name']}}" name="{{ $column['db_name'] }}"
                    value="{{ old($column['db_name'] , isset($column['now_value'][0] ) ? $column['now_value'][0]['id'] : '') }}"/>
             <button type="button" id="upload_btn_{{$column['db_name']}}" value="选择文件">选择文件</button>
-            <button type="button" class="btn btn-sm btn-info btn-round"
+            <button type="button" class="btn btn-xs btn-info btn-default"
                     aria-hidden="true" id="cut_btn_{{$column['db_name']}}">裁剪</button>
         </div>
         <div class="panel-body">

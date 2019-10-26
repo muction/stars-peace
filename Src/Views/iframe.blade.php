@@ -5,13 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>STARS 后台管理系统</title>
 
-    <link href="{{asset('static/stars/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{asset('static/stars/css/materialdesignicons.min.css')}}" rel="stylesheet">
-    <link href="{{asset('static/stars/css/style.min.css')}}" rel="stylesheet">
-
-    <script type="text/javascript" src="{{asset('static/stars/js/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('static/stars/js/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{asset('static/stars/js/main.min.js')}}"></script>
+    @include("StarsPeace::inc.iframe.static")
 
     @yield("page-head")
     <style type="text/css">
@@ -22,13 +16,13 @@
 </head>
 
 <body style="height: 100%;">
-<div class="container-fluid p-t-15" style="height: 100%;overflow-y: hidden;">
 
+<div class="container-fluid p-t-10" style="height: 100%;overflow-y: hidden;">
     <div class="row" style="height: 100%;">
         <div class="col-lg-12" style="height: 100%;">
             <div class="card" style="height: 100%;">
                 @yield('car-head')
-                <div class="card-body" style="height: 92%;padding: 10px">
+                <div class="card-body" style="height: 98%;padding: 0px">
                     <div  style="overflow-x: hidden;height: 100%;">
                         @yield('car-body')
                     </div>
