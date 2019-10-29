@@ -12,8 +12,12 @@ class TemplateService extends ServiceService
      */
     public function themeTemplates( ){
 
-        $path = resource_path('views');
+        $path = config('view.paths');
+        $path = isset($path[0]) ? $path[0] : '';
 
+        if(!$path){
+            return  [];
+        }
         $themeFiles = [];
         $file =new Filesystem();
         $files= $file->allFiles( $path  ,true );
