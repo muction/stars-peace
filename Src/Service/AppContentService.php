@@ -43,7 +43,7 @@ class AppContentService
      */
     public function findBindPaginateData( $bindId, $bindAlias='' ){
 
-        $bindInfo =$this->bindInfo($bindId);
+        $bindInfo =$this->bindInfo($bindId , $bindAlias);
         if($bindInfo && $bindAlias== $bindInfo['alias_name']){
             $paginateConfig = configApp( 'stars.paginate');
             $paginate = isset($paginateConfig[$bindInfo['alias_name']]) ? $paginateConfig[$bindInfo['alias_name']] : $paginateConfig['default'] ;
@@ -180,8 +180,7 @@ class AppContentService
      * @return  null
      */
     public function bindInfo( $bindId , $bindAlias ='' ){
-
-        return MenuBind::info( $bindId ,$bindAlias );
+        return MenuBind::where( 'id', $bindId )->where('alias_name', $bindAlias )->first();
     }
 
     /**

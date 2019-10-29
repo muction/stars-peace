@@ -144,6 +144,7 @@ abstract class AppContentController extends Controller
         $this->locale = checkSiteUrlLangEnv() ;
         $this->activeRouterName = \request()->route()->getName()  ;
         $this->inner = \request()->get('inner') ;
+        $this->isAjaxRequest = \request()->ajax();
 
         $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner ) ;
 
