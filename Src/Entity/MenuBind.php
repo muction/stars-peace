@@ -49,4 +49,14 @@ class MenuBind extends EntityEntity
             ->orderBy('id' , 'asc')
             ->get();
     }
+
+    /**
+     * 绑定详情
+     * @param int $bindId
+     * @return mixed
+     */
+    public static function bindDetail(int  $bindId ){
+        return self::where( 'id', $bindId )
+            ->first();
+    }
 }
