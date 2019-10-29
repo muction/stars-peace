@@ -82,7 +82,7 @@ class AppContentService
                 $paginate =  $className::paginate( $bind['id'], $bind['alias_name'] , $paginate);
 
                 $data['links'] = $paginate->links( configApp('stars.paginate.template') ) ;
-                $data['data'] = $paginate ? $paginate ->toArray() : [];
+                $data['data'] = $paginate ;
             }
 
         }else{
