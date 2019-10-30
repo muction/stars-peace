@@ -64,11 +64,13 @@ class NavMenuService extends ServiceService
 
     /**
      * @param $navId
+     * @param $status
      * @return array
      */
-    public function articleTree( $navId ){
+    public function articleTree( $navId , $status = null ){
+
         $navMenu = new NavMenu();
-        $nodes= $navMenu->getNodes( $navId );
+        $nodes= $navMenu->getNodes( $navId , false  ,$status );
 
         if($nodes)
             foreach ($nodes as $index=>$item){

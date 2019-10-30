@@ -17,13 +17,13 @@
 
 <body style="height: 100%;">
 
-<div class="container-fluid p-t-10" style="height: 100%;overflow-y: hidden;">
-    <div class="row" style="height: 100%;">
-        <div class="col-lg-12" style="height: 100%;">
-            <div class="card" style="height: 100%;">
+<div class="container-fluid p-t-10" style="height: 99%;overflow-y: hidden;">
+    <div class="row" style="height: 99%;">
+        <div class="col-lg-12" style="height: 99%;">
+            <div class="card" style="height: 99%;">
                 @yield('car-head')
-                <div class="card-body" style="height: 100%;padding: 0px">
-                    <div  style="overflow-x: hidden;height: 100%;">
+                <div class="card-body" style="height: 99%;padding: 0px ;background-color:  #fff ">
+                    <div style="overflow-x: hidden;height: 99%;">
                         @yield('car-body')
                     </div>
                 </div>

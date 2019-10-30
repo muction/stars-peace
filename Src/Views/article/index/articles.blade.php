@@ -4,6 +4,11 @@
 
 @section('car-head')
 
+    <style type="text/css">
+        .stars-pagination ul{
+            margin: 0px !important;
+        }
+    </style>
 @endsection
 
 @section('car-body')
@@ -95,7 +100,9 @@
             </tbody>
         </table>
 
-        @include( "StarsPeace::inc.pagination" )
+        <div class="stars-pagination">
+            @include( "StarsPeace::inc.pagination" )
+        </div>
     </div>
 
 </div>

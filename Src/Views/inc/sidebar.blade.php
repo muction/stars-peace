@@ -10,11 +10,13 @@
             </a>
             <ul class="nav nav-subnav">
 
+                @if( config('stars.ppt') )
                 <li>
                     <a class="multitabs" href="{{ route(   'rotate.slide.index.type'  ) }}">
                         幻灯片
                     </a>
                 </li>
+                @endif
 
                 @foreach($articleNav as $_nav)
                     <li>

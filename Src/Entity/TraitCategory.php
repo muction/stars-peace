@@ -36,10 +36,13 @@ trait TraitCategory
      * @param bool $withMenuBind
      * @return mixed
      */
-    public function getNodes( $navId, $withMenuBind=false ){
+    public function getNodes( $navId, $withMenuBind=false , $status = null ){
         $result= self::where( 'nav_id', $navId );
         if($withMenuBind){
             $result = $result->with('binds');
+        }
+        if( is_numeric( $status ) ){
+            $result = $result->where('status' ,'=' , $status );
         }
 
         $result = $result

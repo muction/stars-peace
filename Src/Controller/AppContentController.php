@@ -163,7 +163,7 @@ abstract class AppContentController extends Controller
 
             if(!$this->navMenus ){
                 $peaceNavMenuService = new NavMenuService();
-                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale() ,App::getLocale() ) );
+                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale()  ) , 1);
                 Cache::put( $cacheNavMenusKey , $this->navMenus  , configApp('stars.cache.navMenu' , 60) );
             }
 
