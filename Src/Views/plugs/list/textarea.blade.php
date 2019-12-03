@@ -1,1 +1,1 @@
-{{$valueItem[$_listColumnName]}}
+{{ Str::limit($valueItem[$_listColumnName] , 20 , '...') }}
