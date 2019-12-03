@@ -34,8 +34,13 @@
         }
 
         // 点击
-        function clickMenu(){
-            lightyear.loading('show');  // 显示
+        function clickMenu( event, treeId, treeNode ){
+
+            if( treeNode .url){
+                lightyear.loading('show');  // 显示
+            }
+             
+            //console.log( event, treeId, treeNode );
            // lightyear.loading('hide');
         }
 
