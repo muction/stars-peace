@@ -163,7 +163,7 @@ abstract class AppContentController extends Controller
 
             if(!$this->navMenus ){
                 $peaceNavMenuService = new NavMenuService();
-                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale() ,App::getLocale() ) );
+                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale()  ) , 1);
                 Cache::put( $cacheNavMenusKey , $this->navMenus  , configApp('stars.cache.navMenu' , 60) );
             }
 
@@ -198,14 +198,7 @@ abstract class AppContentController extends Controller
 
         //TODO 优化点
         if( $this->isAjaxRequest ){
-            $appContentService = new AppContentService();
-            $bindId=  \request('bindId', 0);
-            $bindAlias= \request('bindAlias') ;
-            if($bindId && $bindAlias){
-                $bindData[str_replace('.','_', $bindAlias )] = $appContentService->findBindPaginateData($bindId , $bindAlias);
-                $this->appendBindData( $bindData );
-            }
-            return $this->responseSuccess( $this->assign );
+            return $this->ajaxHandle() ;
         }
 
         if(!$template){
@@ -216,6 +209,30 @@ abstract class AppContentController extends Controller
         }
 
         return view(  $this->templateName , $this->assign  );
+    }
+
+    /**
+     * ajax 请求时处理
+     * 如果有扩展需求，覆盖此方法即可
+     */
+    public function ajaxHandle(){
+
+        return $this->ajaxFindBindData() ;
+    }
+
+    /**
+     * 获取绑定数据
+     */
+    final protected function ajaxFindBindData(){
+
+        $appContentService = new AppContentService();
+        $bindId=  \request('bindId', 0);
+        $bindAlias= \request('bindAlias') ;
+        if($bindId && $bindAlias){
+            $bindData[str_replace('.','_', $bindAlias )] = $appContentService->findBindPaginateData($bindId , $bindAlias);
+            $this->appendBindData( $bindData );
+        }
+        return $this->responseSuccess( $this->assign );
     }
 
     /**
