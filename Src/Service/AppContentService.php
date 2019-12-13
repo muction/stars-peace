@@ -189,10 +189,10 @@ class AppContentService
      * @param string $inner
      * @return array|mixed
      */
-    public function formatActiveMenuInfo( $routerName , $inner = ''){
+    public function formatActiveMenuInfo( $routerName , $inner  , $activeNavId ){
 
         $navMenuService = new NavMenuService() ;
-        $activeMenuInfo = $navMenuService->findByRouterName( $routerName );
+        $activeMenuInfo = $navMenuService->findByRouterName( $routerName ,$activeNavId );
         if(!$activeMenuInfo){
             return [];
         }

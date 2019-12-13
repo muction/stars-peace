@@ -142,8 +142,9 @@ class NavMenuService extends ServiceService
      * @param $routerName
      * @return mixed
      */
-    public function findByRouterName( $routerName ){
-        $info= NavMenu::where( 'route_name' ,'=' ,$routerName )->first();
+    public function findByRouterName( $routerName ,$activeNavId ){
+        $info= NavMenu::where('nav_id', $activeNavId )
+            ->where( 'route_name' ,'=' ,$routerName )->first();
         return $info ? $info->toArray() : [];
     }
 
