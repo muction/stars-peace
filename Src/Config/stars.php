@@ -8,6 +8,9 @@ return [
         ]
     ],
 
+    'hook'=>[
+        'articleHook'=> App\Hook\Article::class
+    ],
 
     /**
      * 配置项已站点支持语言为维度进行切分
