@@ -139,6 +139,7 @@ abstract class AppContentController extends Controller
     private function initAppData(){
 
         //服务者设定
+        $this->activeNavId = config('stars.nav.'. App::getLocale()  ) ;
         $this->appContentService = new AppContentService();
         $this->navMenuService = new NavMenuService();
         $this->locale = checkSiteUrlLangEnv() ;
@@ -146,7 +147,7 @@ abstract class AppContentController extends Controller
         $this->inner = \request()->get('inner') ;
         $this->isAjaxRequest = \request()->ajax();
 
-        $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner ) ;
+        $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner , $this->activeNavId) ;
 
         if(! $this->activeMenuInfo){
             throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" , 500);
@@ -163,7 +164,7 @@ abstract class AppContentController extends Controller
 
             if(!$this->navMenus ){
                 $peaceNavMenuService = new NavMenuService();
-                $this->navMenus = $peaceNavMenuService->articleTree( config('stars.nav.'. App::getLocale()  ) , 1);
+                $this->navMenus = $peaceNavMenuService->articleTree( $this->activeNavId , 1);
                 Cache::put( $cacheNavMenusKey , $this->navMenus  , configApp('stars.cache.navMenu' , 60) );
             }
 
