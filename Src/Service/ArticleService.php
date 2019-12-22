@@ -120,13 +120,13 @@ class ArticleService extends ServiceService
         }
 
 
-        $storage=  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
+        $storageResult  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
         if( $this->hook ){
             $hook = new ArticleHookFoundation( new $this->hook()  );
             $hook->saved(  $request , $this->sheetTableName, $assign['bindId'], $storage );
         }
 
-        return $storage;
+        return $storageResult;
     }
 
     /**
