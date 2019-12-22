@@ -112,7 +112,7 @@ class ArticleService extends ServiceService
             $affect= $article->edit($this->sheetTableName, $assign['bindId'], $infoId, $storage );
             if( $this->hook ){
                 $hook = new ArticleHookFoundation( new $this->hook() );
-                $hook->saved( $request , $this->sheetTableName, $assign['bindId'], $storage, $infoId  );
+                $hook->saved( $request , $this->sheetTableName, $assign['bindId'], $affect, $infoId  );
             }
 
             return $affect;
