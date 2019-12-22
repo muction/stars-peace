@@ -3,6 +3,7 @@
 
 namespace Stars\Peace\Contracts;
 use Illuminate\Http\Request;
+use Stars\Peace\Entity\ArticleEntity;
 
 interface ArticleHook
 {
@@ -24,5 +25,5 @@ interface ArticleHook
      * @param $storage
      * @return mixed
      */
-    public function saved( Request $request, string $sheetTableName,int $bindId,  $storage , int $infoId=0 );
+    public function saved( Request $request, string $sheetTableName,int $bindId, ArticleEntity $storage , int $infoId=0 );
 }
