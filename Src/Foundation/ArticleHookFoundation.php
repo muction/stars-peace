@@ -35,11 +35,11 @@ class ArticleHookFoundation implements ArticleHook
      * @param string $sheetTableName
      * @param int $bindId
      * @param int $infoId
-     * @param array $storage
+     * @param  object $storage
      * @return mixed
      */
-    public function saved(Request $request, string $sheetTableName, int $bindId, array $storage, int $infoId = 0)
+    public function saved(Request $request, string $sheetTableName, int $bindId, $storage, int $infoId = 0)
     {
-        return $this->hook->saved( $request , $sheetTableName , $bindId, $storage ,$infoId );
+        return $this->hook->saved( $request , $sheetTableName , $bindId,  $storage ,$infoId );
     }
 }

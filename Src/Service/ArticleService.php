@@ -108,7 +108,6 @@ class ArticleService extends ServiceService
         }
 
         $article = new ArticleEntity();
-        $configHook = config('stars.hook.articleHook');
         if($infoId > 0){
             $affect= $article->edit($this->sheetTableName, $assign['bindId'], $infoId, $storage );
             if( $this->hook ){
@@ -120,13 +119,13 @@ class ArticleService extends ServiceService
         }
 
 
-        $storageResult  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
+        $storage  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
         if( $this->hook ){
             $hook = new ArticleHookFoundation( new $this->hook()  );
             $hook->saved(  $request , $this->sheetTableName, $assign['bindId'], $storage );
         }
 
-        return $storageResult;
+        return $storage;
     }
 
     /**
