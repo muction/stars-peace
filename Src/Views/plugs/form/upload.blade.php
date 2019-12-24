@@ -25,7 +25,7 @@
                     @foreach( $column['now_value'] as $__nowFileValue )
 
                         <div id="{{ md5($__nowFileValue['id']) }}">
-                            <a href="javascript:void(0)" class="_remove_queue_fileuploader" data-file_id="{{ md5($__nowFileValue['id']) }}">移除</a>
+                            <a href="javascript:void(0)" class="_remove_queue_file{{ $column['db_name'] }}" data-file_id="{{ md5($__nowFileValue['id']) }}">移除</a>
                             {{ $__nowFileValue['original_name'] }}
                         </div>
 
@@ -37,7 +37,7 @@
             <div id="upload_result_{{$column['db_name']}}">
                 @if( isset($column['now_value']) && $column['now_value'])
                     @foreach( $column['now_value'] as $__nowValue )
-                        <input id="result_hidden_{{ md5($__nowValue['id']) }}" type="hidden" name="uploader[]" value="{{$__nowValue['id']}}">
+                        <input id="result_hidden_{{ md5($__nowValue['id']) }}" type="hidden" name="{{ $column['db_name'] }}[]" value="{{$__nowValue['id']}}">
                     @endforeach
                 @endif
             </div>
