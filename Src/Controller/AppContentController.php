@@ -193,6 +193,19 @@ abstract class AppContentController extends Controller
 
         $this->templateName = $template;
 
+        //如果设置了SEO处理则使用配置时的SEO配置内容
+        if( config('stars.page.seo') ){
+            $seoClassService = config('stars.page.seo');
+            $pageSeoInstance = new $seoClassService( $this->bindData , $this->activeMenuInfo );
+            $this->assign = array_merge($this->assign , [
+               '__pageSeo'=>[
+                   'title'=> $pageSeoInstance->title() ,
+                   'keywords'=> $pageSeoInstance->keywords() ,
+                   'description'=> $pageSeoInstance->description() ,
+               ]
+            ]);
+        }
+
         if($data && is_array($data)){
             $this->assign = array_merge($this->assign , $data ) ;
         }
