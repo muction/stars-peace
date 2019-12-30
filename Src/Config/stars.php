@@ -12,6 +12,10 @@ return [
         'articleHook'=> App\Hook\Article::class
     ],
 
+    'page'=>[
+        'seo'=>""
+    ],
+
     /**
      * 配置项已站点支持语言为维度进行切分
      * 例如：网站支持 zh,en两种语言，则使用默认配置即可，支持其他语言则以此类推即可。
