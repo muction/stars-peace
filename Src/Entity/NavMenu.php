@@ -18,7 +18,7 @@ class NavMenu extends EntityEntity
      * 批量添加
      * @var array
      */
-    protected $fillable = [ 'nav_id' , 'parent_id' ,'image_id' , 'title' ,'route_name' ,'href' ,'icon' , 'level' ,'template_name' ,'template_type'];
+    protected $fillable = [ 'nav_id' , 'parent_id' ,'image_id' , 'title' ,'route_name' ,'href' ,'icon' , 'level' ,'template_name' ,'template_type','seo_title' ,'seo_keywords', 'seo_description'];
 
     /**
      * @param array $menu

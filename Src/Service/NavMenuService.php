@@ -19,7 +19,8 @@ class NavMenuService extends ServiceService
     public function storage( Request $request ,$navId ){
 
         $level=1;
-        $only = $request->only(['parent_id' ,'title' ,'route_name' ,'image_id' ,'href' ,'icon' ,'order' ,'template_name','template_type']) ;
+        $only = $request->only(['parent_id' ,'title' ,'route_name' ,'image_id' ,'href' ,'icon' ,
+            'order' ,'template_name','template_type' ,'seo_title' ,'seo_keywords', 'seo_description']) ;
         if($only['parent_id']){
             $detail = NavMenu::detail($navId, $only['parent_id'] );
             $level = $detail['level'] +1;

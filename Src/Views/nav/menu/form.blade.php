@@ -105,6 +105,27 @@
         </div>
 
         <div class="form-group">
+            <label for="icon" class="col-sm-2 control-label">SEO名称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="seo_title" name="seo_title" value="{{ old('seo_title', isset($info['seo_title'] ) ? $info['seo_title'] : '' ) }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="icon" class="col-sm-2 control-label">SEO关键字</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="seo_keywords" name="seo_keywords" value="{{ old('seo_keywords', isset($info['seo_keywords'] ) ? $info['seo_keywords'] : '' ) }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="icon" class="col-sm-2 control-label">SEO介绍</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="seo_description" name="seo_description" >{{ old('seo_description', isset($info['seo_description'] ) ? $info['seo_keywords'] : '' ) }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">保存</button>
             </div>

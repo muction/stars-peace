@@ -48,14 +48,14 @@ abstract class PageSeoFoundation implements Page,PageSeo
     {
         $this->activeMenuInfo = $activeMenuInfo;
         $this->bindData = $bindData;
-        $this->handle() ;
+        $this->handle( $this->bindData , $this->activeMenuInfo ) ;
     }
 
     /**
      * 综合处理
      * @return mixed
      */
-    abstract function handle();
+    abstract function handle( array $bindData =[] ,array $activeMenuInfo=[] );
 
     /**
      * 页面关键字
