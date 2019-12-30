@@ -80,4 +80,31 @@ abstract class PageSeoFoundation implements Page,PageSeo
     final public function description(){
         return $this->description ;
     }
+
+    /**
+     * 设置页码title
+     * @param $title
+     * @return mixed
+     */
+    final public function setTitle( $title ){
+        return $this->title = $title;
+    }
+
+    /**
+     * 设置页码关键字
+     * @param $keyWords
+     * @return mixed
+     */
+    final public function setKeyWords( $keyWords ){
+        return $this->keywords = $keyWords ;
+    }
+
+    /**
+     * 设置页码简介
+     * @param $description
+     * @return mixed
+     */
+    final public function setDescription( $description ){
+        return $this->description = $description;
+    }
 }

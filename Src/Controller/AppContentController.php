@@ -198,7 +198,7 @@ abstract class AppContentController extends Controller
             $seoClassService = config('stars.page.seo');
             $pageSeoInstance = new $seoClassService( $this->bindData , $this->activeMenuInfo );
             $this->assign = array_merge($this->assign , [
-               '__pageSeo'=>[
+               'pageSeo'=>[
                    'title'=> $pageSeoInstance->title() ,
                    'keywords'=> $pageSeoInstance->keywords() ,
                    'description'=> $pageSeoInstance->description() ,
