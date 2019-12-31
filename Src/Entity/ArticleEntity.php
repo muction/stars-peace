@@ -30,7 +30,8 @@ class ArticleEntity extends EntityEntity
      */
     public function edit(string $sheetTableName, int $bindId, int $id, array $storage ){
         $info =$this->info( $sheetTableName , $id, $bindId ) ;
-        return $info->update( $storage );
+        $info->update( $storage );
+        return $info;
     }
 
     /**

@@ -3,6 +3,7 @@ namespace Stars\Peace\Service;
 
 use Stars\Peace\Entity\ArticleEntity;
 use Stars\Peace\Entity\AttachmentEntity;
+use Stars\Peace\Foundation\ArticleHookFoundation;
 use Stars\Peace\Foundation\ServiceService;
 use Stars\Peace\Foundation\SheetSheet;
 use Stars\Peace\Lib\Option;
@@ -47,6 +48,8 @@ class ArticleService extends ServiceService
      */
     public $sheetColumns = [];
 
+    private $hook = null;
+
     /**
      * 初始化，解析当前shee所有相关信息
      * @param array $bindSheetInfo
@@ -77,6 +80,9 @@ class ArticleService extends ServiceService
         $this->sheetColumns = isset( $bindSheetInfo['sheet']['columns']) ?
             $bindSheetInfo['sheet']['columns'] : '' ;
 
+        //是否配置了钩子
+        $this->hook = config('stars.hook.articleHook');
+
         return $this;
     }
 
@@ -102,16 +108,24 @@ class ArticleService extends ServiceService
         }
 
         $article = new ArticleEntity();
-
         if($infoId > 0){
-            return $article->edit($this->sheetTableName, $assign['bindId'], $infoId, $storage );
-//            $info =$article->info( $this->sheetTableName , $infoId, $assign['bindId'] ) ;
-//            return $info->save( $storage );
+            $affect= $article->edit($this->sheetTableName, $assign['bindId'], $infoId, $storage );
+            if( $this->hook ){
+                $hook = new ArticleHookFoundation( new $this->hook() );
+                $hook->saved( $request , $this->sheetTableName, $assign['bindId'], $affect, $infoId  );
+            }
+
+            return $affect;
         }
 
 
-        return  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
+        $storage  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
+        if( $this->hook ){
+            $hook = new ArticleHookFoundation( new $this->hook()  );
+            $hook->saved(  $request , $this->sheetTableName, $assign['bindId'], $storage );
+        }
 
+        return $storage;
     }
 
     /**
@@ -136,7 +150,12 @@ class ArticleService extends ServiceService
     public function remove( $bindId, $infoId ){
 
         $article = new ArticleEntity();
-        return $article->remove( $this->sheetTableName, $infoId , $bindId  );
+        $remove= $article->remove( $this->sheetTableName, $infoId , $bindId  );
+        if( $this->hook ){
+            $hook = new ArticleHookFoundation( new $this->hook()  );
+            $hook->deleted( $this->sheetTableName, $infoId , $bindId );
+        }
+        return $remove ;
     }
 
     /**

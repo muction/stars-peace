@@ -100,7 +100,7 @@ if( !function_exists( 'makeInnerParams') ){
 
     function makeInnerParams( $bindId, $infoId ){
 
-        return ['inner'=> implode(  config('stars.inner.delimiter'),  func_get_args() ) ];
+        return ['inner'=> implode(  configApp('stars.inner.delimiter'),  func_get_args() ) ];
     }
 }
 

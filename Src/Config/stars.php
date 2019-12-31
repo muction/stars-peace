@@ -8,6 +8,13 @@ return [
         ]
     ],
 
+    'hook'=>[
+        'articleHook'=> App\Hook\Article::class
+    ],
+
+    'page'=>[
+        'seo'=>""
+    ],
 
     /**
      * 配置项已站点支持语言为维度进行切分
