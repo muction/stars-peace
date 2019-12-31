@@ -121,7 +121,7 @@
         <div class="form-group">
             <label for="icon" class="col-sm-2 control-label">SEO介绍</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="seo_description" name="seo_description" >{{ old('seo_description', isset($info['seo_description'] ) ? $info['seo_keywords'] : '' ) }}</textarea>
+                <textarea class="form-control" id="seo_description" name="seo_description" >{{ old('seo_description', isset($info['seo_description'] ) ? $info['seo_description'] : '' ) }}</textarea>
             </div>
         </div>
 
