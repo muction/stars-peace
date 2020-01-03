@@ -17,6 +17,7 @@ class StarsPeaceProvider extends ServiceProvider
         Console\Commands\SheetMake::class,
         Console\Commands\StarsInit::class,
         Console\Commands\StarsForge::class,
+        Console\Commands\StarsVersion::class,
     ];
 
     /**
