@@ -122,6 +122,8 @@ Route::group(['prefix'=>"rotate" ,'middleware'=>['web'] , 'namespace'=> "Stars\P
 
         Route::get('/attachments/preview/{bindId}/{attachmentIds}' , 'AttachmentController@imgPreview')->name( 'rotate.attachment.img.preview' );
 
+        //模板操作
+        Route::get( '/template/index/{navId}/{menuId}' , 'TemplateController@index' )->name('rotate.template.index');
     } );
 
 
