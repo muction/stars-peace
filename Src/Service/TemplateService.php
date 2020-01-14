@@ -2,26 +2,34 @@
 namespace Stars\Peace\Service;
 
 use App\Entity\TemplateCodeEntity;
+use Illuminate\Http\Request;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Filesystem\Filesystem;
 
 class TemplateService extends ServiceService
 {
+    private $viewsPath = "";
+
+    public function __construct()
+    {
+        $path = config('view.paths');
+        $this->viewsPath = isset($path[0]) ? $path[0] : '';
+    }
+
     /**
      * 自动返回 resources/views/ 下所有模板文件
      * @return array
      */
     public function themeTemplates( ){
 
-        $path = config('view.paths');
-        $path = isset($path[0]) ? $path[0] : '';
 
-        if(!$path){
+
+        if(!$this->viewsPath ){
             return  [];
         }
         $themeFiles = [];
         $file =new Filesystem();
-        $files= $file->allFiles( $path  ,true );
+        $files= $file->allFiles( $this->viewsPath  ,true );
         foreach ($files as $index=>$file) {
             $themeFiles[] = $file->getRelativePathname();
         }
@@ -36,39 +44,43 @@ class TemplateService extends ServiceService
      * @param string $fileMd5
      * @param array $menuInfo
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function templateInfo(int $navId,int $menuId , $fileMd5,array  $menuInfo )
+    public function templateInfo(Request $request ,int $navId,int $menuId , $fileMd5  )
     {
-        $code = null;
-        $return = ['versions'=>[] , 'code'=>[] ,'model'=>'未知' ];
-        if( $fileMd5 ){
-            $codeInfo = TemplateCodeEntity::where('file_md5' , $fileMd5)->first();
-            if( $codeInfo ){
-                $return['model'] = "数据库";
-                $code = $codeInfo->toArray();
-                $code = $code['template_code'];
-            }
+        $templateContent = '';
+
+        //文章导航
+        $navs = new NavService();
+        $articleNavs = $navs->articleNav();
+        $firstArticleNavId=  $articleNavs ? $articleNavs->toArray() : [];
+        $validNavId = $request->input('nav', isset($firstArticleNavId[0]) ? $firstArticleNavId[0]['id'] : 0 );
+        $validNavInfo = $navs->info($validNavId);
+
+            //有效菜单
+        $navMenus = new NavMenuService();
+        $navMenus = $navMenus->tree( $validNavId );
+
+
+        //所有模板文件
+        $templateFiles = $this->themeTemplates();
+
+        //当前编辑的模板
+        $templatePathName = $request->input('template_name');
+        //dd($templateFiles);
+        if($templatePathName){
+            $fileSystem = new  Filesystem();
+            $templateContent = $fileSystem->get( $this->viewsPath.'/'.$templatePathName );
         }
 
-        if(!$code ){
-            //从模板文件里加载
-            $path = config('view.paths');
-            if( isset($path[0]) && $path[0]){
-                $templateFilePath = $path[0].'/'.$menuInfo['template_name'] ;
-                if( file_exists( $templateFilePath ) ){
-                    $return['model'] = "文件";
-                    $code = file_get_contents( $templateFilePath );
-                }
-            }
-        }
-
-        $versions = TemplateCodeEntity::where('nav_id' , $navId)->where('menu_id', $menuId)
-            ->orderBy('updated_at' ,'DESC')
-            ->get();
-
-        $return ['versions'] = $versions;
-        $return ['code'] = $code;
-        return $return ;
+        return [ 'articleNavs'=>$articleNavs ,
+            'navMenus'=>$navMenus ,
+            'validNavId'=>$validNavId ,
+            'validNavInfo'=>$validNavInfo,
+            'templateName'=>$templatePathName ,
+            'templateContent'=>$templateContent ,
+            'templateFiles'=>$templateFiles
+        ] ;
     }
 
 }

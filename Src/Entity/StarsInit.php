@@ -155,6 +155,7 @@ class StarsInit extends EntityEntity
 
     /**
      * 初始化菜单
+     * @param $navId
      * @return array
      */
     private function adminMenus( $navId ){
@@ -175,7 +176,7 @@ class StarsInit extends EntityEntity
             ] ,
             ['nav_id'=>$navId ,'title'=>'系统设置' ,'route_name'=> ''  ,'href'=>'', 'icon'=>'mdi mdi-settings', 'level'=>1 ,'order'=>10 ,'status'=>1 ,
                 'children'=>[
-                   // ['nav_id'=>$navId ,'title'=>'网站设置' ,'route_name'=> 'rotate.option.site'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
+                    ['nav_id'=>$navId ,'title'=>'模板管理' ,'route_name'=> 'rotate.template.index'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
                     ['nav_id'=>$navId ,'title'=>'附件管理' ,'route_name'=> 'rotate.attachment.index'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
                 ]
             ] ,

@@ -6,7 +6,7 @@ use Stars\Peace\Foundation\EntityEntity;
 class NavEntity extends EntityEntity
 {
     protected $table = 'navs';
-    protected $fillable = ['title' ,'remark' ,'article'];
+    protected $fillable = ['title' ,'remark' ,'article' ,'theme'];
 
     /**
      * @param array $nav

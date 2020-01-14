@@ -14,6 +14,12 @@
                 <input type="text" class="form-control" id="title" name="title" value="{{ old('title', isset($info['title'] ) ? $info['title'] : '' ) }}">
             </div>
         </div>
+        <div class="form-group  @error('theme') has-error @enderror">
+            <label for="title" class="col-sm-2 control-label">主题名称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="theme" name="theme" value="{{ old('theme', isset($info['theme'] ) ? $info['theme'] : '' ) }}">
+            </div>
+        </div>
         <div class="form-group @error('remark') has-error @enderror">
             <label for="textarea" class="col-sm-2 control-label">简单介绍 <span class="required">*</span></label>
             <div class="col-sm-10">

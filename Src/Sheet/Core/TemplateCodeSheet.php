@@ -28,7 +28,7 @@ class TemplateCodeSheet extends SheetSheet
         $this->addIntColumn('导航ID', 'nav_id');
         $this->addIntColumn('菜单ID', 'menu_id');
         $this->addCharColumn('文件md5', 'file_md5' ,32);
-        $this->addTextWidget('模板名称', 'template_filename' ,255);
+        $this->addTextWidget('模板名称', 'template_filename' ,512);
         $this->addEditorWidget("代码" ,'template_code');
         $this->addRadioGroupWidget('状态', 'status', 3,
             $this->columnOptions(
