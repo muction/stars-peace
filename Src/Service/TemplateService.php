@@ -3,6 +3,7 @@ namespace Stars\Peace\Service;
 
 use App\Entity\TemplateCodeEntity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Filesystem\Filesystem;
 
@@ -49,6 +50,7 @@ class TemplateService extends ServiceService
     public function templateInfo(Request $request ,int $navId,int $menuId , $fileMd5  )
     {
         $templateContent = '';
+        $templateDataSource= '';
 
         //文章导航
         $navs = new NavService();
@@ -67,10 +69,26 @@ class TemplateService extends ServiceService
 
         //当前编辑的模板
         $templatePathName = $request->input('template_name');
-        //dd($templateFiles);
+
         if($templatePathName){
-            $fileSystem = new  Filesystem();
-            $templateContent = $fileSystem->get( $this->viewsPath.'/'.$templatePathName );
+
+            //取得数据库模板数据
+            $templateContent = TemplateCodeEntity::where([
+                'status'=> TemplateCodeEntity::STATUS_USE_ING,
+                'nav_id'=> $validNavId ,
+                'template_filename' => $templatePathName
+            ])->value('template_code');
+            if($templateContent){
+                $templateDataSource= '数据库';
+            }else if(!$templateContent){
+
+                //再加载文件
+                $fileSystem = new  Filesystem();
+                if($fileSystem->exists( $this->viewsPath.'/'.$templatePathName )){
+                    $templateContent = $fileSystem->get( $this->viewsPath.'/'.$templatePathName );
+                    $templateDataSource= '模板文件';
+                }
+            }
         }
 
         return [ 'articleNavs'=>$articleNavs ,
@@ -79,8 +97,101 @@ class TemplateService extends ServiceService
             'validNavInfo'=>$validNavInfo,
             'templateName'=>$templatePathName ,
             'templateContent'=>$templateContent ,
+            'templateDataSource'=>$templateDataSource ,
             'templateFiles'=>$templateFiles
         ] ;
+    }
+
+    /**
+     * 应用更改
+     * @param Request $request
+     * @return mixed
+     */
+    public function apply(Request $request){
+        $requestAll = $request->all();
+        $update =null;
+        $create= null;
+        $writeFileResult = null;
+
+        //先取得当前正在使用的模板数据
+        $useIngTemplateInfo = TemplateCodeEntity::where(
+                [
+                    'status'=> TemplateCodeEntity::STATUS_USE_ING,
+                    'nav_id'=>$requestAll['validNavId']  ,
+                    'template_filename'=>$requestAll['templateName']
+                ]
+            )->first();
+
+        try{
+            DB::beginTransaction();
+
+            //将当前 status=1 使用中的置位 0
+            $update= TemplateCodeEntity::setStatus(
+                [
+                    'status'=> TemplateCodeEntity::STATUS_USE_ING,
+                    'nav_id'=>$requestAll['validNavId']  ,
+                    'template_filename'=>$requestAll['templateName']
+                ] ,
+                ['status'=>TemplateCodeEntity::STATUS_STOP ]);
+
+            //写入新的模板文件
+            $create= TemplateCodeEntity::storage( $requestAll['validNavId'] , $requestAll['templateName'] , $requestAll['templateContent'] , TemplateCodeEntity::STATUS_USE_ING) ;
+            DB::commit();
+
+        }catch (\Exception $exception){
+            DB::rollBack();
+
+            //取得最后一条信息
+            if($useIngTemplateInfo){
+                $useIngTemplateInfo = $useIngTemplateInfo->toArray();
+                $this->putFileTemplateContent( $this->viewsPath.'/'.$useIngTemplateInfo['template_filename'], $useIngTemplateInfo['template_code'] );
+            }
+
+            return false;
+        }
+
+        //文件操作，写入新的文件内容
+        $this->putFileTemplateContent( $this->viewsPath.'/'.$requestAll['templateName'] ,  $requestAll['templateContent']);
+        return ['update'=>$update ,'create'=>$create ,'writeFile'=>$writeFileResult ];
+    }
+
+    /**
+     * 回滚到上次版本
+     * @param Request $request
+     * @return bool|int
+     */
+    public function rollBack(Request $request ){
+       try{
+           $requestAll=$request->all();
+           $useIngTemplateInfo = TemplateCodeEntity::where(
+                   [
+                       'status'=> TemplateCodeEntity::STATUS_STOP ,
+                       'nav_id'=>$requestAll['validNavId']  ,
+                       'template_filename'=>$requestAll['templateName']
+                   ]
+               )->orderBy('updated_at','DESC')->first();
+           if($useIngTemplateInfo){
+               $useIngTemplateInfo = $useIngTemplateInfo->toArray();
+               return $this->putFileTemplateContent( $this->viewsPath.'/'.$useIngTemplateInfo['template_filename'], $useIngTemplateInfo['template_code'] );
+           }
+           return false;
+       }catch (\Exception $exception){
+           return false;
+       }
+    }
+
+    /**
+     * 具体写入文件
+     * @param $templateName
+     * @param $templateContent
+     * @return bool|int
+     */
+    public function putFileTemplateContent( $templateName, $templateContent ){
+        $file = new Filesystem();
+        if(!$file->exists($templateName)){
+            return false;
+        }
+        return $file->put( $templateName  , $templateContent);
     }
 
 }

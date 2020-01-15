@@ -53,8 +53,10 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <button class="btn btn-sm btn-warning" type="button">应用此更改</button>
-                                <button class="btn btn-sm btn-default" type="button">回归上次版本</button>
+                                <button class="btn btn-sm btn-warning" type="button" id="btn-apply-change">应用更改</button>
+                                <button class="btn btn-sm btn-default" type="button" id="btn-back-last-version">回滚</button>
+
+                                <label class="label label-info" title="模板数据来源">{{$templateDataSource}}</label>
                             </div>
                         </div>
                         <div class="" style="height: 10px;"></div>
@@ -106,5 +108,63 @@
 
             $('#menus').css({height : documentHeight});
 
+            $(function(){
+                let templateName = "{{ $templateName }}";
+                let validNavId = "{{$validNavId}}";
+                let token = "{{csrf_token()}}";
+                var hasRequest=null;
+                //应用本次更改
+                $('#btn-apply-change').click(function(){
+
+                    if( confirm('您即将应用本次更改，将会替换现有模板文件，是否继续?') && confirm("确定继续操作?")){
+                        if( hasRequest !=null ){
+                            hasRequest.abort();
+                        }
+
+                        hasRequest= $.ajax({
+                            url : "{{ route('rotate.template.apply') }}",
+                            type:"post" ,
+                            data : { templateName : templateName , validNavId:validNavId , templateContent : editor.getValue() , _token : token },
+                            dataType : "json" ,
+                            error: function(){
+                                alert("应用时发生错误，您可以稍后尝试重试，如果错误继续存在，请联系站点管理员~");
+                            },
+                            success : function( e ){
+                                if( e.error == 0){
+                                    alert( e.msg );
+                                }else{
+                                    alert( '操作失败了' );
+                                }
+                            }
+                        });
+                    }
+                });
+
+                $('#btn-back-last-version').click(function(){
+                    if( confirm('确定要回滚到上次版本吗? 是否继续?') && confirm("确定继续操作?")){
+                        if( hasRequest !=null ){
+                            hasRequest.abort();
+                        }
+
+                        hasRequest= $.ajax({
+                            url : "{{ route('rotate.template.rollBack') }}",
+                            type:"post" ,
+                            data : { templateName : templateName , validNavId:validNavId , templateContent : editor.getValue() , _token : token },
+                            dataType : "json" ,
+                            error: function(){
+                                alert("应用时发生错误，您可以稍后尝试重试，如果错误继续存在，请联系站点管理员~");
+                            },
+                            success : function( e ){
+                                if( e.error == 0){
+                                    alert( e.msg );
+                                }else{
+                                    alert( '操作失败了' );
+                                }
+                            }
+                        });
+                    }
+                });
+
+            });
         </script>
 @endsection

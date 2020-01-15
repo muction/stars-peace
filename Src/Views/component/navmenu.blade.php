@@ -18,7 +18,7 @@
                 </a>
 
                 @if( $item['template_name'] )
-                    <a class="btn btn-xs btn-default" target="_blank" href="{{ route( 'rotate.template.index' , ['navId'=>$item['nav_id'] ,'menuId'=>$item['id'] ]) }}"
+                    <a class="btn btn-xs btn-default" href="{{ route( 'rotate.template.index' , ['navId'=>$item['nav_id'] ,'template_name'=>$item['template_name'] ]) }}"
                        title="编辑模板" data-toggle="tooltip">
                         <i class="mdi mdi-file-document"></i>
                     </a>

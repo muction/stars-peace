@@ -23,10 +23,35 @@ class TemplateController extends PeaceController
      * @param int $menuId
      * @param string $fileMd5
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function index(Request $request, TemplateService $templateService , $navId=0, $menuId=0 ,$fileMd5='' ){
 
         $templateInfo = $templateService->templateInfo($request,  $navId, $menuId , $fileMd5  );
         return $this->view('template.index' , $templateInfo );
+    }
+
+    /**
+     * 应用模板更改
+     * @param Request $request
+     * @param TemplateService $templateService
+     * @return array
+     */
+    public function apply(Request $request, TemplateService $templateService){
+        return $this->responseSuccess(
+            $templateService->apply( $request )
+        );
+    }
+
+    /**
+     * 回滚操作
+     * @param Request $request
+     * @param TemplateService $templateService
+     * @return array
+     */
+    public function rollBack(Request $request, TemplateService $templateService){
+        return $this->responseSuccess(
+            $templateService->rollBack( $request )
+        );
     }
 }
