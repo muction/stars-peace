@@ -32,7 +32,7 @@
                 <form action="" method="get" id="templateForm">
 
                     {{--  所有模板文件 --}}
-                    <div id="menus" style="overflow-y: scroll">
+
                         <div class="row">
                             <div class="col-md-3">
                                 <select name="nav" class="">
@@ -49,6 +49,8 @@
                                 </select>
                             </div>
                         </div>
+
+
                         <div class="" style="height: 10px;"></div>
 
                         <div class="row">
@@ -59,21 +61,25 @@
                                 <label class="label label-info" title="模板数据来源">{{$templateDataSource}}</label>
                             </div>
                         </div>
-                        <div class="" style="height: 10px;"></div>
-                        <div class="list-group">
-                            @foreach($templateFiles as  $index=>$filePathName)
-                                @if( strstr( $filePathName , $validNavInfo['theme'] ) )
 
-                                    <a href="{{ route('rotate.template.index' , ['nav'=>$validNavId ,'template_name'=>$filePathName ]) }}"
-                                       class="list-group-item  @if($templateName == $filePathName) active @endif "
-                                       style="line-height: 10px"
-                                    >
-                                        {{ $filePathName }}
-                                    </a>
-                                @endif
-                            @endforeach
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <ol>
+                                    @foreach($templateFiles as  $index=>$filePathName)
+                                        @if( strstr( $filePathName , $validNavInfo['theme'] ) )
+                                            <li>
+                                                <a href="{{ route('rotate.template.index' , ['nav'=>$validNavId ,'template_name'=>$filePathName ]) }}"
+                                                   style="@if($templateName == $filePathName) color:red @endif "
+                                                   style="line-height: 10px"
+                                                >
+                                                   {{ $filePathName }}
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ol>
+                            </div>
                         </div>
-                    </div>
                 </form>
             </div>
             <div class="col-md-10">
@@ -106,7 +112,7 @@
             var documentHeight = $(document).height();
             editor.setSize( 'auto', documentHeight );
 
-            $('#menus').css({height : documentHeight});
+            $('#menus').css({height : documentHeight-100});
 
             $(function(){
                 let templateName = "{{ $templateName }}";
