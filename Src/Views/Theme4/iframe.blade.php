@@ -13,38 +13,22 @@
 
 </head>
 <body>
-
-<div class="mt-wrapper " style="height: 100%;">
-    <div class="mt-nav-bar " style="background-color: #ffffff;">
-        <div class="mt-nav mt-nav-tools-left">
-            <ul class="nav nav-tabs">
-                <li class="mt-move-left">
-                    <a><i class="mdi mdi-skip-backward"></i></a>
-                </li>
-            </ul>
-        </div>
-        <nav class="mt-nav mt-nav-panel" style="width: calc(100% - 120px);">
+<div class="mt-nav-bar " style="background-color: #ffffff;">
+    <div class="mt-nav mt-nav-tools-left">
+        <ul class="nav nav-tabs">
+            <li class="mt-move-left">
+                &nbsp;
+            </li>
+        </ul>
+    </div>
+    <nav class="mt-nav mt-nav-panel" style="width: calc(100% - 120px);">
+        <ul class="nav nav-tabs" style="margin-left: 0px;">
             @yield("car-head")
-        </nav>
-        <div class="mt-nav mt-nav-tools-right">
-            <ul class="nav nav-tabs">
-
-            </ul>
-        </div>
-    </div>
-    <div class="tab-content" style="padding-top: 48px;">
-        <div class="container-fluid p-t-15">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            @yield("car-body")
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </ul>
+    </nav>
+</div>
+<div class="container-fluid">
+    @yield("car-body")
 </div>
 </body>
 </html>

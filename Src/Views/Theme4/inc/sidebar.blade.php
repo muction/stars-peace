@@ -12,7 +12,7 @@
 
                 @if( config('stars.ppt') )
                 <li>
-                    <a class="" target="iframe-content" href="{{ route(   'rotate.slide.index.type'  ) }}">
+                    <a class="" target="request-content" href="{{ route(   'rotate.slide.index.type'  ) }}">
                         幻灯片
                     </a>
                 </li>
@@ -20,7 +20,7 @@
 
                 @foreach($articleNav as $_nav)
                     <li>
-                        <a class="" target="iframe-content" href="{{ route('rotate.article.articles', ['navId'=> $_nav['id']]) }}">
+                        <a class="" target="request-content" href="{{ route('rotate.article.articles', ['navId'=> $_nav['id']]) }}">
                             {{ $_nav['title'] }}
                         </a>
                     </li>
