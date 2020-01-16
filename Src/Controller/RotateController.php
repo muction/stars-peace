@@ -16,6 +16,6 @@ class RotateController extends PeaceController
 
        //文章管理导航
        $articleNav =$navService->articleNav();
-       return $this->view( 'rotate.index' , ['sidebar' => $trees ,'articleNav'=>$articleNav ] );
+       return $this->view( 'index' , ['sidebar' => $trees ,'articleNav'=>$articleNav ] );
    }
 }

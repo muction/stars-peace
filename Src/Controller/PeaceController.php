@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 class PeaceController extends Controller
 {
+    protected $tableHead = [];
+
     /**
      * 响应视图
      * @param $template
@@ -14,10 +16,13 @@ class PeaceController extends Controller
      */
     public function view($template, $data=[]){
 
-       if( stristr( static::class , 'Stars\Peace' ) ){
+        if( $this->tableHead ){
+            $data = array_merge( ['tableHead'=>$this->tableHead ] , $data );
+        }
+        if( stristr( static::class , 'Stars\Peace' ) ){
            return view( "StarsPeace::".$template, $data );
-       }
-       return view( $template, $data );
+        }
+        return view( $template, $data );
     }
 
     /**
@@ -27,7 +32,7 @@ class PeaceController extends Controller
      */
     public function responseSuccess( $data =[]  ){
 
-        return $this->responseStructure( 200 ,0 , "操作成功" , $data );
+         return $this->responseStructure( 200 ,0 , "操作成功" , $data );
     }
 
     /**
@@ -71,4 +76,15 @@ class PeaceController extends Controller
         ];
     }
 
+    /**
+     * 增加头部定义
+     * @param $key
+     * @param $title
+     * @param bool $isHide
+     * @return array
+     */
+    public function addTableHead( $key, $title, $isHide = false ){
+        $this->tableHead[]= [ 'key'=> $key , 'title'=> $title ,'hide'=>$isHide  ] ;
+        return $this->tableHead;
+    }
 }

@@ -7,6 +7,11 @@ use Illuminate\Support\ServiceProvider;
 class StarsPeaceProvider extends ServiceProvider
 {
     /**
+     * 当前版本号
+     */
+    const STARS_PEACE_VERSION = '4.1.0';
+
+    /**
      * 支持命令
      * @var array
      */
@@ -50,10 +55,8 @@ class StarsPeaceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         $this->mergeConfigFrom( __DIR__.'/Config/stars.php' , 'StarsPeace' );
-
-        $this->loadViewsFrom( __DIR__ .'/Views' , 'StarsPeace' );
+        $this->loadViewsFrom( $this->getViewPath() , 'StarsPeace' );
         $this->loadRoutesFrom( __DIR__. "/Route/route.php" );
         $this->publishes([
 
@@ -75,5 +78,13 @@ class StarsPeaceProvider extends ServiceProvider
         foreach ( $this->routeMiddleware as $alias=>$class){
             app('router')->aliasMiddleware( $alias , $class);
         }
+    }
+
+    /**
+     * 获取视图路径
+     * @return string
+     */
+    private function getViewPath(){
+        return __DIR__ .'/Views/Theme4';
     }
 }

@@ -76,4 +76,6 @@ class NavController extends PeaceController
         $info = $navService->info( $navId ) ;
         return $this->view( 'nav.form' ,['info'=>$info ] );
    }
+
+
 }

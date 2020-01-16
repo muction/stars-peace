@@ -2503,7 +2503,7 @@ dd, dt {
     bottom: 0;
     z-index: 5;
     display: block;
-    width: 240px;
+    width: 200px;
     font-weight: 500;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -2576,7 +2576,7 @@ dd, dt {
     text-align: center;
 }
 .sidebar-header a img {
-    max-width: 240px;
+    max-width: 200px;
     margin: 16px 0px;
 }
 .sidebar-main {
@@ -2675,7 +2675,7 @@ dd, dt {
     right: 0;
     left: 0;
     z-index: 4;
-    padding-left: 240px;
+    padding-left: 200px;
     background-color: #fff;
     -webkit-transition: padding 0.3s;
     transition: padding 0.3s;
@@ -2771,7 +2771,7 @@ dd, dt {
 	height: 100%;
 	width: 100%;
     padding-top: 68px;
-    padding-left: 240px;
+    padding-left: 200px;
     -webkit-transition: padding 0.3s;
     transition: padding 0.3s;
 }
@@ -3254,7 +3254,7 @@ dd, dt {
         transform: translateZ(0);
     }
     .lyear-layout-sidebar-close .lyear-layout-sidebar {
-        width: 240px;
+        width: 200px;
     }
     .lyear-layout-sidebar-close .lyear-layout-header,
     .lyear-layout-sidebar-close .lyear-layout-content {
@@ -3275,7 +3275,7 @@ dd, dt {
 }
 @media screen and (max-width: 420px) {
     .dropdown-skin .dropdown-menu {
-        width: -131px!important; 
+        width: -131px!important;
     }
     .nav-step .nav-step-item p {
         display: none;
@@ -3311,7 +3311,7 @@ dd, dt {
 	    transition: all .3s ease-in-out;
     }
     .lyear-layout-sidebar-close .lyear-layout-sidebar:hover {
-        width: 240px;
+        width: 200px;
     }
     .lyear-layout-sidebar-close .lyear-layout-sidebar:hover .nav-drawer > li > a {
         padding-right: 24px;
