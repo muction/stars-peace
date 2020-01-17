@@ -19,73 +19,63 @@
     </style>
 @endsection
 
+@section("car-head")
+
+    @php( $_routeName = Request()->route()->getName() )
+    <ul  class="nav nav-tabs" >
+        <li>
+            <form id="templateForm" method="get">
+
+                <select id="nav-select" name="nav"  style="margin-top: 8px;margin-left: 15px">
+                    @foreach($articleNavs as $nav)
+                        <option value="{{ $nav['id'] }}"
+                                @if( $validNavId ==  $nav['id'] )
+                                selected="selected"
+                            @endif >
+                            {{ $nav['title'] }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <select id="nav-menu-select" name="template_name" style="width: 150px">
+                    @component('StarsPeace::component.template-select-menu', ['datas'=> $navMenus ,'templateName'=>$templateName ,'validNavId'=>$validNavId ]) @endcomponent
+                </select>
+            </form>
+
+        </li>
+        <li>
+            <div class="btn-group" role="group" style="margin-top:5px; margin-left: 5px">
+                <button type="button" class="btn btn-sm btn-default" id="btn-back-last-version">向上回滚</button>
+                <button type="button" class="btn btn-sm btn-default" id="btn-apply-change">应用更改</button>
+            </div>
+        </li>
+        <li>
+            <div style="margin: 10px;"> <span class="label label-info">{{ $templateDataSource ? $templateDataSource.':'.$templateName : '请选择要编辑的模板' }}</span></div>
+        </li>
+    </ul>
+@endsection
+
 @section('car-body')
     <div class="row" style="height: 100%">
-            <div class="col-md-3" style="padding-right: 0px;">
-                <div class="panel panel-default">
-                    <div class="panel-heading">{{ $templateDataSource ? $templateDataSource.':'.$templateName : '请选择要编辑的模板' }}</div>
-                    <div class="panel-body">
-                        <form action="" method="get" id="templateForm">
-
-                            {{--  所有模板文件 --}}
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="btn-group " role="group" aria-label="...">
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                选择导航
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                @foreach($articleNavs as $nav)
-                                                    <li value="{{ $nav['id'] }}">
-                                                        <a href="{{ route('rotate.template.index' , ['nav'=>$nav ,'template_name'=>$templateName ]) }}">
-                                                            {{ $nav['title'] }}
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-default btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                选择菜单
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                @component('StarsPeace::component.template-select-menu', ['datas'=> $navMenus ,'templateName'=>$templateName ,'validNavId'=>$validNavId ]) @endcomponent
-                                            </ul>
-                                        </div>
-                                        <button type="button" class="btn btn-sm btn-danger btn-default" id="btn-apply-change">应用更改</button>
-                                        <button type="button" class="btn  btn-sm btn-dark btn-default" id="btn-back-last-version">向上回滚</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <ol style="margin-top: 10px;">
-                                        @foreach($templateFiles as  $index=>$filePathName)
-                                            @if( strstr( $filePathName , $validNavInfo['theme'] ) )
-                                                <li>
-                                                    <a href="{{ route('rotate.template.index' , ['nav'=>$validNavId ,'template_name'=>$filePathName ]) }}"
-                                                       style="@if($templateName == $filePathName) color:green @else color:#9C9E9E @endif "
-                                                       style="line-height: 10px" >
-                                                        {{ $filePathName }}
-                                                    </a>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ol>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9" style="padding-left: 0px;">
-                <textarea name="templateContent" id="code"  >{{$templateContent}}</textarea>
-            </div>
+        <div class="col-md-3" style="padding-right: 0px;padding-left: 0px">
+            <ol>
+                @foreach($templateFiles as  $index=>$filePathName)
+                    @if( strstr( $filePathName , $validNavInfo['theme'] ) )
+                        <li>
+                            <a href="{{ route('rotate.template.index' , ['nav'=>$validNavId ,'template_name'=>$filePathName ]) }}"
+                               style="@if($templateName == $filePathName) color:green @else color:#9C9E9E @endif "
+                               style="line-height: 10px" >
+                                {{ $filePathName }}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+            </ol>
         </div>
+        <div class="col-md-9" style="padding-left: 0px;">
+            <textarea name="templateContent" id="code"  >{{$templateContent}}</textarea>
+        </div>
+    </div>
 
     <script type="text/javascript">
         $(function(){
@@ -109,8 +99,8 @@
 
             var documentHeight = $(document).height();
             editor.setSize( 'auto', documentHeight-100 );
-
-            $('#menus').css({height : documentHeight-100});
+            //
+            // $('#menus').css({height : documentHeight-100});
 
             $(function(){
                 let templateName = "{{ $templateName }}";
@@ -168,7 +158,6 @@
                         });
                     }
                 });
-
             });
         </script>
 @endsection

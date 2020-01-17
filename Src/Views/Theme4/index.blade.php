@@ -11,6 +11,7 @@
     <link href="{{ asset('static/stars/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/multitabs.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/materialdesignicons.min.css') }}" rel="stylesheet">
+
     <link href="{{ asset('static/stars/css/style.min.css') }}" rel="stylesheet">
     <style type="text/css">
         .lyear-layout-web, .lyear-layout-container, .lyear-layout-content, .container-fluid {
@@ -227,7 +228,7 @@
 
         <!--页面主要内容-->
         <main class="lyear-layout-content">
-            <iframe src="http://xin.com" name="request-content" width="100%" height="100%"></iframe>
+            <iframe src="http://package.dev.muction.net/rotate/nav" name="request-content" width="100%" height="100%"></iframe>
         </main>
         <!--End 页面主要内容-->
     </div>
