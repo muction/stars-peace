@@ -27,6 +27,7 @@ class TemplateController extends PeaceController
      */
     public function index(Request $request, TemplateService $templateService , $navId=0, $menuId=0 ,$fileMd5='' ){
 
+        //加载模板数据
         $templateInfo = $templateService->templateInfo($request,  $navId, $menuId , $fileMd5  );
         return $this->view('template.index' , $templateInfo );
     }

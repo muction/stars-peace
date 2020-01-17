@@ -49,6 +49,11 @@ class TemplateService extends ServiceService
      */
     public function templateInfo(Request $request ,int $navId,int $menuId , $fileMd5  )
     {
+        //满足条件时，同步磁盘到数据库的模板数据
+        if( !$request->only(['nav','template_name']) ){
+            $this->refreshTemplateContent2Database() ;
+        }
+
         $templateContent = '';
         $templateDataSource= '';
 
@@ -139,9 +144,10 @@ class TemplateService extends ServiceService
             DB::commit();
 
         }catch (\Exception $exception){
+
             DB::rollBack();
 
-            //取得最后一条信息
+            // 如果出现异常，包括数据库、文件写入，系统自动将上次使用中的模板重新覆盖下模板文档
             if($useIngTemplateInfo){
                 $useIngTemplateInfo = $useIngTemplateInfo->toArray();
                 $this->putFileTemplateContent( $this->viewsPath.'/'.$useIngTemplateInfo['template_filename'], $useIngTemplateInfo['template_code'] );
@@ -194,4 +200,55 @@ class TemplateService extends ServiceService
         return $file->put( $templateName  , $templateContent);
     }
 
+    /**
+     * 同步磁盘模板文件内容到数据库
+     * @param Request $request
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function refreshTemplateContent2Database(){
+
+        $disk = new Filesystem();
+        $templateFiles = $this->themeTemplates();
+        if(!$templateFiles){
+            return false;
+        }
+
+        $navService = new NavService();
+        $navs = $navService->articleNav();
+        $navs = $navs ? array_column( $navs->toArray() , 'id'): [];
+        $navMenuService= new NavMenuService();
+
+        $template2Navs = [];
+        foreach ($navs as $navId){
+            $templates = $navMenuService->navMenus(  $navId );
+            $tem= array_column( $templates , 'nav_id','template_name' );
+            $template2Navs = array_merge( $template2Navs , $tem );
+        }
+
+        try{
+            DB::beginTransaction();
+
+            //清除
+            TemplateCodeEntity::setStatus( [ 'status'=>TemplateCodeEntity::STATUS_USE_ING ] , ['status'=>TemplateCodeEntity::STATUS_STOP] );
+
+            //开始同步
+            foreach ($templateFiles as $file){
+                if( strstr( strtolower($file) , '.blade.php')){
+                    $navId = isset( $template2Navs[$file]) ? $template2Navs[$file] : null;
+                    if($navId){
+                        $content =( $disk->get( $this->viewsPath .'/'.$file ) );
+                        TemplateCodeEntity::storage( $navId , $file , $content , TemplateCodeEntity::STATUS_USE_ING  );
+                    }
+                }
+            }
+
+            DB::commit();
+        }catch (\Exception $exception){
+
+            DB::rollBack();
+
+            return false;
+        }
+        return true;
+    }
 }

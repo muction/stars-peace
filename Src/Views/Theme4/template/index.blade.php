@@ -43,14 +43,16 @@
             </form>
 
         </li>
+
         <li>
-            <div class="btn-group" role="group" style="margin-top:5px; margin-left: 5px">
-                <button type="button" class="btn btn-sm btn-default" id="btn-back-last-version">向上回滚</button>
-                <button type="button" class="btn btn-sm btn-default" id="btn-apply-change">应用更改</button>
-            </div>
+            <div style="margin: 10px;" class="text-primary"> {{ $templateDataSource ? $templateDataSource.' :'.$templateName : '请选择要编辑的模板' }} </div>
         </li>
+
         <li>
-            <div style="margin: 10px;"> <span class="label label-info">{{ $templateDataSource ? $templateDataSource.':'.$templateName : '请选择要编辑的模板' }}</span></div>
+            <div class="btn-group" role="group" style="margin-top:2px; margin-left: 5px">
+                <button type="button" class="btn btn-default" id="btn-back-last-version">向上回滚</button>
+                <button type="button" class="btn btn-default" id="btn-apply-change">应用更改</button>
+            </div>
         </li>
     </ul>
 @endsection
@@ -126,6 +128,7 @@
                             success : function( e ){
                                 if( e.error == 0){
                                     alert( e.msg );
+                                    window.location.reload();
                                 }else{
                                     alert( '操作失败了' );
                                 }
