@@ -168,20 +168,41 @@ class TemplateService extends ServiceService
      */
     public function rollBack(Request $request ){
        try{
+           DB::beginTransaction();
            $requestAll=$request->all();
-           $useIngTemplateInfo = TemplateCodeEntity::where(
+           $backVersion = $request->input("backVersion");
+           if( $backVersion == '__LAST__' ){
+               $findTemplate = TemplateCodeEntity::where(
                    [
-                       'status'=> TemplateCodeEntity::STATUS_STOP ,
+                       'status'=>TemplateCodeEntity::STATUS_STOP,
                        'nav_id'=>$requestAll['validNavId']  ,
                        'template_filename'=>$requestAll['templateName']
                    ]
                )->orderBy('updated_at','DESC')->first();
-           if($useIngTemplateInfo){
-               $useIngTemplateInfo = $useIngTemplateInfo->toArray();
-               return $this->putFileTemplateContent( $this->viewsPath.'/'.$useIngTemplateInfo['template_filename'], $useIngTemplateInfo['template_code'] );
+               $backVersion = $findTemplate->id;
            }
+           $useIngTemplateInfo = TemplateCodeEntity::where([
+               'id'=>$backVersion ,'nav_id'=>$request['validNavId']
+           ])->first();
+           if($useIngTemplateInfo){
+
+               //等于1的重置为无效
+               TemplateCodeEntity::setStatus(['status'=>TemplateCodeEntity::STATUS_USE_ING] , ['status'=>TemplateCodeEntity::STATUS_STOP]);
+
+               //将此改为使用中
+               $useIngTemplateInfo->status= TemplateCodeEntity::STATUS_USE_ING;
+               $useIngTemplateInfo->save();
+
+               $tempInfo = $useIngTemplateInfo->toArray();
+               return $this->putFileTemplateContent( $this->viewsPath.'/'.$tempInfo['template_filename'], $tempInfo['template_code'] );
+           }
+
+           DB::commit();
+
            return false;
+
        }catch (\Exception $exception){
+           DB::rollBack();
            return false;
        }
     }
@@ -203,6 +224,7 @@ class TemplateService extends ServiceService
     /**
      * 同步磁盘模板文件内容到数据库
      * @param Request $request
+     * @return bool
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function refreshTemplateContent2Database(){

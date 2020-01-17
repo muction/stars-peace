@@ -139,6 +139,18 @@
 
                 $('#btn-back-last-version').click(function(){
                     if( confirm('确定要回滚到上次版本吗? 是否继续?') && confirm("确定继续操作?")){
+                        let backVersion = "";
+                        while( !backVersion ){
+                            backVersion =  window.prompt( "请输入要回归的版本，__LAST__ 将回滚到上次版本" , "__LAST__"   );
+                            if( backVersion == null ){
+                                break;
+                            }
+                        }
+
+                        if( !backVersion){
+                            return false;
+                        }
+
                         if( hasRequest !=null ){
                             hasRequest.abort();
                         }
@@ -146,7 +158,7 @@
                         hasRequest= $.ajax({
                             url : "{{ route('rotate.template.rollBack') }}",
                             type:"post" ,
-                            data : { templateName : templateName , validNavId:validNavId , templateContent : editor.getValue() , _token : token },
+                            data : { backVersion: backVersion,templateName : templateName , validNavId:validNavId , templateContent : editor.getValue() , _token : token },
                             dataType : "json" ,
                             error: function(){
                                 alert("应用时发生错误，您可以稍后尝试重试，如果错误继续存在，请联系站点管理员~");
