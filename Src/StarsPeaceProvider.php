@@ -23,6 +23,9 @@ class StarsPeaceProvider extends ServiceProvider
         Console\Commands\StarsInit::class,
         Console\Commands\StarsForge::class,
         Console\Commands\StarsVersion::class,
+        Console\Commands\AppPack::class,
+        Console\Commands\AppUpdate::class,
+
     ];
 
     /**

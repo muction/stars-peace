@@ -56,5 +56,12 @@ return [
     // 所有配置项与 zh 一样...
     'en'=>[
 
+    ],
+
+    'common'=>[
+        'update'=>[
+            //打包保存的目录
+            'saveDir' => public_path('fixs')
+        ]
     ]
 ];
