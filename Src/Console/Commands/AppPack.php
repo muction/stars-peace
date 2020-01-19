@@ -41,7 +41,7 @@ class AppPack extends AppPatch
      * git 仓库目录地址
      * @var string
      */
-    private $gitRepoDir = "/Users/muction/Studio/apps/develop/package/extends/stars-peace/";
+    private $gitRepoDir = "";
 
     /**
      * 打包类型
@@ -55,13 +55,9 @@ class AppPack extends AppPatch
      */
     private $allowType = [1,2];
 
-
     /**
-     * 有效参数，type=file 指文件全路径，多个用空格标记  ,type=git 指git 提交id ,多个用空格标出
      * @var string
      */
-    private $args = "";
-
     private $readMeFile = "";
 
     /**
@@ -188,6 +184,8 @@ class AppPack extends AppPatch
        // $command = "git -C {$this->gitRepoDir} show a10db0bd55b0fb9cdd26751ad257a61bf9fc4422 --name-only";
 
         try{
+            $this->gitRepoDir = base_path();
+
             $commitIds = "";
             while ( !$commitIds ){
                 $input = $this->ask("请输入git提交ID，多个用空格：");
@@ -207,11 +205,9 @@ class AppPack extends AppPatch
                             $files[] = $line;
                         }
                     }
-                    dd($files);
                 }
             }
 
-            dd($files);
             $this->zipFiles( $files );
 
         }catch (\Exception $exception){
