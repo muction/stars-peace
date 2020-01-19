@@ -22,7 +22,7 @@ class AppPack extends AppPatch
      *
      * @var string
      */
-    protected $signature = 'app:pack {args*}';
+    protected $signature = 'app:pack';
 
     /**
      * The console command description.
@@ -78,9 +78,6 @@ class AppPack extends AppPatch
             }
         }
 
-        //输入的文件
-        $this->args = $this->argument('args') ;
-
         //设置补丁保存目录
         $this->packSaveDir = config('stars.common.update.saveDir');
 
@@ -90,7 +87,7 @@ class AppPack extends AppPatch
 
         //分流处理
         if($this->type == 1){
-            $this->packZipFiles( $this->args );
+            $this->packZipFiles();
 
         }elseif ($this->type ==2){
             $this->packByGitCommit();
@@ -105,10 +102,35 @@ class AppPack extends AppPatch
      * @param array $files
      * @return bool
      */
-    private function packZipFiles( array $files ){
+    private function packZipFiles( ){
 
         try{
-            $files = $this->validFiles( $files  );
+            $files = "";
+            while ( !$files ){
+                $input = $this->ask("请输入要加入压缩包的相对文件，多个用空格：");
+                if($input){
+                    $files = $input;
+                }
+            }
+
+            $files = explode(" ", $files ) ;
+            $this->zipFiles( $files );
+
+        }catch (\Exception $exception){
+
+            $this->error("打包出现异常：{$exception->getMessage()}");
+        }
+    }
+
+    /**
+     * 压缩文件
+     * @param array $files
+     * @return bool
+     * @throws \Exception
+     */
+    private function zipFiles(array $files ){
+        try{
+            $files = $this->validFiles(  $files );
             if($files['inValid']){
                 $this->error("文件不存在，无法进行打包: ". implode("," , $files['inValid']) );
                 return false;
@@ -136,8 +158,7 @@ class AppPack extends AppPatch
                 $this->error("打包失败");
             }
         }catch (\Exception $exception){
-
-            $this->error("打包出现异常：{$exception->getMessage()}");
+            throw $exception;
         }
     }
 
@@ -164,9 +185,38 @@ class AppPack extends AppPatch
      * 给到git 提交的commid 自动打包所有文件
      */
     private function packByGitCommit(){
-        $command = "git -C {$this->gitRepoDir} show a10db0bd55b0fb9cdd26751ad257a61bf9fc4422 --name-only";
-        dump($command) ;
-        exec($command , $output );
-        dd($output);
+       // $command = "git -C {$this->gitRepoDir} show a10db0bd55b0fb9cdd26751ad257a61bf9fc4422 --name-only";
+
+        try{
+            $commitIds = "";
+            while ( !$commitIds ){
+                $input = $this->ask("请输入git提交ID，多个用空格：");
+                if($input){
+                    $commitIds = $input;
+                }
+            }
+
+            $files = [];
+            $commitIds = explode(" ", $commitIds);
+            foreach ($commitIds as $commitId ){
+                exec("git -C ".$this->gitRepoDir ." show {$commitId} --name-only", $outPut );
+                if( $outPut ){
+                    $outPut = array_reverse($outPut );
+                    foreach ($outPut as $line){
+                        if( file_exists( base_path($line) ) ){
+                            $files[] = $line;
+                        }
+                    }
+                    dd($files);
+                }
+            }
+
+            dd($files);
+            $this->zipFiles( $files );
+
+        }catch (\Exception $exception){
+
+            $this->error("获取GIT提交时异常：".$exception->getMessage() );
+        }
     }
 }
