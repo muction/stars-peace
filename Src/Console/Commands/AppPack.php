@@ -114,7 +114,7 @@ class AppPack extends AppPatch
         $patchFileName = $this->makePatchName();
 
         foreach ( $files['valid'] as $file ){
-            exec("zip {$this->packSaveDir}/{$patchFileName}.zip -m ".base_path( $file ) );
+            //exec("zip {$this->packSaveDir}/{$patchFileName}.zip -m ".base_path( $file ) );
         }
 
         $this->info("打包完成");
@@ -129,5 +129,4 @@ class AppPack extends AppPatch
         exec($command , $output );
         dd($output);
     }
-
 }
