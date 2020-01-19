@@ -34,9 +34,10 @@ abstract class AppPatch extends Command
 
     /**
      * 生成补丁包名
+     * @param string $path
      * @return string
      */
-    public function makePatchName(){
-        return 'PATCH.'.date('Ymd');
+    public function makePatchPathName( $path='' ){
+        return $path. '/PATCH.'.date('Ymd.Hi');
     }
 }

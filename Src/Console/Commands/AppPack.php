@@ -62,6 +62,8 @@ class AppPack extends AppPatch
      */
     private $args = "";
 
+    private $readMeFile = "";
+
     /**
      * 核心处理
      * @return mixed|void
@@ -105,19 +107,57 @@ class AppPack extends AppPatch
      */
     private function packZipFiles( array $files ){
 
-        $files = $this->validFiles( $files  );
-        if($files['inValid']){
-            $this->error("文件不存在，无法进行打包: ". implode("," , $files['inValid']) );
-            return false;
+        try{
+            $files = $this->validFiles( $files  );
+            if($files['inValid']){
+                $this->error("文件不存在，无法进行打包: ". implode("," , $files['inValid']) );
+                return false;
+            }
+
+            //生成readme 文件
+            $patchPathFileName = $this->makePatchPathName( $this->packSaveDir );
+            $files['valid'][]  = $this->makeReadMeFile( $files['valid'] );
+
+            //拼接命令
+            $zipFiles = implode(" ", $files['valid']);
+            exec("zip {$patchPathFileName} {$zipFiles}");
+
+            //计算补丁md5
+            $fileMd5= md5_file( $patchPathFileName );
+
+            //删除readme文件
+            unlink($this->readMeFile);
+
+            //重新命名文件
+            $newPatchFileName= $patchPathFileName.'-'.$fileMd5.'.zip';
+            if( rename(  $patchPathFileName , $newPatchFileName ) ){
+                $this->info("打包完成: {$newPatchFileName}");
+            }else{
+                $this->error("打包失败");
+            }
+        }catch (\Exception $exception){
+
+            $this->error("打包出现异常：{$exception->getMessage()}");
         }
+    }
 
-        $patchFileName = $this->makePatchName();
+    /**
+     * 生成readme文件
+     * @param array $files
+     * @return bool
+     */
+    private function makeReadMeFile(array $files ){
 
-        foreach ( $files['valid'] as $file ){
-            //exec("zip {$this->packSaveDir}/{$patchFileName}.zip -m ".base_path( $file ) );
+        $fileName = 'readme.txt' ;
+        $this->readMeFile = base_path($fileName);
+        if(!file_exists(   $this->readMeFile )){
+            touch($this->readMeFile );
         }
-
-        $this->info("打包完成");
+        file_put_contents( $this->readMeFile , "本次更新文件如下： \r\n");
+        foreach ($files as $file){
+            file_put_contents(   $this->readMeFile , $file."\r\n" , FILE_APPEND);
+        }
+        return $fileName;
     }
 
     /**
