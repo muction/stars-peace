@@ -86,7 +86,7 @@ class AppUpdate extends AppPack
             //根据readme文件进行操作
             $readMeFile = $tmpUpdateDir.'/readme.txt';
             if( !file_exists( $readMeFile )){
-                throw new \Exception("补丁包文件🕐已损坏，请重新下载.");
+                throw new \Exception("补丁包文件已损坏，请重新下载.");
             }
 
 
