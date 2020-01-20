@@ -3,8 +3,10 @@
 namespace Stars\Peace\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Stars\Peace\Foundation\SheetSheet;
 use Stars\Peace\Entity\StarsInit as StarInitData;
+use Stars\Peace\Lib\Option;
 
 /**
  *
@@ -48,7 +50,6 @@ class StarsInit extends PeacePeace
      */
     protected $isCore = true;
 
-
     /**
      * Create a new command instance.
      *
@@ -76,7 +77,14 @@ class StarsInit extends PeacePeace
                 $this->initRootPassword = $this->ask("Please input Root User Password");
             }
         }
+
+        //创建必须目录
+        $this->createSystemDir();
+
+        //创建核心文件
         $this->createCoreSheet() ;
+
+        //初始化数据
         $this->createInitData() ;
 
     }
@@ -132,5 +140,23 @@ class StarsInit extends PeacePeace
     public function replaceStubContent()
     {
         // TODO: Implement replaceStubContent() method.
+    }
+
+
+    /**
+     * 创建核心目录
+     */
+    private function createSystemDir(){
+
+        $this->info("初始化核心目录");
+        $system = new Filesystem();
+        foreach (Option::OPTION_SYSTEM_CORE_DIR as $dir){
+            $path =base_path($dir);
+            if(!$system->isDirectory( $path )){
+                $system->makeDirectory( $path);
+                $this->info("创建目录: {$path}");
+            }
+        }
+        $this->info("初始化目录完成");
     }
 }

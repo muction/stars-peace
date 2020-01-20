@@ -27,4 +27,10 @@ class Option
 
     /** 系统类别设置 **/
     const OPTION_TYPE_SYS = 1;
+
+    /** 系统目录配置 相对于base_path 而言 **/
+    const OPTION_SYSTEM_CORE_DIR = [
+        'fixs',
+        'public/fixs'
+    ];
 }

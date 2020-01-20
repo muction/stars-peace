@@ -5,6 +5,13 @@ namespace Stars\Peace\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem ;
 
+/**
+ * 客户端更新补丁文件
+ *   在服务器端打包好补丁文件后，在终端运行此命令可以进行打补丁
+ *  例如： php artisan app:update 补丁版本号（文件名称，不含扩展名）
+ * Class AppUpdate
+ * @package Stars\Peace\Console\Commands
+ */
 class AppUpdate extends AppPack
 {
     /**
@@ -36,11 +43,14 @@ class AppUpdate extends AppPack
     public function working()
     {
         try{
+
+            $system = new Filesystem();
+
             //补丁下载目录
             $this->pathSaveDir = base_path("fixs");
 
-            if( !is_dir($this->pathSaveDir) ) {
-                mkdir($this->pathSaveDir , 0777 ,true ) ;
+            if( !$system->isDirectory( $this->pathSaveDir) ) {
+                $system->makeDirectory($this->pathSaveDir , 0777 ,true ) ;
             }
 
             //update version
@@ -50,8 +60,6 @@ class AppUpdate extends AppPack
             if( !file_exists( $patchPath ) ){
                 throw new \Exception("Patch File Not Found: {$patchPath}");
             }
-
-            $system = new Filesystem();
 
             //tmp 目录 fixs/20200119/PATCH.20200119.1320
             $prefixPatch = date('Ymd').'/'. substr( $updateVersion , 0 , strpos($updateVersion , '-'));
