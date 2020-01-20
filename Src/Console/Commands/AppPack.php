@@ -15,7 +15,7 @@ use Illuminate\Console\Command;
  * Class AppPack
  * @package App\Console\Commands
  */
-class AppPack extends AppPatch
+class AppPack extends AbstractAppPatch
 {
     /**
      * The name and signature of the console command.

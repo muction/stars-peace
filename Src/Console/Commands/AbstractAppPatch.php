@@ -6,7 +6,12 @@ namespace Stars\Peace\Console\Commands;
 
 use Illuminate\Console\Command;
 
-abstract class AppPatch extends Command
+/**
+ * App 补丁抽象类
+ * Class AppPatch
+ * @package Stars\Peace\Console\Commands
+ */
+abstract class AbstractAppPatch extends Command
 {
     public function handle(){
         $this->working();
