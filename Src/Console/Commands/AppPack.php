@@ -3,6 +3,8 @@
 namespace Stars\Peace\Console\Commands;
 
 use Illuminate\Console\Command;
+use Stars\Tools\Lib\Patch\AppMakePatchOption;
+use Stars\Tools\Lib\Patch\MakePatch;
 
 /**
  * 为了上线后部署及更新方便，开发了更新打包命令
@@ -63,9 +65,11 @@ class AppPack extends AbstractAppPatch
     /**
      * 核心处理
      * @return mixed|void
+     * @throws \Exception
      */
     public function working()
     {
+
         //获取运行模式
         while (!$this->type){
             $input = $this->ask("请选择运行模式：1以指定文件打包，2 以git提交记录打包");
@@ -75,11 +79,13 @@ class AppPack extends AbstractAppPatch
         }
 
         //设置补丁保存目录
-        $this->packSaveDir = config('stars.common.update.saveDir');
+        $this->packSaveDir = rtrim( config('stars.common.update.saveDir') ,'/').DIRECTORY_SEPARATOR ;
 
         if(!is_dir($this->packSaveDir)){
             mkdir($this->packSaveDir , 0777 , true );
         }
+
+
 
         //分流处理
         if($this->type == 1){
@@ -108,9 +114,10 @@ class AppPack extends AbstractAppPatch
                     $files = $input;
                 }
             }
-
-            $files = explode(" ", $files ) ;
-            $this->zipFiles( $files );
+            $files = explode(" ", $files) ;
+            $makePatch = new MakePatch( new AppMakePatchOption(
+                $this->type, $this->packSaveDir , $files)
+            );
 
         }catch (\Exception $exception){
 
@@ -196,19 +203,10 @@ class AppPack extends AbstractAppPatch
 
             $files = [];
             $commitIds = explode(" ", $commitIds);
-            foreach ($commitIds as $commitId ){
-                exec("git -C ".$this->gitRepoDir ." show {$commitId} --name-only", $outPut );
-                if( $outPut ){
-                    $outPut = array_reverse($outPut );
-                    foreach ($outPut as $line){
-                        if( file_exists( base_path($line) ) ){
-                            $files[] = $line;
-                        }
-                    }
-                }
-            }
 
-            $this->zipFiles( $files );
+            $makePatch = new MakePatch( new AppMakePatchOption(
+                    $this->type, $this->packSaveDir , $files)
+            );
 
         }catch (\Exception $exception){
 
