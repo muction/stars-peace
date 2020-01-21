@@ -3,6 +3,7 @@
 namespace Stars\Peace\Console\Commands;
 
 use Illuminate\Console\Command;
+use Stars\Tools\Foundation\PatchMake;
 use Stars\Tools\Lib\Patch\AppMakePatchOption;
 use Stars\Tools\Lib\Patch\MakePatch;
 
@@ -46,6 +47,12 @@ class AppPack extends AbstractAppPatch
     private $gitRepoDir = "";
 
     /**
+     * 工作目录
+     * @var string
+     */
+    private $workDir ="";
+
+    /**
      * 打包类型
      * @var string
      */
@@ -77,6 +84,11 @@ class AppPack extends AbstractAppPatch
                 $this->type = $input;
             }
         }
+        //工作目录
+        $this->workDir = base_path(). DIRECTORY_SEPARATOR ;
+
+        //GIT仓库目录
+        $this->gitRepoDir = $this->workDir;
 
         //设置补丁保存目录
         $this->packSaveDir = rtrim( config('stars.common.update.saveDir') ,'/').DIRECTORY_SEPARATOR ;
@@ -85,17 +97,14 @@ class AppPack extends AbstractAppPatch
             mkdir($this->packSaveDir , 0777 , true );
         }
 
-
-
-        //分流处理
-        if($this->type == 1){
-            $this->packZipFiles();
-
-        }elseif ($this->type ==2){
-            $this->packByGitCommit();
-
-        }else{
-
+        switch ($this->type ){
+            case 1 :
+                 return $this->packZipFiles() ;
+                break;
+            case 2 :
+                 return $this->packByGitCommit() ;
+                break;
+            default:
         }
     }
 
@@ -115,9 +124,8 @@ class AppPack extends AbstractAppPatch
                 }
             }
             $files = explode(" ", $files) ;
-            $makePatch = new MakePatch( new AppMakePatchOption(
-                $this->type, $this->packSaveDir , $files)
-            );
+            $result = PatchMake::makeFilePatch( $this->workDir , $this->packSaveDir ,$files );
+            $this->info("制作完成: {$result}");
 
         }catch (\Exception $exception){
 
@@ -125,75 +133,14 @@ class AppPack extends AbstractAppPatch
         }
     }
 
-    /**
-     * 压缩文件
-     * @param array $files
-     * @return bool
-     * @throws \Exception
-     */
-    private function zipFiles(array $files ){
-        try{
-            $files = $this->validFiles(  $files );
-            if($files['inValid']){
-                $this->error("文件不存在，无法进行打包: ". implode("," , $files['inValid']) );
-                return false;
-            }
 
-            //生成readme 文件
-            $patchPathFileName = $this->makePatchPathName( $this->packSaveDir );
-            $files['valid'][]  = $this->makeReadMeFile( $files['valid'] );
-
-            //拼接命令
-            $zipFiles = implode(" ", $files['valid']);
-            exec("zip {$patchPathFileName} {$zipFiles}");
-
-            //计算补丁md5
-            $fileMd5= md5_file( $patchPathFileName );
-
-            //删除readme文件
-            unlink($this->readMeFile);
-
-            //重新命名文件
-            $newPatchFileName= $patchPathFileName.'-'.$fileMd5.'.zip';
-            if( rename(  $patchPathFileName , $newPatchFileName ) ){
-                $this->info("打包完成: {$newPatchFileName}");
-            }else{
-                $this->error("打包失败");
-            }
-        }catch (\Exception $exception){
-            throw $exception;
-        }
-    }
-
-    /**
-     * 生成readme文件
-     * @param array $files
-     * @return bool
-     */
-    private function makeReadMeFile(array $files ){
-
-        $fileName = 'readme.txt' ;
-        $this->readMeFile = base_path($fileName);
-        if(!file_exists(   $this->readMeFile )){
-            touch($this->readMeFile );
-        }
-        file_put_contents( $this->readMeFile , "本次更新文件如下： \r\n");
-        foreach ($files as $file){
-            file_put_contents(   $this->readMeFile , $file."\r\n" , FILE_APPEND);
-        }
-        return $fileName;
-    }
 
     /**
      * 给到git 提交的commid 自动打包所有文件
      */
     private function packByGitCommit(){
-       // $command = "git -C {$this->gitRepoDir} show a10db0bd55b0fb9cdd26751ad257a61bf9fc4422 --name-only";
-
         try{
-            $this->gitRepoDir = base_path();
-
-            $commitIds = "";
+            $commitIds = ['d19a9b1e7f2e69deefb1af149f754008f394737c' ,'d1a23332a9969f9ddc757410855f83ca42caa67d'];
             while ( !$commitIds ){
                 $input = $this->ask("请输入git提交ID，多个用空格：");
                 if($input){
@@ -201,12 +148,14 @@ class AppPack extends AbstractAppPatch
                 }
             }
 
-            $files = [];
-            $commitIds = explode(" ", $commitIds);
-
-            $makePatch = new MakePatch( new AppMakePatchOption(
-                    $this->type, $this->packSaveDir , $files)
+            $result = PatchMake::makeGitPatch(
+                $this->workDir ,
+                $this->packSaveDir  ,
+                $this->gitRepoDir ,
+                $commitIds
             );
+
+            $this->info("制作完成: {$result}");
 
         }catch (\Exception $exception){
 
