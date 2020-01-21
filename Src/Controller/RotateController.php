@@ -14,8 +14,11 @@ class RotateController extends PeaceController
       // dd( UserEntity::loginUserInfo( ) ->toArray());
        $trees = $navMenuService->tree(1);
 
+       // 树行菜单
+       $articleSides= $navMenuService->articleTree( 2 );
+
        //文章管理导航
        $articleNav =$navService->articleNav();
-       return $this->view( 'index' , ['sidebar' => $trees ,'articleNav'=>$articleNav ] );
+       return $this->view( 'index' , ['sidebar' => $trees ,'articleNav'=>$articleNav ,'articleSides'=>$articleSides] );
    }
 }

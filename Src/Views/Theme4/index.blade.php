@@ -51,6 +51,7 @@
                 <nav class="sidebar-main">
                     <ul class="nav nav-drawer">
                          @include("StarsPeace::inc.sidebar")
+                         @include("StarsPeace::inc.article-sidebar")
                     </ul>
                 </nav>
 

@@ -1,17 +1,35 @@
-@foreach( $datas as $key=>$item)
 
-        @if( isset($item['url']) )
-            <a class="list-group-item" href="javascript:void(0)" data-url="{{ $item['url'] }}"  >
-                @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor
-                {{ $item['title'] }}
-            </a>
-        @else
-            <a class="list-group-item disabled" href="javascript:void(0)" title="未设置操作类">
-                @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor
-                {{ $item['title'] }}
-            </a>
+@foreach($sides as $side)
+
+    @if( !isset($side['nodes']) || !$side['nodes'] )
+        @if( isset($children) )
+            <li>
+                <a class="multitabs allow-close-sidebar" target="request-content" href="{{route( $side['route_name'] )}}">
+                    {{ $side['title'] }}
+                </a>
+            </li>
+        @elseif( \Stars\Rbac\Entity\UserEntity::can( $side['route_name']) ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
+            <li class="nav-item">
+                <a class="multitabs allow-close-sidebar" target="request-content" href="{{route( $side['route_name'] )}}">
+                    <i class="{{ $side['icon'] }}"></i>
+                    <span>{{ $side['title'] }}</span>
+                </a>
+            </li>
         @endif
-    @if( isset($item['nodes']) )
-        @component('StarsPeace::component.content-sidebar', ['datas'=> $item['nodes'] ])  @endcomponent
+
+    @else
+
+        @if( \Stars\Rbac\Entity\UserEntity::can( $side['route_name']) ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
+        <li class="nav-item nav-item-has-subnav">
+            <a href="javascript:void(0)">
+                <i class="{{ $side['icon'] }}"></i>
+                <span>{{ $side['title'] }}</span>
+            </a>
+            <ul class="nav nav-subnav">
+                @component( "StarsPeace::component.sidebar" ,['sides'=>$side['nodes'] ,'children'=>time()  ] ) @endcomponent
+            </ul>
+        </li>
+        @endif
     @endif
- @endforeach
+
+@endforeach
