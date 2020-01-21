@@ -140,14 +140,14 @@ class AppPack extends AbstractAppPatch
      */
     private function packByGitCommit(){
         try{
-            $commitIds = ['d19a9b1e7f2e69deefb1af149f754008f394737c' ,'d1a23332a9969f9ddc757410855f83ca42caa67d'];
+            $commitIds = null;
             while ( !$commitIds ){
                 $input = $this->ask("请输入git提交ID，多个用空格：");
                 if($input){
                     $commitIds = $input;
                 }
             }
-
+            $commitIds = explode(" ", $commitIds) ;
             $result = PatchMake::makeGitPatch(
                 $this->workDir ,
                 $this->packSaveDir  ,
