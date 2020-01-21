@@ -17,11 +17,11 @@
     @yield("page-head")
 </head>
 <body>
+@php( $_routeName = Request()->route()->getName() )
 
-<div class="stars-nav-tabs">
-       @yield("car-head")
-</div>
-
+@if(!in_array( $_routeName , ['rotate.article.articles'] ))
+<div class="stars-nav-tabs" id="frame-nav-tabes">@yield("car-head")</div>
+@endif
 <div class="container-fluid stars-container-fluid">
     <div class="row">
         <div class="col-lg-12">

@@ -2,7 +2,7 @@
 @extends("StarsPeace::iframe")
 
 
-@section('car-head')
+@section('page-head')
 
     <style type="text/css">
         .stars-pagination ul{
