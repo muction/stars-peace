@@ -11,10 +11,28 @@
     </style>
 @endsection
 
+@section("car-head")
+    @include("StarsPeace::article.index.inc")
+@endsection
+
 @section('car-body')
 
 <div style="margin-top: 5px;">
-    @include("StarsPeace::article.index.inc")
+
+        <div style="margin-top: 5px;margin-right:20px ;">
+            <form class="form-inline"
+                  action="{{ route('rotate.article.articles', ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) }}"
+                  method="get" >
+                <div class="form-group">
+                    <label class="sr-only" for="example-if-keyword">关键字</label>
+                    <input class="form-control input-sm" type="text" id="example-if-keyword" name="keyword" value="{{$keyword}}" placeholder="关键字..">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default btn-sm" type="submit">搜索</button>
+                </div>
+            </form>
+        </div>
+
 
     <div class="tab-content">
         <table class="table table-hover table-striped">

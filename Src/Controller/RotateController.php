@@ -2,6 +2,7 @@
 namespace Stars\Peace\Controller;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Stars\Peace\Entity\NavMenu;
 use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\NavService;
@@ -14,11 +15,26 @@ class RotateController extends PeaceController
       // dd( UserEntity::loginUserInfo( ) ->toArray());
        $trees = $navMenuService->tree(1);
 
-       // 树行菜单
-       $articleSides= $navMenuService->articleTree( 2 );
-
        //文章管理导航
        $articleNav =$navService->articleNav();
-       return $this->view( 'index' , ['sidebar' => $trees ,'articleNav'=>$articleNav ,'articleSides'=>$articleSides] );
+
+       // 树行菜单
+       $cacheSlideCacheKey = '_article_slides_cache' ;
+       $articleSides= Cache::get( $cacheSlideCacheKey , [] );
+
+       if( !$articleSides ){
+           foreach ($articleNav as $nav){
+               $articleSides[] = [
+                   'title'=> $nav['title'] ,
+                   'menus'=> $navMenuService->articleTree( $nav->id )
+               ];
+           }
+
+           Cache::store('file' )->set($cacheSlideCacheKey ,$articleSides , 3600 );
+
+       }
+
+
+       return $this->view( 'index' , ['sidebar' => $trees ,'articleSides'=>$articleSides] );
    }
 }

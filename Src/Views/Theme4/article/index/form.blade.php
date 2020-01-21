@@ -23,11 +23,13 @@
 
 @endsection
 
+@section("car-head")
+    @include("StarsPeace::article.index.inc")
+@endsection
 
 @section('car-body')
-<div style="margin-top: 5px;">
-    @include("StarsPeace::article.index.inc")
 
+<div>
     <div class="tab-content">
 
         <form class="form-horizontal"  action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">

@@ -26,6 +26,7 @@ class Nav extends SheetSheet
     protected function sheetColumn()
     {
         $this->addTextWidget( '名称', 'title', 255 );
+        $this->addTextWidget( '主题', 'theme', 255 );
         $this->addTextWidget( '描述', 'remark', 255);
         $this->addCharColumn('文章管理', 'article' , 3);
     }
