@@ -4,8 +4,8 @@
 
 <script type="text/javascript" src="{{asset('static/stars/js/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('static/stars/js/bootstrap.min.js')}}"></script>
-<script type="text/javascript" src="{{asset('static/stars/js/main.min.js')}}"></script>
 
+<script type="text/javascript" src="{{asset('static/stars/js/perfect-scrollbar.min.js')}}"></script>
 
 <script type="text/javascript" src="{{asset('static/stars/js/bootstrap-notify.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('static/stars/js/lightyear.js')}}"></script>

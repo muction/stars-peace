@@ -12,6 +12,11 @@
     <link href="{{ asset('static/stars/css/multitabs.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/materialdesignicons.min.css') }}" rel="stylesheet">
 
+    <script type="text/javascript" src="{{ asset('static/stars/js/perfect-scrollbar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('static/stars/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('static/stars/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('static/stars/js/main.min.js') }}"></script>
+
     <link href="{{ asset('static/stars/css/style.min.css') }}" rel="stylesheet">
     <style type="text/css">
         .lyear-layout-web, .lyear-layout-container, .lyear-layout-content, .container-fluid {
@@ -234,10 +239,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('static/stars/js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('static/stars/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('static/stars/js/perfect-scrollbar.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('static/stars/js/main.min.js') }}"></script>
 
 </body>
 </html>
