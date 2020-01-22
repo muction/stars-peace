@@ -29,7 +29,7 @@
     @php( $_routeName = Request()->route()->getName() )
     <ul class="nav nav-tabs">
         <li>
-            <a  id="btn-back-last-version">向上回滚</a>
+            <a class="btn-back-last-version">回滚版本</a>
         </li>
         <li>
             <a  id="btn-apply-change">应用更改</a>
@@ -78,6 +78,8 @@
         </div>
     </div>
 
+    @include("StarsPeace::template.modal")
+
     <script type="text/javascript">
         $(function () {
             $("select").change(function () {
@@ -85,6 +87,7 @@
             });
 
             $('.select23').select2();
+
         });
 
 
@@ -97,7 +100,9 @@
         });
 
         var documentHeight = $('#box-height').height();
-        editor.setSize('auto', documentHeight);
+        editor.setSize('auto', documentHeight)
+
+        //版本操作
         $(function () {
             let templateName = "{{ $templateName }}";
             let validNavId = "{{$validNavId}}";
@@ -125,6 +130,7 @@
                             alert("应用时发生错误，您可以稍后尝试重试，如果错误继续存在，请联系站点管理员~");
                         },
                         success: function (e) {
+                            //
                             if (e.error == 0) {
                                 alert(e.msg);
                                 window.location.reload();
@@ -136,32 +142,24 @@
                 }
             });
 
-            $('#btn-back-last-version').click(function () {
-                if (confirm('确定要回滚到上次版本吗? 是否继续?') && confirm("确定继续操作?")) {
-                    let backVersion = "";
-                    while (!backVersion) {
-                        backVersion = window.prompt("请输入要回归的版本，__LAST__ 将回滚到上次版本", "__LAST__");
-                        if (backVersion == null) {
-                            break;
-                        }
-                    }
+            //回归版本
+            $('.btn-back-last-version').click(function () {
 
-                    if (!backVersion) {
-                        return false;
-                    }
-
+                if (confirm('确定要回滚吗?') ) {
                     if (hasRequest != null) {
                         hasRequest.abort();
                     }
+
+                    //是否有选择到要回归的版本
+                    let backVersion = $('input[name="version_id"]:checked').val();
 
                     hasRequest = $.ajax({
                         url: "{{ route('rotate.template.rollBack') }}",
                         type: "post",
                         data: {
-                            backVersion: backVersion,
+                            backVersion : backVersion,
                             templateName: templateName,
                             validNavId: validNavId,
-                            templateContent: editor.getValue(),
                             _token: token
                         },
                         dataType: "json",
@@ -170,7 +168,27 @@
                         },
                         success: function (e) {
                             if (e.error == 0) {
-                                alert(e.msg);
+
+                                if( !backVersion ){
+                                    let html = "";
+                                    let max = e.body.length;
+                                    for(let i=0; i< max ; i++){
+                                        let item = e.body[i];
+                                        html +='<div class="radio">' +
+                                            ' <label>' +
+                                            ' <input type="radio" name="version_id" value="'+ item.id +'" />' +
+                                            '创建时间:'+ item.created_at +
+                                            '</label>' +
+                                            ' </div>';
+                                    }
+
+                                    $('#templateVersionBody').html( html );
+                                    $('#templateBackVersion').modal('show');
+                                }else{
+                                    $('#templateVersionBody').html( "" );
+                                    $('#templateBackVersion').modal('hide');
+                                    alert("操作成功");
+                                }
                             } else {
                                 alert('操作失败了');
                             }

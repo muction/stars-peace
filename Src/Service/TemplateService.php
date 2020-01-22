@@ -167,24 +167,19 @@ class TemplateService extends ServiceService
      * @return bool|int
      */
     public function rollBack(Request $request ){
-       try{
-           DB::beginTransaction();
-           $requestAll=$request->all();
-           $backVersion = $request->input("backVersion");
-           if( $backVersion == '__LAST__' ){
-               $findTemplate = TemplateCodeEntity::where(
-                   [
-                       'status'=>TemplateCodeEntity::STATUS_STOP,
-                       'nav_id'=>$requestAll['validNavId']  ,
-                       'template_filename'=>$requestAll['templateName']
-                   ]
-               )->orderBy('updated_at','DESC')->first();
-               $backVersion = $findTemplate->id;
-           }
+        $requestAll=$request->all();
+        $backVersion = $request->input("backVersion");
+        if(!$backVersion){
+            //如果没有提供版本号，则返回改文件的所有版本号
+            return $this->templateVersionList( $requestAll );
+        }
+        try{
+
            $useIngTemplateInfo = TemplateCodeEntity::where([
                'id'=>$backVersion ,'nav_id'=>$request['validNavId']
            ])->first();
            if($useIngTemplateInfo){
+               DB::beginTransaction();
 
                //等于1的重置为无效
                TemplateCodeEntity::setStatus(['status'=>TemplateCodeEntity::STATUS_USE_ING] , ['status'=>TemplateCodeEntity::STATUS_STOP]);
@@ -194,10 +189,11 @@ class TemplateService extends ServiceService
                $useIngTemplateInfo->save();
 
                $tempInfo = $useIngTemplateInfo->toArray();
+
+               DB::commit();
+
                return $this->putFileTemplateContent( $this->viewsPath.'/'.$tempInfo['template_filename'], $tempInfo['template_code'] );
            }
-
-           DB::commit();
 
            return false;
 
@@ -205,6 +201,16 @@ class TemplateService extends ServiceService
            DB::rollBack();
            return false;
        }
+    }
+
+    /**
+     * 返回当前模板所有版本列表
+     * @param array $requestAll
+     * @return mixed
+     */
+    private function templateVersionList( array $requestAll ){
+
+        return TemplateCodeEntity::templateAllVersion( $requestAll['templateName'] , $requestAll['validNavId'] );
     }
 
     /**
