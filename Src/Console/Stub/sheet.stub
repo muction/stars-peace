@@ -1,0 +1,32 @@
+<?php
+namespace __NAME_SPACE__;
+use Stars\Peace\Foundation\SheetSheet;
+
+/**
+ * 系统模型文件
+ * @package Stars\Peace\Sheet
+ */
+class __SHEETNAME__ extends SheetSheet
+{
+
+
+    /**
+     * 定义模型信息
+     * @return mixed
+     */
+    protected function sheetInfo()
+    {
+        $this->makeSheetInfo('模型名称','tableName', '1.1.0');
+    }
+
+    /**
+     * 定义字段集，支持方法请参考SheetField方法
+     * @return mixed
+     */
+    protected function sheetColumn()
+    {
+
+
+    }
+
+}

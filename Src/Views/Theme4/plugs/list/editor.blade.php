@@ -1,0 +1,1 @@
+{{ $valueItem[$_listColumnName] }}
