@@ -1,162 +1,68 @@
 <?php
 namespace Stars\Peace\Entity;
 
-use Stars\Peace\Foundation\EntityEntity;
-use Stars\Peace\Lib\Helper;
-use Stars\Peace\Service\NavMenuService;
-use Illuminate\Support\Facades\Log;
-
-class TemplateCode extends EntityEntity
+class TemplateCode extends ApplyContentEntity
 {
-    use TraitCategory;
-
-    protected $with =  [ 'image'] ;
-
-    protected static $pathMenus=[];
-
     /**
-     * 批量添加
-     * @var array
+     * 表名称
+     * @var string
      */
-    protected $fillable = [ 'nav_id' , 'parent_id' ,'image_id' , 'title' ,'route_name' ,'href' ,'icon' , 'level' ,'template_name' ,'template_type','seo_title' ,'seo_keywords', 'seo_description'];
+    protected $table = 'template_codes';
+
+    //禁用了
+    const STATUS_STOP = 0;
+
+    //使用中
+    const STATUS_USE_ING = 1;
+
+    //禁用，与使用中，中间过度状态
+    const STATUS_TMP = 2;
+
+    protected $fillable = ['nav_id', 'template_filename' ,'template_code' ,'status'];
 
     /**
-     * @param array $menu
+     * 设置状态
+     * @param array $where
+     * @param $update
      * @return mixed
      */
-    public static function storage(array $menu ){
-        return self::create($menu);
+    public static function setStatus( array $where, $update ){
+        return self::where( $where )->update( $update );
     }
 
     /**
-     * data list
-     * @param int $size
-     * @return mixed
-     */
-    public static function paginatePage( $size= 15){
-        return self::orderByDesc('id')->paginate( $size ) ;
-    }
-
-    /**
-     * get a nav info
-     * @param $menuId
-     * @return mixed
-     */
-    public static function info( $menuId ){
-        return self::find( $menuId );
-    }
-
-    /**
+     * 创建
      * @param $navId
-     * @param $menuId
-     * @return
-     */
-    public static function detail( $navId, $menuId ){
-        return self::where('nav_id', $navId)
-            ->where('id', $menuId)->first();
-    }
-
-    /**
-     * remove one nav data
-     * @param $navId
-     * @return bool
-     */
-    public static function remove($navId , $menuId ){
-        $info = self::detail( $navId , $menuId) ;
-        if( $info ){
-            return $info->delete();
-        }
-        return false;
-    }
-
-    /**
-     * edit a nav
-     * @param $navId
-     * @param $menuId
-     * @param $menu
-     * @return bool
-     */
-    public static function edit( $navId, $menuId, $menu ){
-        $detail = self::detail( $navId , $menuId) ;
-        if(!$detail){
-            return false;
-        }
-        $levelChange= $menu['level']-$detail['level'];
-        $result= $detail->update( $menu );
-        $navMenuService = new NavMenuService() ;
-        if($result){
-            $allChildrenMenus= Helper::findAllChildrenNodes( $navMenuService->navMenus( $navId ) , $menuId) ;
-            self::levelChange(array_column($allChildrenMenus, 'id' ) ,  $levelChange);
-        }
-        return true;
-    }
-
-    /**
-     * move menu level
-     * @param $menuIds
-     * @param $levelChange
+     * @param $templateName
+     * @param $templateCode
+     * @param $status
      * @return mixed
      */
-    public static function levelChange( $menuIds , $levelChange ){
-        return self::whereIn('id', $menuIds)->increment('level', $levelChange);
+    public static function storage( $navId, $templateName, $templateCode, $status ){
+        return self::create([
+            'nav_id'=>$navId ,
+            'template_filename'=>$templateName ,
+            'template_code'=>$templateCode ,
+            'status'=>$status
+        ]);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function binds(){
-        return $this->hasMany( MenuBind::class , 'menu_id' ,'id' );
-    }
-
-    /**
-     * @param $navId
+     * 获取指定模板的所有可选版本
+     * @param string $templateName
+     * @param int $navId
+     * @param int $limit
      * @return mixed
      */
-    public static function menus( $navId ){
-        return self::where('nav_id', $navId)
-            ->orderByDesc('order')
-            ->orderBy('id')
-            ->get();
-    }
-
-    /**
-     * @param $where
-     * @param $data
-     * @return mixed
-     */
-    public static function matchUpdate( $where, $data ){
-        return self::where( $where )->update($data);
-    }
-
-    /**
-     * @param $navId
-     * @return
-     */
-    public static function clearNavMenus( $navId ){
-        return self::where('nav_id', $navId)->delete();
-    }
-
-    /**
-     * 一对一
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function image(){
-        return $this->hasOne( AttachmentEntity::class , 'id' ,'image_id' );
-    }
-
-    /**
-     * 获取path
-     * @param $lastItemId
-     * @return array
-     */
-    public static function pathMenus($lastItemId){
-        $item = self::where('id', $lastItemId)
-            ->first()
-            ->toArray();
-        array_unshift(self::$pathMenus , $item);
-        if(isset($item['parent_id']) && $item['parent_id'] > 0){
-            self::pathMenus($item['parent_id']);
-        }
-        return self::$pathMenus;
+    public static function templateAllVersion( string $templateName , int $navId=0 , int $limit = 15){
+        return self::where(function( $query ) use ($templateName, $navId){
+            $query->where('template_filename', $templateName );
+            if( $navId>0){
+                $query->where('nav_id', $navId);
+            }
+        })
+            ->select(['id' ,'template_filename' ,'status','created_at' ,'updated_at'])
+            ->limit( $limit )
+            ->orderByDesc('updated_at')->get();
     }
 }

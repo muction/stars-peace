@@ -1,7 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
-use Stars\Peace\Entity\TemplateCodeEntity;
+use Stars\Peace\Entity\TemplateCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stars\Peace\Foundation\ServiceService;
@@ -78,8 +78,8 @@ class TemplateService extends ServiceService
         if($templatePathName){
 
             //取得数据库模板数据
-            $templateContent = TemplateCodeEntity::where([
-                'status'=> TemplateCodeEntity::STATUS_USE_ING,
+            $templateContent = TemplateCode::where([
+                'status'=> TemplateCode::STATUS_USE_ING,
                 'nav_id'=> $validNavId ,
                 'template_filename' => $templatePathName
             ])->value('template_code');
@@ -119,9 +119,9 @@ class TemplateService extends ServiceService
         $writeFileResult = null;
 
         //先取得当前正在使用的模板数据
-        $useIngTemplateInfo = TemplateCodeEntity::where(
+        $useIngTemplateInfo = TemplateCode::where(
                 [
-                    'status'=> TemplateCodeEntity::STATUS_USE_ING,
+                    'status'=> TemplateCode::STATUS_USE_ING,
                     'nav_id'=>$requestAll['validNavId']  ,
                     'template_filename'=>$requestAll['templateName']
                 ]
@@ -131,16 +131,16 @@ class TemplateService extends ServiceService
             DB::beginTransaction();
 
             //将当前 status=1 使用中的置位 0
-            $update= TemplateCodeEntity::setStatus(
+            $update= TemplateCode::setStatus(
                 [
-                    'status'=> TemplateCodeEntity::STATUS_USE_ING,
+                    'status'=> TemplateCode::STATUS_USE_ING,
                     'nav_id'=>$requestAll['validNavId']  ,
                     'template_filename'=>$requestAll['templateName']
                 ] ,
-                ['status'=>TemplateCodeEntity::STATUS_STOP ]);
+                ['status'=>TemplateCode::STATUS_STOP ]);
 
             //写入新的模板文件
-            $create= TemplateCodeEntity::storage( $requestAll['validNavId'] , $requestAll['templateName'] , $requestAll['templateContent'] , TemplateCodeEntity::STATUS_USE_ING) ;
+            $create= TemplateCode::storage( $requestAll['validNavId'] , $requestAll['templateName'] , $requestAll['templateContent'] , TemplateCode::STATUS_USE_ING) ;
             DB::commit();
 
         }catch (\Exception $exception){
@@ -175,17 +175,17 @@ class TemplateService extends ServiceService
         }
         try{
 
-           $useIngTemplateInfo = TemplateCodeEntity::where([
+           $useIngTemplateInfo = TemplateCode::where([
                'id'=>$backVersion ,'nav_id'=>$request['validNavId']
            ])->first();
            if($useIngTemplateInfo){
                DB::beginTransaction();
 
                //等于1的重置为无效
-               TemplateCodeEntity::setStatus(['status'=>TemplateCodeEntity::STATUS_USE_ING] , ['status'=>TemplateCodeEntity::STATUS_STOP]);
+               TemplateCode::setStatus(['status'=>TemplateCode::STATUS_USE_ING] , ['status'=>TemplateCode::STATUS_STOP]);
 
                //将此改为使用中
-               $useIngTemplateInfo->status= TemplateCodeEntity::STATUS_USE_ING;
+               $useIngTemplateInfo->status= TemplateCode::STATUS_USE_ING;
                $useIngTemplateInfo->save();
 
                $tempInfo = $useIngTemplateInfo->toArray();
@@ -210,7 +210,7 @@ class TemplateService extends ServiceService
      */
     private function templateVersionList( array $requestAll ){
 
-        return TemplateCodeEntity::templateAllVersion( $requestAll['templateName'] , $requestAll['validNavId'] );
+        return TemplateCode::templateAllVersion( $requestAll['templateName'] , $requestAll['validNavId'] );
     }
 
     /**
@@ -257,7 +257,7 @@ class TemplateService extends ServiceService
             DB::beginTransaction();
 
             //清除
-            TemplateCodeEntity::setStatus( [ 'status'=>TemplateCodeEntity::STATUS_USE_ING ] , ['status'=>TemplateCodeEntity::STATUS_STOP] );
+            TemplateCode::setStatus( [ 'status'=>TemplateCode::STATUS_USE_ING ] , ['status'=>TemplateCode::STATUS_STOP] );
 
             //开始同步
             foreach ($templateFiles as $file){
@@ -265,7 +265,7 @@ class TemplateService extends ServiceService
                     $navId = isset( $template2Navs[$file]) ? $template2Navs[$file] : null;
                     if($navId){
                         $content =( $disk->get( $this->viewsPath .'/'.$file ) );
-                        TemplateCodeEntity::storage( $navId , $file , $content , TemplateCodeEntity::STATUS_USE_ING  );
+                        TemplateCode::storage( $navId , $file , $content , TemplateCode::STATUS_USE_ING  );
                     }
                 }
             }

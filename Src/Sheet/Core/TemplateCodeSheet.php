@@ -26,9 +26,9 @@ class TemplateCodeSheet extends SheetSheet
     protected function sheetColumn()
     {
         $this->addIntColumn('导航ID', 'nav_id');
-        $this->addCharColumn('文件md5', 'file_md5' ,32);
         $this->addTextWidget('模板名称', 'template_filename' ,512);
         $this->addEditorWidget("代码" ,'template_code');
+        $this->addVarCharColumn("操作者名" ,'author' , 100);
         $this->addRadioGroupWidget('状态', 'status', 3,
             $this->columnOptions(
                 $this->optionPublicStatic(),

@@ -186,10 +186,11 @@
                                     for(let i=0; i< max ; i++){
                                         let item = e.body[i];
                                         let isUseIng = parseInt( item.status ) == 1 ? " 使用中" :"";
+
                                         html +='<div class="radio">' +
                                             ' <label>' +
                                             ' <input type="radio" name="version_id" value="'+ item.id +'" />' +
-                                            '创建时间：'+ item.created_at + isUseIng +
+                                            ' 创建时间：'+ item.created_at+ '&nbsp;版本号：' + item.id + ' ' + isUseIng +
                                             '</label>' +
                                             ' </div>';
                                     }

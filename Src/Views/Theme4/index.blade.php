@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>首页 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title> {{ config('app.name' , "星际智能") }} 管理系统 </title>
     <link rel="icon" href="favicon.ico" type="image/ico">
-    <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-    <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
-    <meta name="author" content="yinqi">
+    <meta name="keywords" content=" {{ config('app.name' , "星际智能") }} 管理系统">
+    <meta name="description" content=" {{ config('app.name' , "星际智能") }} 管理系统">
+    <meta name="author" content="muction@yeah.net">
+
     <link href="{{ asset('static/stars/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/multitabs.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/materialdesignicons.min.css') }}" rel="stylesheet">
@@ -19,9 +20,7 @@
 
     <link href="{{ asset('static/stars/css/style.min.css') }}" rel="stylesheet">
     <style type="text/css">
-        .lyear-layout-web, .lyear-layout-container, .lyear-layout-content, .container-fluid {
-            height: 100%;
-        }
+
 
         iframe {
             border: 0px;
@@ -29,9 +28,6 @@
             margin: 0px
         }
 
-        .container-fluid {
-            margin-top: 48px;
-        }
     </style>
 </head>
 
@@ -45,20 +41,14 @@
 
             <!-- logo -->
             <div id="logo" class="sidebar-header">
-                <a href="index.html"><img src="{{ asset('static/stars/images/logo-sidebar.png') }}" title="LightYear"
-                                          alt="LightYear"/></a>
+                <a href="{{ route('rotate.dashboard.index') }}" target="request-content">
+                    <img src="{{ asset('static/stars/images/logo-sidebar.png') }}" title="{{ config('app.name' , "星际智能") }} 管理系统"  alt="{{ config('app.name' , "星际智能") }} 管理系统"/>
+                </a>
             </div>
             <div class="lyear-layout-sidebar-scroll">
-
                 <nav class="sidebar-main">
                     @include("StarsPeace::inc.sidebar")
                 </nav>
-
-                <div class="sidebar-footer">
-                    <p class="copyright">Copyright &copy; 2019. <a target="_blank"
-                                            href="http://lyear.itshubao.com">IT书包</a> All rights
-                        reserved.</p>
-                </div>
             </div>
 
         </aside>
