@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">选择要回归的版本</h4>
+                <h4 class="modal-title" id="myModalLabel">选择要回归的版本(最新15个)</h4>
             </div>
 
             <form name="selectBackVersion" id="selectBackVersion">

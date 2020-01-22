@@ -111,6 +111,11 @@
             //应用本次更改
             $('#btn-apply-change').click(function () {
 
+                if(!templateName){
+                    alert("请选择模板文件");
+                    return false;
+                }
+
                 if (confirm('您即将应用本次更改，将会替换现有模板文件，是否继续?') && confirm("确定继续操作?")) {
                     if (hasRequest != null) {
                         hasRequest.abort();
@@ -145,7 +150,13 @@
             //回归版本
             $('.btn-back-last-version').click(function () {
 
+                if(!templateName){
+                    alert("请选择模板文件");
+                    return false;
+                }
+
                 if (confirm('确定要回滚吗?') ) {
+
                     if (hasRequest != null) {
                         hasRequest.abort();
                     }
@@ -174,10 +185,11 @@
                                     let max = e.body.length;
                                     for(let i=0; i< max ; i++){
                                         let item = e.body[i];
+                                        let isUseIng = parseInt( item.status ) == 1 ? " 使用中" :"";
                                         html +='<div class="radio">' +
                                             ' <label>' +
                                             ' <input type="radio" name="version_id" value="'+ item.id +'" />' +
-                                            '创建时间:'+ item.created_at +
+                                            '创建时间：'+ item.created_at + isUseIng +
                                             '</label>' +
                                             ' </div>';
                                     }
