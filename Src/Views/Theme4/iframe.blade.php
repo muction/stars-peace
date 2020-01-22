@@ -25,7 +25,6 @@
 <body>
 
 <div class="stars-nav-tabs" id="frame-nav-tabes">
-
     @yield("car-head")
 </div>
 

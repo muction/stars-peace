@@ -12,7 +12,6 @@ class RotateController extends PeaceController
 {
    public function index(NavService $navService, NavMenuService $navMenuService){
 
-      // dd( UserEntity::loginUserInfo( ) ->toArray());
        $trees = $navMenuService->tree(1);
 
        //文章管理导航
