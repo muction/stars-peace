@@ -1,9 +1,0 @@
-<?php
-namespace Stars\Peace\Service;
-
-use Stars\Peace\Foundation\ServiceService;
-
-class SERVERNAME extends ServiceService
-{
-
-}

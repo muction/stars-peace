@@ -1,9 +1,0 @@
-<?php
-namespace Stars\Peace\Entity;
-
-use Stars\Peace\Foundation\EntityEntity;
-
-class ENTITYNAME extends EntityEntity
-{
-
-}

@@ -1,1 +1,0 @@
-<textarea class="form-control input-sm" name="{{$column['db_name']}}">{{old($column['db_name'] , isset($column['now_value']) ? $column['now_value'] : '')}}</textarea>
