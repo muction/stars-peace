@@ -18,12 +18,12 @@
 
 @if( isset( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_SELECT] ) )
     @php( $__sheetValueSelect=  $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_SELECT] )
+
     @if(isset($__sheetValueSelect[0]))
         @foreach( $__sheetValueSelect as $_index=>$_value)
             <label class="lyear-radio radio-inline radio-primary">
                 <input type="radio" name="{{ $column['db_name'] }}" value="{{ $_value['value'] }}"
-                       @if( $__radiosActiveValue ==$_value['value']  ) checked="checked" @endif
-
+                       @if( $__radiosActiveValue ==$_value['value']  || isset($_value['default']) && $_value['default'] == true ) checked="checked" @endif
                 >
                 <span> {{ $_value['title'] }}</span>
             </label>
