@@ -1,7 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
-use App\Entity\TemplateCodeEntity;
+use Stars\Peace\Entity\TemplateCodeEntity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stars\Peace\Foundation\ServiceService;
