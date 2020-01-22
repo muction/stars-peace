@@ -29,96 +29,92 @@
 
 @section('car-body')
 
-<div>
-    <div class="tab-content">
 
-        <form class="form-horizontal"  action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">
+<form class="form-horizontal"  action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">
 
-            @csrf
+    @csrf
 
-            @foreach( $bindSheetInfo['sheet']['columns'] as $column )
+    @foreach( $bindSheetInfo['sheet']['columns'] as $column )
 
-                @if( $column['scene'] == \Stars\Peace\Foundation\SheetSheet::SCENE_SYSTEM )
-                    @continue
+        @if( $column['scene'] == \Stars\Peace\Foundation\SheetSheet::SCENE_SYSTEM )
+            @continue
+        @endif
+
+        <div class="form-group  @error($column['db_name'] ) has-error @enderror">
+            <label for="inputEmail3" class="col-sm-2 control-label">
+                @if( isset($bindSheetInfo['options']['column_required']) && in_array($column['db_name'] , $bindSheetInfo['options']['column_required']) )
+                    <span style="color: red">*</span>
                 @endif
+                {{$column['title']}}
+            </label>
+            <div class="col-sm-10">
+                @php( $_columnDefaultValue= isset( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] )
+           ? ( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] ) :'')
 
-                <div class="form-group  @error($column['db_name'] ) has-error @enderror">
-                    <label for="inputEmail3" class="col-sm-2 control-label">
-                        @if( isset($bindSheetInfo['options']['column_required']) && in_array($column['db_name'] , $bindSheetInfo['options']['column_required']) )
-                            <span style="color: red">*</span>
-                        @endif
-                        {{$column['title']}}
-                    </label>
-                    <div class="col-sm-10">
-                        @php( $_columnDefaultValue= isset( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] )
-                   ? ( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] ) :'')
+                @switch( $column['plug'] )
 
-                        @switch( $column['plug'] )
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TEXT )
+                    @include("StarsPeace::plugs.form.text")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TEXT )
-                            @include("StarsPeace::plugs.form.text")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_SELECT )
+                    @include("StarsPeace::plugs.form.select")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_SELECT )
-                            @include("StarsPeace::plugs.form.select")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_EDITOR )
+                    @include("StarsPeace::plugs.form.editor")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_EDITOR )
-                            @include("StarsPeace::plugs.form.editor")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_CROPPER )
+                    @include("StarsPeace::plugs.form.cropper")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_CROPPER )
-                            @include("StarsPeace::plugs.form.cropper")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_RADIOS )
+                    @include("StarsPeace::plugs.form.radios")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_RADIOS )
-                            @include("StarsPeace::plugs.form.radios")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_CHECKBOX )
+                    @include("StarsPeace::plugs.form.checkboxs")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_CHECKBOX )
-                            @include("StarsPeace::plugs.form.checkboxs")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_UPLOAD )
+                    @include("StarsPeace::plugs.form.upload")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_UPLOAD )
-                            @include("StarsPeace::plugs.form.upload")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_NUMBER )
+                    @include("StarsPeace::plugs.form.number")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_NUMBER )
-                            @include("StarsPeace::plugs.form.number")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TIME )
+                    @include("StarsPeace::plugs.form.timer")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TIME )
-                            @include("StarsPeace::plugs.form.timer")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TEXTAREA )
+                    @include("StarsPeace::plugs.form.textarea")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TEXTAREA )
-                            @include("StarsPeace::plugs.form.textarea")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_PASSWORD )
+                    @include("StarsPeace::plugs.form.password")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_PASSWORD )
-                            @include("StarsPeace::plugs.form.password")
-                            @break
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_MAP_BAIDU )
+                    @include("StarsPeace::plugs.form.map.baidu")
+                    @break
 
-                            @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_MAP_BAIDU )
-                            @include("StarsPeace::plugs.form.map.baidu")
-                            @break
-
-                            @default
-                            <H4>不支持的插件： {{$column['plug']}}</H4>
-                        @endswitch
-                    </div>
-                </div>
-
-            @endforeach
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Sign in</button>
-                </div>
+                    @default
+                    <H4>不支持的插件： {{$column['plug']}}</H4>
+                @endswitch
             </div>
-        </form>
+        </div>
 
+    @endforeach
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">保存</button>
+        </div>
     </div>
- </div>
+</form>
+
 
 {{--  仅限表单页面共用js调用  --}}
     <script type="text/javascript">

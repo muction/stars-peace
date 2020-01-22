@@ -17,7 +17,6 @@
 
 @section('car-body')
 
-<div style="margin-top: 5px;">
 
         <div style="margin-top: 5px;margin-right:20px ;">
             <form class="form-inline"
@@ -34,7 +33,6 @@
         </div>
 
 
-    <div class="tab-content">
         <table class="table table-hover table-striped">
             <thead>
             <tr>
@@ -121,7 +119,5 @@
         <div class="stars-pagination">
             @include( "StarsPeace::inc.pagination" )
         </div>
-    </div>
 
-</div>
 @endsection

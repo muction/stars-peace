@@ -51,10 +51,7 @@
             <div class="lyear-layout-sidebar-scroll">
 
                 <nav class="sidebar-main">
-                    <ul class="nav nav-drawer">
-                         @include("StarsPeace::inc.sidebar")
-                         @include("StarsPeace::inc.article-sidebar")
-                    </ul>
+                    @include("StarsPeace::inc.sidebar")
                 </nav>
 
                 <div class="sidebar-footer">
@@ -95,7 +92,7 @@
 
         <!--页面主要内容-->
         <main class="lyear-layout-content">
-            <iframe src="http://package.dev.muction.net/rotate/nav" name="request-content" width="100%" height="100%"></iframe>
+            <iframe src="{{ route('rotate.dashboard.index') }}" name="request-content" width="100%" height="100%"></iframe>
         </main>
         <!--End 页面主要内容-->
     </div>

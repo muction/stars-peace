@@ -35,5 +35,38 @@
 </div>
 
 @yield("car-footer")
+
+
+@error('messageError')
+<script type="text/javascript">
+    parent.lightyear.notify( '{{ $message }}' , 'danger', 2000 );
+</script>
+@enderror
+
+@error('messageWarning')
+<script type="text/javascript">
+    parent.lightyear.notify( '{{ $message }}' , 'warning', 2000);
+</script>
+@enderror
+
+@error('messageInfo')
+<script type="text/javascript">
+    parent.lightyear.notify( '{{ $message }}' , 'success', 2000 ,  'mdi mdi-emoticon-happy');
+</script>
+@enderror
+
+<script type="text/javascript">
+    $(function(){
+
+        $( '.act-stars-remove' ).click(function(){
+            return window.confirm("确定要继续操作吗？");
+        });
+
+        $('.article-stars-remove').click(function(){
+            return window.confirm("确定要继续操作吗？");
+        });
+
+    });
+</script>
 </body>
 </html>

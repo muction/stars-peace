@@ -4,13 +4,13 @@
     @if( !isset($side['nodes']) || !$side['nodes'] )
         @if( isset($children) )
             <li>
-                <a class="@if(isset($side['url']) && $side['url'])multitabs allow-close-sidebar @else text-muted @endif " target="request-content" href="{{ isset($side['url']) ? $side['url'] : 'javascript:void(0)'}}">
+                <a target="request-content" href="{{ isset($side['url']) ? $side['url'] : 'javascript:void(0)'}}">
                     {{ $side['title'] }}
                 </a>
             </li>
         @elseif( \Stars\Rbac\Entity\UserEntity::can( $side['route_name']) ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
             <li class="nav-item">
-                <a class="@if(isset($side['url']) && $side['url'])multitabs allow-close-sidebar @else text-muted @endif" target="request-content" href="{{ isset($side['url']) ? $side['url'] : 'javascript:void(0)'}}" >
+                <a target="request-content" href="{{ isset($side['url']) ? $side['url'] : 'javascript:void(0)'}}" >
                     <i class="{{ $side['icon'] }}"></i>
                     <span>{{ $side['title'] }}</span>
                 </a>
