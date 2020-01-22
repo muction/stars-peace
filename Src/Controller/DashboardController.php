@@ -15,7 +15,7 @@ class DashboardController extends PeaceController
 
         $attachmentTotal = $dashboardService->attachmentTotal();
         $adminTotal = $dashboardService->adminTotal();
-        $messageTotal = $dashboardService->messageTotal();
-        return $this->view('dashboard.simple' , ['attachmentTotal' =>$attachmentTotal , 'adminTotal'=>$adminTotal , 'messageTotal'=>$messageTotal ]);
+        //$messageTotal = $dashboardService->messageTotal();
+        return $this->view('dashboard.simple' , ['attachmentTotal' =>$attachmentTotal , 'adminTotal'=>$adminTotal ]);
     }
 }

@@ -15,10 +15,17 @@
     <script type="text/javascript" src="{{asset('static/stars/js/lightyear.js')}}"></script>
 
     @yield("page-head")
+
+    <style type="text/css">
+        .nav-tabs{
+            margin-bottom: 0px;
+        }
+    </style>
 </head>
 <body>
 
 <div class="stars-nav-tabs" id="frame-nav-tabes">
+
     @yield("car-head")
 </div>
 
