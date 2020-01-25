@@ -36,13 +36,16 @@
         <table class="table table-hover table-striped">
             <thead>
             <tr>
-                <th width="100" align="center">
+                <th width="100" align="center" style="text-align: center">
                     操作
+                </th>
+                <th width="100" align="center" style="text-align: center">
+                    ID
                 </th>
                 @foreach( $bindListColumns as $_listColumnName )
                     @foreach( $sheetColumns as $_sheetColumn )
                         @if( $_listColumnName == $_sheetColumn['db_name'] )
-                            <th >{{$_sheetColumn['title']}}</th>
+                            <th style="text-align: center">{{$_sheetColumn['title']}}</th>
                             @break
                         @endif
                     @endforeach
@@ -56,10 +59,12 @@
                     <td align="center">
                         @include("StarsPeace::plugs.list.action")
                     </td>
-
+                    <td style="text-align: center">
+                        {{$valueItem['id']}}
+                    </td>
                     @foreach( $bindListColumns as $_listColumnName )
                         @if( isset( $sheetColumns[$_listColumnName]['plug'] ) )
-                            <td>
+                            <td style="text-align: center">
                                 @switch( $sheetColumns[$_listColumnName]['plug'] )
                                     @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_TEXT )
                                     @include("StarsPeace::plugs.list.text")

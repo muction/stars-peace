@@ -30,7 +30,7 @@
 @section('car-body')
 
 
-<form class="form-horizontal"  action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">
+<form class="form-horizontal" id="articleSubmitForm" action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">
 
     @csrf
 
@@ -110,7 +110,7 @@
     @endforeach
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">保存</button>
+            <button type="submit" class="btn btn-default" id="articleSubmitFormBtn" >保存</button>
         </div>
     </div>
 </form>

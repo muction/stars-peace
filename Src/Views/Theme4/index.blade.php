@@ -10,7 +10,6 @@
     <meta name="author" content="muction@yeah.net">
 
     <link href="{{ asset('static/stars/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('static/stars/css/multitabs.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/materialdesignicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/animate.css') }}" rel="stylesheet">
 
@@ -55,7 +54,7 @@
             });
 
             $("#content-iframe").on("load", function(event){//判断 iframe是否加载完成  这一步很重要
-                $("#frame-nav-tabes a", this.contentDocument).click(function(){//添加点击事件
+                $("a", this.contentDocument).click(function(){//添加点击事件
                     pageProgress('show');
                 });
             });

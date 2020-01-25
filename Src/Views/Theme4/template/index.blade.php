@@ -142,6 +142,13 @@
                             } else {
                                 alert('操作失败了');
                             }
+                        },
+                        complete:function(){
+                            try{
+                                parent. pageProgress ('hide');
+                            }catch (e) {
+
+                            }
                         }
                     });
                 }
@@ -204,6 +211,13 @@
                                 }
                             } else {
                                 alert('操作失败了');
+                            }
+                        },
+                        complete:function(){
+                            try{
+                                parent. pageProgress ('hide');
+                            }catch (e) {
+
                             }
                         }
                     });

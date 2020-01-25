@@ -19,18 +19,17 @@
 
                 @if( $item['template_name'] )
                     <a class="btn btn-xs btn-default" href="{{ route( 'rotate.template.index' , ['navId'=>$item['nav_id'] ,'template_name'=>$item['template_name'] ]) }}"
-                       title="编辑模板" data-toggle="tooltip">
+                       title="编辑模板:{{$item['template_name']}}" data-toggle="tooltip">
                         <i class="mdi mdi-file-document"></i>
                     </a>
                 @endif
             </div>
         </td>
         <td>  @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor {{ $item['title'] }}</td>
+        <td>{{ $item['template_name'] }}</td>
         <td>{{ $item['route_name'] }}</td>
         <td>{{ $item['href'] }}</td>
-        <td>{{ $item['icon'] }}</td>
         <td>{{ $item['order'] }}</td>
-        <td>{{ $item['status'] }}</td>
     </tr>
 
     @if( isset($item['nodes']) )
