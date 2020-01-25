@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>bootstrap-table - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>IFRAMECONTENT</title>
     <link href="{{ asset('static/stars/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/materialdesignicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('static/stars/css/style.min.css') }}" rel="stylesheet">
@@ -21,6 +21,12 @@
             margin-bottom: 0px;
         }
     </style>
+
+    <script type="text/javascript">
+        $(function(){
+            parent. pageProgress ('hide');
+        });
+    </script>
 </head>
 <body>
 
