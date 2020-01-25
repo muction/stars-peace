@@ -1,8 +1,8 @@
 <?php
 namespace Stars\Peace\Service;
 
-use Stars\Peace\Entity\MenuBind;
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\MenuBindEntity;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Stars\Peace\Lib\Helper;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class NavMenuService extends ServiceService
         $only = $request->only(['parent_id' ,'title' ,'route_name' ,'image_id' ,'href' ,'icon' ,
             'order' ,'template_name','template_type' ,'seo_title' ,'seo_keywords', 'seo_description']) ;
         if($only['parent_id']){
-            $detail = NavMenu::detail($navId, $only['parent_id'] );
+            $detail = NavMenuEntity::detail($navId, $only['parent_id'] );
             $level = $detail['level'] +1;
         }
 
@@ -40,10 +40,10 @@ class NavMenuService extends ServiceService
             if( !isset($only['image_id']) || !$only['image_id']){
                 $only['image_id'] = 0;
             }
-            return NavMenu::edit( $navId, $request->input('id') , $only  );
+            return NavMenuEntity::edit( $navId, $request->input('id') , $only  );
         }
 
-        return NavMenu::storage( array_merge( ['nav_id'=>$navId ,'level'=>$level] , $only ) );
+        return NavMenuEntity::storage( array_merge( ['nav_id'=>$navId ,'level'=>$level] , $only ) );
     }
 
     /**
@@ -51,7 +51,7 @@ class NavMenuService extends ServiceService
      * @return mixed
      */
     public function pagination(){
-        return NavMenu::paginatePage( 15 );
+        return NavMenuEntity::paginatePage( 15 );
     }
 
     /**
@@ -59,7 +59,7 @@ class NavMenuService extends ServiceService
      * @return array
      */
     public function tree($navId  ){
-        $navMenu = new NavMenu();
+        $navMenu = new NavMenuEntity();
         return $navMenu->tree( $navId );
     }
 
@@ -70,7 +70,7 @@ class NavMenuService extends ServiceService
      */
     public function articleTree( $navId , $status = null ){
 
-        $navMenu = new NavMenu();
+        $navMenu = new NavMenuEntity();
         $nodes= $navMenu->getNodes( $navId , false  ,$status );
 
         if($nodes)
@@ -95,7 +95,7 @@ class NavMenuService extends ServiceService
      */
     public function remove( $navId ,$menuId ){
 
-        return NavMenu::remove( $navId , $menuId );
+        return NavMenuEntity::remove( $navId , $menuId );
     }
 
     /**
@@ -105,7 +105,7 @@ class NavMenuService extends ServiceService
      */
     public function info( $menuId ){
 
-        return NavMenu::info( $menuId ) ;
+        return NavMenuEntity::info( $menuId ) ;
     }
 
     /**
@@ -116,7 +116,7 @@ class NavMenuService extends ServiceService
      */
     public function detail($navId, $menuId ){
 
-        return NavMenu::detail($navId,  $menuId ) ;
+        return NavMenuEntity::detail($navId,  $menuId ) ;
     }
 
     /**
@@ -125,7 +125,7 @@ class NavMenuService extends ServiceService
      * @return mixed
      */
     public function navMenus( $navId , $withMenuBind=false ){
-        $navMenu = new NavMenu();
+        $navMenu = new NavMenuEntity();
         return $navMenu->getNodes( $navId ,$withMenuBind)->toArray();
     }
 
@@ -136,7 +136,7 @@ class NavMenuService extends ServiceService
      */
     public function crumbs( $menuId ){
 
-        return NavMenu::pathMenus( $menuId );
+        return NavMenuEntity::pathMenus( $menuId );
     }
 
     /**
@@ -144,7 +144,7 @@ class NavMenuService extends ServiceService
      * @return mixed
      */
     public function findByRouterName( $routerName ,$activeNavId ){
-        $info= NavMenu::where('nav_id', $activeNavId )
+        $info= NavMenuEntity::where('nav_id', $activeNavId )
             ->where( 'route_name' ,'=' ,$routerName )->first();
         return $info ? $info->toArray() : [];
     }

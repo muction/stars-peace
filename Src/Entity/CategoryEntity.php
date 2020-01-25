@@ -8,9 +8,11 @@ use Stars\Peace\Foundation\EntityEntity;
  * Class Limit
  * @package Stars\Peace\Entity
  */
-class Category extends EntityEntity
+class CategoryEntity extends EntityEntity
 {
     use TraitCategory;
+
+    protected $table ="categories";
 
     protected $fillable = [ 'title' ,'summary' ,'icon' ,'parent_id' ,'path' ,'type' ,'order' ,'status' , 'level' ];
 }

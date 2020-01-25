@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use phpDocumentor\Reflection\Types\Parent_;
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Service\AppContentService;
 use App\Http\Controllers\Controller;
 use Stars\Peace\Service\NavMenuService;

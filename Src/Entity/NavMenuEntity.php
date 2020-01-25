@@ -6,14 +6,15 @@ use Stars\Peace\Lib\Helper;
 use Stars\Peace\Service\NavMenuService;
 use Illuminate\Support\Facades\Log;
 
-class NavMenu extends EntityEntity
+class NavMenuEntity extends EntityEntity
 {
     use TraitCategory;
 
+    protected $table ="nav_menus";
     protected $with =  [ 'image'] ;
 
     protected static $pathMenus=[];
-    
+
     /**
      * 批量添加
      * @var array
@@ -105,7 +106,7 @@ class NavMenu extends EntityEntity
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function binds(){
-        return $this->hasMany( MenuBind::class , 'menu_id' ,'id' );
+        return $this->hasMany( MenuBindEntity::class , 'menu_id' ,'id' );
     }
 
     /**

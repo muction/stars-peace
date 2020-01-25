@@ -3,8 +3,9 @@ namespace Stars\Peace\Entity;
 
 use Stars\Peace\Foundation\EntityEntity;
 
-class MenuBind extends EntityEntity
+class MenuBindEntity extends EntityEntity
 {
+    protected $table= 'menu_binds';
     protected $fillable = [ 'title' ,'menu_id' ,'sheet_name' ,'alias_name' ,'options' ,'order' ,'status' ];
     /**
      * @param array $allBinds

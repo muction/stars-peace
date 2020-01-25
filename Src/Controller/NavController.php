@@ -1,7 +1,7 @@
 <?php
 namespace Stars\Peace\Controller;
 
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Service\NavService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;

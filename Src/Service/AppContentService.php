@@ -3,7 +3,7 @@ namespace Stars\Peace\Service;
 
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
-use Stars\Peace\Entity\MenuBind;
+use Stars\Peace\Entity\MenuBindEntity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -180,7 +180,7 @@ class AppContentService
      * @return  null
      */
     public function bindInfo( $bindId , $bindAlias ='' ){
-        return MenuBind::where( 'id', $bindId )->where('alias_name', $bindAlias )->first();
+        return MenuBindEntity::where( 'id', $bindId )->where('alias_name', $bindAlias )->first();
     }
 
     /**

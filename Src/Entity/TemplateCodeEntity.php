@@ -1,7 +1,9 @@
 <?php
 namespace Stars\Peace\Entity;
 
-class TemplateCode extends ApplyContentEntity
+use Stars\Peace\Foundation\EntityEntity;
+
+class TemplateCodeEntity extends EntityEntity
 {
     /**
      * 表名称

@@ -117,7 +117,7 @@
         <!--页面主要内容-->
         <main class="lyear-layout-content">
             <div class="progress" style="height: 2px;margin-bottom: -1px">
-                <div class="progress-bar progress-bar-striped active" id="show-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <div class="progress-bar progress-bar-purple active" id="show-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                     <span class="sr-only">75% Complete</span>
                 </div>
             </div>

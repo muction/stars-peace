@@ -3,7 +3,7 @@ namespace Stars\Peace\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\NavService;
 use Stars\Rbac\Entity\UserEntity;

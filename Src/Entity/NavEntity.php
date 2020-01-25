@@ -42,7 +42,7 @@ class NavEntity extends EntityEntity
     public static function remove($navId){
         $info = self::info( $navId ) ;
         if( $info ){
-            $navMenu= new NavMenu();
+            $navMenu= new NavMenuEntity();
             if( $navMenu -> tree( $navId ) ){
                 return false;
             }
@@ -58,7 +58,7 @@ class NavEntity extends EntityEntity
      */
     public function navMenus( $navId )
     {
-        return $this->hasMany( NavMenu::class ,'nav_id' ,'id' )
+        return $this->hasMany( NavMenuEntity::class ,'nav_id' ,'id' )
             ->where('nav_id', $navId );
     }
 

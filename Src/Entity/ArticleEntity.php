@@ -5,6 +5,7 @@ use Stars\Peace\Foundation\EntityEntity;
 
 class ArticleEntity extends EntityEntity
 {
+
     //开启黑名单
     protected $guarded = [];
 
