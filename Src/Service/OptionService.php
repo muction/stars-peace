@@ -44,6 +44,12 @@ class OptionService extends ServiceService
     public function getItem( $key , $type ){
         return OptionEntity::where('key', $key)
             ->where('type', $type)
+            ->first();
+    }
+
+    public function getItems( $key , $type ){
+        return OptionEntity::where('key', $key)
+            ->where('type', $type)
             ->get();
     }
 }
