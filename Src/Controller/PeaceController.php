@@ -4,6 +4,11 @@ namespace Stars\Peace\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/**
+ * root 控制器
+ * Class PeaceController
+ * @package Stars\Peace\Controller
+ */
 class PeaceController extends Controller
 {
     protected $tableHead = [];

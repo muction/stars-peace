@@ -8,6 +8,11 @@ use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\NavService;
 use Stars\Rbac\Entity\UserEntity;
 
+/**
+ * 后台框架页
+ * Class RotateController
+ * @package Stars\Peace\Controller
+ */
 class RotateController extends PeaceController
 {
    public function index(NavService $navService, NavMenuService $navMenuService){

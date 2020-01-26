@@ -5,6 +5,11 @@ use Illuminate\Http\Request;
 use Stars\Peace\Service\SlideService;
 use Stars\Peace\Service\SlideTypeService;
 
+/**
+ * 幻灯片
+ * Class SlideController
+ * @package Stars\Peace\Controller
+ */
 class SlideController extends PeaceController
 {
     //

@@ -3,6 +3,11 @@ namespace Stars\Peace\Controller;
 
 use Stars\Peace\Service\DashboardService;
 
+/**
+ * 后台控制面板
+ * Class DashboardController
+ * @package Stars\Peace\Controller
+ */
 class DashboardController extends PeaceController
 {
     /**
@@ -15,7 +20,6 @@ class DashboardController extends PeaceController
 
         $attachmentTotal = $dashboardService->attachmentTotal();
         $adminTotal = $dashboardService->adminTotal();
-        //$messageTotal = $dashboardService->messageTotal();
         return $this->view('dashboard.simple' , ['attachmentTotal' =>$attachmentTotal , 'adminTotal'=>$adminTotal ]);
     }
 }

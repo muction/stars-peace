@@ -8,6 +8,11 @@ use Stars\Peace\Service\SheetService;
 use Stars\Peace\Service\TemplateService;
 use Illuminate\Http\Request;
 
+/**
+ * 导航菜单
+ * Class NavMenuController
+ * @package Stars\Peace\Controller
+ */
 class NavMenuController extends PeaceController
 {
     /**

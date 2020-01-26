@@ -101,6 +101,7 @@ abstract class AppContentController extends Controller
     /**
      * 构造
      * AppContentController constructor.
+     * @throws Exception
      */
     public function __construct()
     {

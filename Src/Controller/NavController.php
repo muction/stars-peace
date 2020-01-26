@@ -6,6 +6,11 @@ use Stars\Peace\Service\NavService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
+/**
+ * 导航控制器
+ * Class NavController
+ * @package Stars\Peace\Controller
+ */
 class NavController extends PeaceController
 {
     /**
