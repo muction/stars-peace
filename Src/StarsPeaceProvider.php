@@ -12,6 +12,11 @@ class StarsPeaceProvider extends ServiceProvider
     const STARS_PEACE_VERSION = '4.1.0';
 
     /**
+     * 系统别名【竹子】
+     */
+    const STARS_PEACE_ALIAS_NAME = 'Bamboo';
+
+    /**
      * 支持命令
      * @var array
      */
@@ -88,6 +93,6 @@ class StarsPeaceProvider extends ServiceProvider
      * @return string
      */
     private function getViewPath(){
-        return __DIR__ .'/Views/Theme4';
+        return __DIR__ .'/Views/'. self::STARS_PEACE_ALIAS_NAME ;
     }
 }

@@ -4,9 +4,34 @@
 
 @section('page-head')
 
+    <link href="{{ asset('static/stars/js/bootstrap-datepicker/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{asset('static/stars/js/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/stars/js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.js-datepicker').each(function() {
+                var $input = jQuery(this);
+                $input.datepicker({
+                    weekStart: 1,
+                    autoclose: true,
+                    todayHighlight: true,
+                    language: 'zh-CN',
+                    format: 'yyyy-mm-dd',
+                });
+            });
+        });
+    </script>
+
     <style type="text/css">
         .stars-pagination ul{
             margin: 0px !important;
+        }
+        .stars-article-search-label{
+            font-weight: normal;
+        }
+        .stars-label-interval{
+            margin-left: 10px;
         }
     </style>
 @endsection
@@ -23,9 +48,16 @@
                   action="{{ route('rotate.article.articles', ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) }}"
                   method="get" >
                 <div class="form-group">
-                    <label class="sr-only" for="example-if-keyword">关键字</label>
+                    <label class="stars-article-search-label" for="example-if-keyword">关键字：</label>
                     <input class="form-control input-sm" type="text" id="example-if-keyword" name="keyword" value="{{$keyword}}" placeholder="关键字..">
                 </div>
+                <div class="form-group">
+                    <label class="stars-article-search-label stars-label-interval" for="example-if-keyword">创建时间：</label>
+                    <input class="form-control input-sm js-datepicker" type="text" readonly="readonly" name="start_time" value="{{ $startTime }}" placeholder="开始时间">
+                    -
+                    <input class="form-control input-sm js-datepicker" type="text" readonly="readonly" name="end_time" value="{{ $endTime }}" placeholder="结束时间">
+                </div>
+
                 <div class="form-group">
                     <button class="btn btn-default btn-sm" type="submit">搜索</button>
                 </div>

@@ -37,7 +37,9 @@ class ArticleController extends PeaceController
             'bindId'=>$bindId ,
             'action'=>$action ,
             'infoId'=> $request->input('infoId') ,
-            'keyword' => $request->input('keyword')
+            'keyword' => $request->input('keyword') ,
+            'startTime' => $request->input('start_time') ,
+            'endTime' => $request->input('end_time') ,
         ];
 
         if($menuId){
@@ -85,7 +87,7 @@ class ArticleController extends PeaceController
         }else if( !$action )
         {
             // 分页获取数据
-            $assign['datas'] = $articleService->pagation( $bindId , $assign['keyword'], $articleService->bindListSearchColumns );
+            $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );
             $assign['bindListColumns'] = $articleService->bindListColumns ;
             $assign['sheetColumns'] = $articleService->sheetColumns ;
             $templateName = "article.index.articles";
