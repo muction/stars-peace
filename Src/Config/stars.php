@@ -8,10 +8,35 @@ return [
         ]
     ],
 
+    /**
+     * 共有配置
+     */
+    'common'=>[
+        //更新
+        'update'=>[
+            //打包保存的目录
+            'saveDir' => public_path('fixs')
+        ],
+
+        //允许访问IP
+        'allowIp'=> [] ,
+
+        //拒绝IP
+        'denyIp' => [],
+    ],
+
+    /**
+     * 后台发布文章钩子
+     *  钩子需实现 Stars\Peace\Contracts\ArticleHook; 接口
+     */
     'hook'=>[
         'articleHook'=> App\Hook\Article::class
     ],
 
+    /**
+     * app seo
+     * 需继承 Stars\Peace\Foundation\PageSeoFoundation
+     */
     'page'=>[
         'seo'=>""
     ],
@@ -21,13 +46,18 @@ return [
      * 例如：网站支持 zh,en两种语言，则使用默认配置即可，支持其他语言则以此类推即可。
      */
 
-    //key 为支持语言简写， value为对应的导航id值
+    /**
+     * 导航简称及导航ID映射配置
+     */
     'nav'=> [
         'en' => 7,
         'zh' => 2
     ],
 
 
+    /**
+     * ********************************** 以下是样例配置 ***********************************
+     */
     'zh'=>[
         'inner'=> [
             'templateName' => 'detail' ,
@@ -58,10 +88,8 @@ return [
 
     ],
 
-    'common'=>[
-        'update'=>[
-            //打包保存的目录
-            'saveDir' => public_path('fixs')
-        ]
-    ]
+    /**
+     * ******************************** 样例配置结束 *************************************
+     */
+
 ];
