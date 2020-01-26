@@ -1,5 +1,13 @@
 @extends("StarsPeace::iframe")
 
+@section( 'car-head' )
+
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ route('rotate.attachment.index'  ) }}" >附件管理</a>
+        </li>
+    </ul>
+@endsection
 
 @section('car-body')
     <table class="table table-hover">
