@@ -2,17 +2,20 @@
 
 
 @section( 'car-head' )
-    <div class="card-header">
-        <div>自定义配置</div>
-    </div>
+
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ route( 'rotate.option.site' ) }}" >动态设置</a>
+        </li>
+    </ul>
 @endsection
 
 @section('car-body')
     <form class="form-inline" method="post" action="{{ route( 'rotate.option.sites.storage') }}">
         @csrf
         <div class="" style="margin-bottom: 10px;">
-            <button type="submit" class="btn btn-success">保存</button>
-            <button type="button" class="btn btn-default stars-create-new-customer">新增</button>
+            <button type="submit" class="btn btn-success btn-sm">保存</button>
+            <button type="button" class="btn btn-default btn-sm stars-create-new-customer">新增</button>
         </div>
 
         <div class="system-item">
@@ -58,8 +61,8 @@
                     '</div>'
                 );
             });
-            
-            
+
+
             $(document.body).on( 'click' ,'.stars-remove-new-item', function () {
                 if( confirm("确定要移除吗") ){
 

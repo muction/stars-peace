@@ -203,7 +203,23 @@ class StarsInit extends EntityEntity
      */
     private function createPermissionType(){
         $permissionType=  PermissionTypeEntity::create(['title'=>"后台权限" ,'order'=>10 ]);
+
+        //增加一个文章管理权限
+        $permissions = new PermissionEntity();
+        $articlePermission = $permissions->where(['title'=> 'rotate.article.articles'])->first();
+        if(!$articlePermission ){
+            $permissions->create( [
+                'type'=> 0 ,
+                'title'=> 'rotate.article.articles' ,//判断权限使用
+                'display_name'=> "文章管理",
+                'description' =>"文章管理" ,
+
+            ] );
+        }
+
         //更新权限
         \Stars\Rbac\Entity\PermissionEntity::where('id','>',0)->update(['type'=>$permissionType->id]);
+
+
     }
 }

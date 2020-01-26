@@ -60,7 +60,7 @@
 
             <div id="box-height" class="list-group" style="margin-top: 10px;margin-right: 14px">
                 @foreach($templateFiles as  $index=>$filePathName)
-                    @if( strstr( $filePathName , $validNavInfo['theme'] ) )
+                    @if(isset($validNavInfo) && strstr( $filePathName , $validNavInfo['theme'] ) )
 
                             <a href="{{ route('rotate.template.index' , ['nav'=>$validNavId ,'template_name'=>$filePathName ]) }}"
                                style="line-height: 10px;text-align: right"

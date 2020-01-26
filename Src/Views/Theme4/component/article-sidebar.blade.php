@@ -16,7 +16,7 @@
                     {{ $side['title'] }}
                 </a>
             </li>
-        @elseif( \Stars\Rbac\Entity\UserEntity::can( $side['route_name']) ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
+        @else
             <li class="nav-item">
                 <a target="request-content"
                    @if(!isset($side['url']))
@@ -33,30 +33,26 @@
         @endif
 
     @else
+        <li class="nav-item nav-item-has-subnav" >
+            <a
+               target="request-content"
+               @if(!isset($side['url']))
+                    title="未绑定可操作项" style="text-decoration: underline; cursor: not-allowed;"
+               @else
+                    href="{{ $side['url'] }}"
+                    title="{{ $side['title'] }}"
+               @endif
+            >
+                <i class="{{ $side['icon'] }}"></i>
 
-        @if( \Stars\Rbac\Entity\UserEntity::can( $side['route_name']) ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
-            <li class="nav-item nav-item-has-subnav" >
-                <a
-                   target="request-content"
-                   @if(!isset($side['url']))
-                        title="未绑定可操作项" style="text-decoration: underline; cursor: not-allowed;"
-                   @else
-                        href="{{ $side['url'] }}"
-                        title="{{ $side['title'] }}"
-                   @endif
-                >
-                    <i class="{{ $side['icon'] }}"></i>
+                <span >{{ $side['title'] }}</span>
 
-                    <span >{{ $side['title'] }}</span>
-
-                </a>
-                <ul class="nav nav-subnav">
-                    @component( "StarsPeace::component.article-sidebar" ,['sides'=>$side['nodes'] ,'children'=>time()  ] ) @endcomponent
-                </ul>
-            </li>
-        @endif
+            </a>
+            <ul class="nav nav-subnav">
+                @component( "StarsPeace::component.article-sidebar" ,['sides'=>$side['nodes'] ,'children'=>time()  ] ) @endcomponent
+            </ul>
+        </li>
     @endif
-
 @endforeach
 
 
