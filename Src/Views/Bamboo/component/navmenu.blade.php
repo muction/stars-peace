@@ -30,7 +30,7 @@
         <td>
             @if($item['binds'] )
                 @foreach($item['binds'] as $bind)
-                    <a href="{{ makeArticleUrl( $item['nav_id'], $bind['menu_id'], $bind['id'] ) }}" title="录入内容">{{$bind['title']}}</a>
+                    <a href="{{ makeArticleUrl( $item['nav_id'], $bind['menu_id'], $bind['id'] ) }}" title="录入内容 {{ $bind['table_name'] }} - {{ $bind['alias_name'] }}">{{$bind['title']}}</a>
                 @endforeach
             @else
                 -

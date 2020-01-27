@@ -35,7 +35,6 @@
 
     <form method="post" action="{{ route( 'rotate.menu.bind.storage' , ['navId'=>$info['nav_id'] ,'menuId'=>$info['id'] ,'bindId'=>$bind['id'] ]) }}" >
         @csrf
-
             @foreach($sheets as $key=> $item)
 
                 @php( $_bindOptions= json_decode($bind['options'] , true ) )
@@ -44,8 +43,6 @@
                 @if( $bind['sheet_name'] != $_sheetName )
                     @continue
                 @endif
-
-
 
                 <input type="hidden" name="sheets[]" value="{{ $_sheetName }}" />
                 <input type="hidden" name="sheets_table_name-{{$_sheetName}}" value="{{ $item['info']['tableName'] }}" />

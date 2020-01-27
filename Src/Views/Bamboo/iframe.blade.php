@@ -14,12 +14,16 @@
     <script type="text/javascript" src="{{asset('static/stars/js/bootstrap.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/stars/js/bootstrap-notify.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('static/stars/js/lightyear.js')}}"></script>
+    <script type="text/javascript" src="{{asset('static/stars/js/notify.js')}}"></script>
 
     @yield("page-head")
 
     <style type="text/css">
         .nav-tabs{
             margin-bottom: 0px;
+        }
+        .required{
+            color:red
         }
     </style>
 
@@ -52,25 +56,23 @@
 </div>
 
 @yield("car-footer")
-
-
-@error('messageError')
 <script type="text/javascript">
-    parent.lightyear.notify( '{{ $message }}' , 'danger', 2000 );
-</script>
-@enderror
 
-@error('messageWarning')
-<script type="text/javascript">
-    parent.lightyear.notify( '{{ $message }}' , 'warning', 2000);
-</script>
-@enderror
+    $(function(){
+        @error('messageError')
+        $.notify("{{ $message }}", "error");
+        @enderror
 
-@error('messageInfo')
-<script type="text/javascript">
-    parent.lightyear.notify( '{{ $message }}' , 'success', 2000 ,  'mdi mdi-emoticon-happy');
+        @error('messageWarning')
+        $.notify("{{ $message }}", "warn");
+        @enderror
+
+        @error('messageInfo')
+        $.notify("{{ $message }}", "success");
+        @enderror
+    });
+
 </script>
-@enderror
 
 <script type="text/javascript">
     $(function(){

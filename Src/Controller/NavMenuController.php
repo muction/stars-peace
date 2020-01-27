@@ -108,7 +108,7 @@ class NavMenuController extends PeaceController
      * @param $navId
      * @param $menuId
      * @param int $bindId
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
    public function bind(NavMenuService $navMenuService ,NavService $navService, MenuBindService $menuBindService , SheetService $sheetService, $navId, $menuId, $bindId=0){
 
@@ -120,6 +120,7 @@ class NavMenuController extends PeaceController
            $assign['bind'] = $menuBindService->bindInfo( $menuId, $bindId );
             return $this->view('nav.menu.bind_edit', $assign ) ;
        }
+       $assign['sheets'] = $allSheets ? array_chunk($allSheets , 4) : [];
        return $this->view('nav.menu.bind' , $assign);
    }
 
