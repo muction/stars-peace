@@ -1,5 +1,14 @@
 @extends("StarsPeace::iframe")
 
+@section( 'car-head' )
+
+    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+        <li>
+            <a href="{{ route('rotate.dashboard.index'  ) }}" >控制面板</a>
+        </li>
+    </ul>
+@endsection
+
 @section('car-body')
 
     <div class="row">
