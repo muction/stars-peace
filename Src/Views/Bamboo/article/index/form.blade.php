@@ -109,7 +109,7 @@
 
     @endforeach
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-2 col-sm-10" >
             <button type="submit" class="btn btn-default" id="articleSubmitFormBtn" >保存</button>
         </div>
     </div>
@@ -130,6 +130,15 @@
                 forceParse: 0,
                 showMeridian: 1,
                 format: 'yyyy-mm-dd hh:ii:ss'
+            });
+
+            $('#articleSubmitFormBtn').click(function(){
+                try{
+                    $(this).text("提交中..");
+                    parent.pageProgress('show');
+                }catch (e) {
+
+                }
             });
         });
     </script>
