@@ -193,3 +193,12 @@ if( !function_exists('substrAppAfter') ){
         return stristr( $string , $explode );
     }
 }
+
+/**
+ * 生成文章管理url
+ */
+if( !function_exists( "makeArticleUrl" )){
+    function makeArticleUrl( $navId , $menuId , $bindId ){
+        return route( 'rotate.article.articles',  ['navId'=> $navId , 'menuId'=>$menuId ,'bindId'=>$bindId ] ) ;
+    }
+}

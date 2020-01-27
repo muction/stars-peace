@@ -15,11 +15,12 @@
         <tr>
 
             <th>操作</th>
+            <th>排序</th>
             <th>菜单名称</th>
+            <th>可选项</th>
             <th>模板</th>
             <th>路由名称</th>
             <th>外连地址</th>
-            <th>排序</th>
         </tr>
         </thead>
         <tbody>

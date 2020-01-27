@@ -25,11 +25,20 @@
                 @endif
             </div>
         </td>
-        <td>  @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor {{ $item['title'] }}</td>
+        <td>{{ $item['order'] }}</td>
+        <td>  @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor <a target="_blank" href="{{ routeApp($item['route_name'] , $item['href']) }}" title="访问页面">{{ $item['title'] }}</a></td>
+        <td>
+            @if($item['binds'] )
+                @foreach($item['binds'] as $bind)
+                    <a href="{{ makeArticleUrl( $item['nav_id'], $bind['menu_id'], $bind['id'] ) }}" title="录入内容">{{$bind['title']}}</a>
+                @endforeach
+            @else
+                -
+            @endif
+        </td>
         <td>{{ $item['template_name'] }}</td>
         <td>{{ $item['route_name'] }}</td>
         <td>{{ $item['href'] }}</td>
-        <td>{{ $item['order'] }}</td>
     </tr>
 
     @if( isset($item['nodes']) )

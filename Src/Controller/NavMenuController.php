@@ -24,7 +24,7 @@ class NavMenuController extends PeaceController
      */
    public function index(NavMenuService $navMenuService, NavService $navService,  $navId ){
 
-       $tree = $navMenuService->tree( $navId );
+       $tree = $navMenuService->tree( $navId ,true );
        $navInfo = $navService->info( $navId );
        return $this->view( 'nav.menu.index' , ['datas' => $tree ,'nav'=>$navInfo ] );
    }

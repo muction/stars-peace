@@ -56,11 +56,12 @@ class NavMenuService extends ServiceService
 
     /**
      * @param $navId
+     * @param bool $withBinds
      * @return array
      */
-    public function tree($navId  ){
+    public function tree($navId ,$withBinds=false ){
         $navMenu = new NavMenuEntity();
-        return $navMenu->tree( $navId );
+        return $navMenu->tree( $navId,$withBinds );
     }
 
     /**
@@ -72,15 +73,12 @@ class NavMenuService extends ServiceService
 
         $navMenu = new NavMenuEntity();
         $nodes= $navMenu->getNodes( $navId , false  ,$status );
-
         if($nodes)
             foreach ($nodes as $index=>$item){
-                $params= [ 'navId'=> $navId , 'menuId'=>$item['id']];
                 $menuBindInfos = $item->binds->toArray();
                 if(isset($menuBindInfos[0])){
-                    $params['bindId'] = $menuBindInfos[0]['id'];
                     $nodes[$index]->target = "articleContent";
-                    $nodes[$index]->url = route( 'rotate.article.articles',  $params );
+                    $nodes[$index]->url = makeArticleUrl( $navId, $item['id'] , $menuBindInfos[0]['id']  );
                 }
 
             }
