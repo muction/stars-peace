@@ -3,6 +3,10 @@
         @if($templateName == $item['template_name'])
             selected="selected"
             @endif
+
+        @if( !$item['template_name'] )
+            disabled="disabled"
+        @endif
     >
         @for($i=0;$i< ($item['level']-1) *3;$i++) &nbsp; @endfor {{ $item['title'] }}
     </option>
