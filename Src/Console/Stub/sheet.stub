@@ -16,7 +16,7 @@ class __SHEETNAME__ extends SheetSheet
      */
     protected function sheetInfo()
     {
-        $this->makeSheetInfo('模型名称','tableName', '1.1.0');
+        $this->makeSheetInfo('模型名称','app_tableName', '1.1.0');
     }
 
     /**
