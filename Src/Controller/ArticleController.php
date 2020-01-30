@@ -30,7 +30,7 @@ class ArticleController extends PeaceController
 
         $assign = [
             'menuBindInfo'=>[] ,
-            'sides'=>[] ,
+            'sides' =>[] ,
             'bindSheetInfo' => [] ,
             'navId'=>$navId ,
             'menuId'=>$menuId ,
@@ -80,11 +80,7 @@ class ArticleController extends PeaceController
         $assign['sides'] = $navMenuService->articleTree( $navId );
 
         //定义模板
-        if( !$menuId  ){
-
-            $templateName = "article.index";
-
-        }else if( !$action )
+        if( !$action )
         {
             // 分页获取数据
             $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );

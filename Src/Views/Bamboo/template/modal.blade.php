@@ -12,7 +12,7 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">关闭</button>
                 <button type="button" class="btn btn-primary btn-back-last-version" >确定版本</button>
             </div>
         </div>

@@ -155,6 +155,10 @@
             });
 
             //回归版本
+            $('#modal-close').click(function(){
+                $('#templateVersionBody').html( "" );
+            });
+
             $('.btn-back-last-version').click(function () {
 
                 if(!templateName){
@@ -185,21 +189,32 @@
                             alert("应用时发生错误，您可以稍后尝试重试，如果错误继续存在，请联系站点管理员~");
                         },
                         success: function (e) {
-                            if (e.error == 0) {
+                            if (e.error === 0) {
 
                                 if( !backVersion ){
                                     let html = "";
                                     let max = e.body.length;
                                     for(let i=0; i< max ; i++){
                                         let item = e.body[i];
-                                        let isUseIng = parseInt( item.status ) == 1 ? " 使用中" :"";
+                                        let itemStatus=  parseInt( item.status );
+                                        let isUseIng = itemStatus === 1? " 使用中" :"";
 
-                                        html +='<div class="radio">' +
-                                            ' <label>' +
-                                            ' <input type="radio" name="version_id" value="'+ item.id +'" />' +
-                                            ' 创建时间：'+ item.created_at+ '&nbsp;版本号：' + item.id + ' ' + isUseIng +
-                                            '</label>' +
-                                            ' </div>';
+                                        if(isUseIng === 1){
+                                            html +='<div class="radio">' +
+                                                ' <label>' +
+                                                ' <input type="radio" name="version_id" value="'+ item.id +'" />' +
+                                                ' 创建时间：'+ item.created_at+ '&nbsp;版本号：' + item.id + ' ' + isUseIng +
+                                                '</label>' +
+                                                ' </div>';
+                                        }else{
+                                            html +='<div class="radio">' +
+                                                ' <label>' +
+                                                ' <input type="radio" disabled="disabled" />' +
+                                                ' 创建时间：'+ item.created_at+ '&nbsp;版本号：' + item.id + ' ' + isUseIng +
+                                                '</label>' +
+                                                ' </div>';
+                                        }
+
                                     }
 
                                     $('#templateVersionBody').html( html );

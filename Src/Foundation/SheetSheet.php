@@ -222,7 +222,14 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     public function __construct()
     {
+        /**
+         * 设置基本信息
+         */
         $this->sheetInfo() ;
+
+        /**
+         * 设置字段信息
+         */
         $this->sheetColumn() ;
     }
 
@@ -246,8 +253,8 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
 
         return [
             'info'=>[
-                'tableName'=>$this->dbTableName,
-                'sheetName'=>$this->sheetName ,
+                'tableName' => $this->dbTableName,
+                'sheetName' =>  $this->sheetName ,
                 'sheetClassName' => $this->sheetClassName ,
                 'version'=>$this->version ,
                 'author' =>$this->author
@@ -279,7 +286,6 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     final public function dbTableName( $sheetTableName )
     {
-
         return strtolower( self::$tablePrefix . $sheetTableName );
     }
 
