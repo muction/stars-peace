@@ -2,6 +2,7 @@
 
 namespace Stars\Peace\Entity;
 
+use Spatie\Permission\Models\Permission;
 use Stars\Peace\Foundation\EntityEntity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,8 @@ class StarsInit extends EntityEntity
             $navId = $this->createNav();
             $adminMenus =$this->adminMenus($navId );
             $this->createNavMenus($adminMenus);
-
+            //创建权限分类
+            $this->createPermissionType();
             $roleId = $this->createRole();
             $userId = $this->createUser($rootName, $rootPassword);
             $this->createRoleUser($roleId, $userId);
@@ -67,10 +69,22 @@ class StarsInit extends EntityEntity
      */
     private function createNavMenus($nodes, $parentId=0)
     {
-        $navMenus =new NavMenu();
+        $navMenus =new NavMenuEntity();
+        $permissions = new PermissionEntity();
         foreach ($nodes as $node){
             $node['parent_id'] = $parentId;
             $no = $navMenus-> creteNodes($node );
+            //同样创建权限
+            if($node['route_name'] ){
+                $permissions->create( [
+                    'type'=> 0 ,
+                    'title'=> $node['route_name'] ,//判断权限使用
+                    'display_name'=> $node['title' ],
+                    'description' => $node['title'] ,
+
+                ] );
+            }
+
             if(isset($node['children'])){
                 $this->createNavMenus($node['children'], $no->id);
             }
@@ -155,6 +169,7 @@ class StarsInit extends EntityEntity
 
     /**
      * 初始化菜单
+     * @param $navId
      * @return array
      */
     private function adminMenus( $navId ){
@@ -175,10 +190,36 @@ class StarsInit extends EntityEntity
             ] ,
             ['nav_id'=>$navId ,'title'=>'系统设置' ,'route_name'=> ''  ,'href'=>'', 'icon'=>'mdi mdi-settings', 'level'=>1 ,'order'=>10 ,'status'=>1 ,
                 'children'=>[
-                   // ['nav_id'=>$navId ,'title'=>'网站设置' ,'route_name'=> 'rotate.option.site'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
+                    ['nav_id'=>$navId ,'title'=>'模板管理' ,'route_name'=> 'rotate.template.index'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
                     ['nav_id'=>$navId ,'title'=>'附件管理' ,'route_name'=> 'rotate.attachment.index'  ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
+                    ['nav_id'=>$navId ,'title'=>'动态设置' ,'route_name'=> 'rotate.option.site'   ,'href'=>'', 'icon'=>'', 'level'=>2 ,'order'=>10 ,'status'=>1 ] ,
                 ]
             ] ,
         ];
+    }
+
+    /**
+     * 创建后台权限，并更新所有前后台权限设置
+     */
+    private function createPermissionType(){
+        $permissionType=  PermissionTypeEntity::create(['title'=>"后台权限" ,'order'=>10 ]);
+
+        //增加一个文章管理权限
+        $permissions = new PermissionEntity();
+        $articlePermission = $permissions->where(['title'=> 'rotate.article.articles'])->first();
+        if(!$articlePermission ){
+            $permissions->create( [
+                'type'=> 0 ,
+                'title'=> 'rotate.article.articles' ,//判断权限使用
+                'display_name'=> "文章管理",
+                'description' =>"文章管理" ,
+
+            ] );
+        }
+
+        //更新权限
+        \Stars\Rbac\Entity\PermissionEntity::where('id','>',0)->update(['type'=>$permissionType->id]);
+
+
     }
 }

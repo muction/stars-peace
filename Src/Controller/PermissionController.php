@@ -7,6 +7,11 @@ use Stars\Peace\Service\PermissionTypeService;
 use Stars\Peace\Service\RoleService;
 use Illuminate\Http\Request;
 
+/**
+ * 权限控制器
+ * Class PermissionController
+ * @package Stars\Peace\Controller
+ */
 class PermissionController extends PeaceController
 {
 

@@ -22,11 +22,12 @@ trait TraitCategory
     /**
      * 获取树形菜单
      * @param int $navId
+     * @param bool $withMenuBind
      * @return array
      */
-    public function tree( $navId=0){
+    public function tree( $navId=0, $withMenuBind=false){
 
-        $root = $this->getNodes( $navId );
+        $root = $this->getNodes( $navId , $withMenuBind);
         return Helper::list2Tree( $root ? $root->toArray() : [] , 'id', 'parent_id' , 'nodes' , 0 );
     }
 

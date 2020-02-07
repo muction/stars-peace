@@ -7,6 +7,16 @@ use Illuminate\Support\ServiceProvider;
 class StarsPeaceProvider extends ServiceProvider
 {
     /**
+     * 当前版本号
+     */
+    const STARS_PEACE_VERSION = '4.1.0';
+
+    /**
+     * 系统别名【竹子】
+     */
+    const STARS_PEACE_ALIAS_NAME = 'Bamboo';
+
+    /**
      * 支持命令
      * @var array
      */
@@ -18,6 +28,9 @@ class StarsPeaceProvider extends ServiceProvider
         Console\Commands\StarsInit::class,
         Console\Commands\StarsForge::class,
         Console\Commands\StarsVersion::class,
+        Console\Commands\AppPack::class,
+        Console\Commands\AppUpdate::class,
+
     ];
 
     /**
@@ -50,10 +63,8 @@ class StarsPeaceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         $this->mergeConfigFrom( __DIR__.'/Config/stars.php' , 'StarsPeace' );
-
-        $this->loadViewsFrom( __DIR__ .'/Views' , 'StarsPeace' );
+        $this->loadViewsFrom( $this->getViewPath() , 'StarsPeace' );
         $this->loadRoutesFrom( __DIR__. "/Route/route.php" );
         $this->publishes([
 
@@ -75,5 +86,13 @@ class StarsPeaceProvider extends ServiceProvider
         foreach ( $this->routeMiddleware as $alias=>$class){
             app('router')->aliasMiddleware( $alias , $class);
         }
+    }
+
+    /**
+     * 获取视图路径
+     * @return string
+     */
+    private function getViewPath(){
+        return __DIR__ .'/Views/'. self::STARS_PEACE_ALIAS_NAME ;
     }
 }

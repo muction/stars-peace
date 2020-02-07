@@ -134,4 +134,13 @@ interface SheetWidget
      */
     public function addMapBaiDuWidget( $title, $dbName , $option);
 
+    /**
+     * 增加一个代码编辑器插件
+     * @param $title
+     * @param $dbName
+     * @param $option
+     * @return mixed
+     */
+    public function addCodeMirrorWidget( $title, $dbName, $option  );
+
 }

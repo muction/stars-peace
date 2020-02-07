@@ -5,6 +5,11 @@ namespace Stars\Peace\Controller;
 use Stars\Peace\Service\OptionService;
 use Illuminate\Http\Request;
 
+/**
+ * 动态配置控制器
+ * Class OptionController
+ * @package Stars\Peace\Controller
+ */
 class OptionController extends PeaceController
 {
     //

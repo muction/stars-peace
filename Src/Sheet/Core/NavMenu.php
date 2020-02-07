@@ -47,6 +47,12 @@ class NavMenu extends SheetSheet
                 $this->optionDefault(10)
             )
         );
+
+        $this->addTextWidget('SEO标题', 'seo_title', 255);
+        $this->addTextWidget('SEO关键字', 'seo_keywords', 512);
+        $this->addTextWidget('SEO介绍', 'seo_description', 512);
+
+
         $this->addRadioGroupWidget('状态', 'status', 3,
             $this->columnOptions(
                 $this->optionPublicStatic(),

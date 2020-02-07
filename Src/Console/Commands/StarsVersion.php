@@ -5,6 +5,7 @@ namespace Stars\Peace\Console\Commands;
 use Illuminate\Console\Command;
 use Stars\Peace\Foundation\SheetSheet;
 use Stars\Peace\Entity\StarsInit as StarInitData;
+use Stars\Peace\StarsPeaceProvider;
 
 /**
  *
@@ -48,14 +49,10 @@ class StarsVersion extends PeacePeace
      */
     protected $isCore = true;
 
-    /**
-     * 系统版本
-     */
-    const VERSION = "4.0";
 
     /**
      * Create a new command instance.
-     *  
+     *
      * @return void
      */
     public function __construct()
@@ -70,7 +67,7 @@ class StarsVersion extends PeacePeace
      */
     public function handleCommand()
     {
-        $this->info( "当期版本: ".self::VERSION );
+        $this->info( "当期版本: ". StarsPeaceProvider::STARS_PEACE_VERSION );
     }
 
 

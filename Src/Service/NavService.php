@@ -14,7 +14,7 @@ class NavService extends ServiceService
      */
     public function storage( Request $request ){
 
-        $only=['title' ,'remark' ,'article'];
+        $only=['title' ,'remark' ,'article' ,'theme'];
         if($request->input('id')){
             return NavEntity::edit(
                 $request->input('id') ,
