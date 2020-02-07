@@ -29,7 +29,7 @@ class StarsPeaceProvider extends ServiceProvider
         Console\Commands\StarsForge::class,
         Console\Commands\StarsVersion::class,
         Console\Commands\AppPack::class,
-        Console\Commands\AppUpdate::class,
+       // Console\Commands\AppUpdate::class,
 
     ];
 
