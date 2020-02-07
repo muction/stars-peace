@@ -13,7 +13,7 @@ use Stars\Tools\Foundation\PatchApply;
  * Class AppUpdate
  * @package Stars\Peace\Console\Commands
  */
-class AppUpdate extends AppPack
+class AppUpdate extends AbstractAppPatch
 {
     /**
      * 工作目录
@@ -26,6 +26,12 @@ class AppUpdate extends AppPack
      * @var string
      */
     private $pathSaveDir = "";
+
+    /**
+     * 补丁包文件名
+     * @var string
+     */
+    private $patchFileName ="";
 
     /**
      * The name and signature of the console command.
@@ -52,6 +58,11 @@ class AppUpdate extends AppPack
         try{
             $this->workDir = base_path().'/' ;
             $this->pathSaveDir = base_path('fixs/');
+            $this->patchFileName = $this->argument("patchFile");
+
+            if(!file_exists( $this->pathSaveDir . $this->patchFileName )){
+                throw new \Exception("补丁包文件不存在");
+            }
 
             $result= PatchApply::apply(
                 $this->workDir,
