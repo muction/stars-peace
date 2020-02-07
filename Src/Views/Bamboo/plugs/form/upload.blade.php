@@ -33,7 +33,6 @@
                 @endif
             </div>
 
-
             <div id="upload_result_{{$column['db_name']}}">
                 @if( isset($column['now_value']) && $column['now_value'])
                     @foreach( $column['now_value'] as $__nowValue )
