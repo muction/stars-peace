@@ -96,6 +96,11 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     const SUPPORT_WIDGET_EDITOR = 'editor';
 
     /**
+     * 代码编辑器
+     */
+    const SUPPORT_WIDGET_CODE_MIRROR = 'code_mirror';
+
+    /**
      * 图片裁剪插件
      */
     const SUPPORT_WIDGET_CROPPER = 'cropper';
@@ -217,7 +222,14 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     public function __construct()
     {
+        /**
+         * 设置基本信息
+         */
         $this->sheetInfo() ;
+
+        /**
+         * 设置字段信息
+         */
         $this->sheetColumn() ;
     }
 
@@ -241,8 +253,8 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
 
         return [
             'info'=>[
-                'tableName'=>$this->dbTableName,
-                'sheetName'=>$this->sheetName ,
+                'tableName' => $this->dbTableName,
+                'sheetName' =>  $this->sheetName ,
                 'sheetClassName' => $this->sheetClassName ,
                 'version'=>$this->version ,
                 'author' =>$this->author
@@ -274,7 +286,6 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     final public function dbTableName( $sheetTableName )
     {
-
         return strtolower( self::$tablePrefix . $sheetTableName );
     }
 
@@ -761,6 +772,27 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     }
 
     /**
+     * 代码编辑器插件
+     * @param $title
+     * @param $dbName
+     * @param array $option
+     * @return mixed|void
+     */
+    final public function addCodeMirrorWidget($title, $dbName, $option=[] )
+    {
+        $this->columns[$dbName] = [
+            'title'  => $title ,
+            'plug'   => self::SUPPORT_WIDGET_CODE_MIRROR,
+            'scene'  =>self::SCENE_APP ,
+            'db_name'=> $dbName,
+            'db_length'  => 0 ,
+            'db_index'   => false ,
+            'options'    => $option
+        ];
+    }
+
+
+    /**
      * 当前系统支持的插件
      * @return array|bool|string
      */
@@ -777,6 +809,7 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
             self::SUPPORT_WIDGET_UPLOAD,
             self::SUPPORT_WIDGET_SELECT,
             self::SUPPORT_WIDGET_PASSWORD,
+            self::SUPPORT_WIDGET_CODE_MIRROR ,
             self::SUPPORT_COLUMN_CHAR ,
             self::SUPPORT_COLUMN_INT,
             self::SUPPORT_COLUMN_NUMBER,

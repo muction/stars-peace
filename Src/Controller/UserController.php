@@ -8,6 +8,11 @@ use Stars\Peace\Service\UserService;
 use Illuminate\Http\Request;
 use Stars\Rbac\Entity\UserEntity;
 
+/**
+ * 后台账户
+ * Class UserController
+ * @package Stars\Peace\Controller
+ */
 class UserController extends PeaceController
 {
     /**

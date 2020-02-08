@@ -131,14 +131,19 @@ class ArticleService extends ServiceService
     /**
      * 分页
      * @param $bindId
-     * @param string $keyword
+     * @param null $assign
      * @param null $bindListSearchColumns
      * @return mixed
      */
-    public function pagation( $bindId, $keyword='' , $bindListSearchColumns=null ){
+    public function pagation( $bindId, $assign=null , $bindListSearchColumns=null ){
 
         $article = new ArticleEntity();
-        return $article->pageList( $this->sheetTableName, $keyword, $bindListSearchColumns, $bindId ,Option::ARTICLE_PAGE_SIZE );
+        return $article->pageList(
+            $this->sheetTableName,
+            ['keyword'=>$assign['keyword'] ,'startTime'=>$assign['startTime'] ,'endTime'=>$assign['endTime' ]],
+            $bindListSearchColumns,
+            $bindId ,
+            Option::ARTICLE_PAGE_SIZE );
     }
 
     /**

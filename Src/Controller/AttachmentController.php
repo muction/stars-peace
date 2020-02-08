@@ -6,6 +6,11 @@ use Stars\Peace\Service\AttachmentService;
 use Stars\Peace\Service\MenuBindService;
 use Illuminate\Http\Request;
 
+/**
+ * 系统附件上传控制器
+ * Class AttachmentController
+ * @package Stars\Peace\Controller
+ */
 class AttachmentController extends PeaceController
 {
 

@@ -13,7 +13,7 @@ class AuthController extends PeaceController
     //登录页
     public function login(){
 
-        return $this->view('auth.login');
+        return $this->view('login');
     }
 
     /**

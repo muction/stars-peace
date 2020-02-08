@@ -5,6 +5,7 @@ use Stars\Peace\Foundation\EntityEntity;
 
 class ArticleEntity extends EntityEntity
 {
+
     //开启黑名单
     protected $guarded = [];
 
@@ -56,16 +57,17 @@ class ArticleEntity extends EntityEntity
      * @param int $size
      * @return mixed
      */
-    public function pageList(string $sheetTableName, $keyword, $bindListSearchColumns ,  $bindId, $size=15 ){
-
-
+    public function pageList(string $sheetTableName, $searchOption , $bindListSearchColumns ,  $bindId, $size=15 ){
         $index= $this->setTable( $sheetTableName )->where( 'bind_id', $bindId );
-        if($keyword){
-            $index = $index->where(function( $query ) use ($keyword, $bindListSearchColumns){
-                if($bindListSearchColumns){
+        if($searchOption){
+            $index = $index->where(function( $query ) use ($searchOption, $bindListSearchColumns){
+                if($bindListSearchColumns && $searchOption['keyword']){
                     foreach ($bindListSearchColumns as $__column){
-                         $query->orWhere( $__column , 'like' , "%{$keyword}%" );
+                         $query->orWhere( $__column , 'like' , "%{$searchOption['keyword']}%" );
                     }
+                }
+                if( isset($searchOption['startTime']) && isset($searchOption['endTime']) && $searchOption['startTime'] && $searchOption['endTime'] ){
+                    $query->whereBetween('created_at' , [$searchOption['startTime'].' 00:00:00' , $searchOption['endTime'].' 23:59:59']);
                 }
             });
         }

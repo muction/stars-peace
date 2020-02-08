@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ApplyContentEntity extends Model
 {
+    protected $table ="";
+
     /**
      * @param $bindId
      * @return mixed

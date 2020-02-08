@@ -23,21 +23,23 @@ class ArticleController extends PeaceController
      * @param int $menuId
      * @param int $bindId
      * @param string $action
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return mixed
      * @throws \Exception
      */
     public function menus(Request $request, NavMenuService $navMenuService, MenuBindService $menuBindService, ArticleService $articleService, $navId , $menuId=0, $bindId=0 , $action='' ){
 
         $assign = [
             'menuBindInfo'=>[] ,
-            'sides'=>[] ,
+            'sides' =>[] ,
             'bindSheetInfo' => [] ,
             'navId'=>$navId ,
             'menuId'=>$menuId ,
             'bindId'=>$bindId ,
             'action'=>$action ,
             'infoId'=> $request->input('infoId') ,
-            'keyword' => $request->input('keyword')
+            'keyword' => $request->input('keyword') ,
+            'startTime' => $request->input('start_time') ,
+            'endTime' => $request->input('end_time') ,
         ];
 
         if($menuId){
@@ -78,14 +80,10 @@ class ArticleController extends PeaceController
         $assign['sides'] = $navMenuService->articleTree( $navId );
 
         //定义模板
-        if( !$menuId  ){
-
-            $templateName = "article.index";
-
-        }else if( !$action )
+        if( !$action )
         {
             // 分页获取数据
-            $assign['datas'] = $articleService->pagation( $bindId , $assign['keyword'], $articleService->bindListSearchColumns );
+            $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );
             $assign['bindListColumns'] = $articleService->bindListColumns ;
             $assign['sheetColumns'] = $articleService->sheetColumns ;
             $templateName = "article.index.articles";
@@ -103,7 +101,6 @@ class ArticleController extends PeaceController
         }else{
             $templateName = "";
         }
-
         return $this->view( $templateName , $assign );
 
     }

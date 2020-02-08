@@ -1,11 +1,16 @@
 <?php
 namespace Stars\Peace\Controller;
 
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Service\NavService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
+/**
+ * 导航控制器
+ * Class NavController
+ * @package Stars\Peace\Controller
+ */
 class NavController extends PeaceController
 {
     /**
@@ -76,4 +81,6 @@ class NavController extends PeaceController
         $info = $navService->info( $navId ) ;
         return $this->view( 'nav.form' ,['info'=>$info ] );
    }
+
+
 }

@@ -2,8 +2,8 @@
 namespace Stars\Peace\Service;
 
 use Illuminate\Support\Facades\DB;
-use Stars\Peace\Entity\MenuBind;
-use Stars\Peace\Entity\NavMenu;
+use Stars\Peace\Entity\MenuBindEntity;
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ class MenuBindService extends ServiceService
      * @return mixed
      */
     public function bindAllInfo( $menuId  ){
-        $result= MenuBind::bindAllInfo( $menuId );
+        $result= MenuBindEntity::bindAllInfo( $menuId );
         return $result ? $result->toArray() : [];
     }
 
@@ -64,11 +64,11 @@ class MenuBindService extends ServiceService
         }
 
         if($bindId){
-            $bindInfo = MenuBind::info( $menuId, $bindId );
+            $bindInfo = MenuBindEntity::info( $menuId, $bindId );
             return $bindInfo ? $bindInfo->update( $saveAll[0] ) : false;
         }
 
-        return $saveAll ? MenuBind::saveAll( $saveAll ) : false;
+        return $saveAll ? MenuBindEntity::saveAll( $saveAll ) : false;
     }
 
     /**
@@ -78,7 +78,7 @@ class MenuBindService extends ServiceService
      * @return mixed
      */
     public function navMenuBindRemove( $menuId ,$bindId ){
-        return MenuBind::remove( $menuId, $bindId );
+        return MenuBindEntity::remove( $menuId, $bindId );
     }
 
     /**
@@ -87,7 +87,7 @@ class MenuBindService extends ServiceService
      * @return mixed
      */
     public function bindInfo( $menuId, $bindId ){
-        return MenuBind::info( $menuId, $bindId );
+        return MenuBindEntity::info( $menuId, $bindId );
     }
 
     /**
@@ -118,26 +118,26 @@ class MenuBindService extends ServiceService
            $tempOldNewIdMap = [];
 
            //取出数据源
-           $sourceNavMenus = NavMenu::menus($sourceNavId );
+           $sourceNavMenus = NavMenuEntity::menus($sourceNavId );
            $sourceNavMenus = $sourceNavMenus ? $sourceNavMenus->toArray() : [];
            //开启事务
            DB::beginTransaction();
 
            //清理原来旧导航菜单数据
-           NavMenu::clearNavMenus( $targetNavId );
+           NavMenuEntity::clearNavMenus( $targetNavId );
 
            foreach ($sourceNavMenus as $menu){
                $oldMenuId = $menu['id'] ;
                $menu['nav_id'] = $targetNavId ;
                unset($menu['id'] ,$menu['created_at'] ,$menu['updated_at']  );
-               $navNewMenu = NavMenu::storage($menu);
+               $navNewMenu = NavMenuEntity::storage($menu);
                $tempOldNewIdMap [$oldMenuId] = $navNewMenu ? $navNewMenu->id : 0;
            }
 
            //更新parent_id
            foreach ($tempOldNewIdMap as $oldId=>$newId){
                //更新
-               NavMenu::matchUpdate(['nav_id'=>$targetNavId , 'parent_id'=>$oldId ] , ['parent_id'=>$newId ]);
+               NavMenuEntity::matchUpdate(['nav_id'=>$targetNavId , 'parent_id'=>$oldId ] , ['parent_id'=>$newId ]);
 
                //复制绑定
                $menuBinds = $this->bindAllInfo( $oldId );
@@ -148,7 +148,7 @@ class MenuBindService extends ServiceService
                         $menuBinds[$index]['menu_id'] = $newId;
                     }
                     //批量写入
-                   MenuBind::saveAll( $menuBinds );
+                   MenuBindEntity::saveAll( $menuBinds );
                }
            }
            DB::commit();

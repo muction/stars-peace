@@ -8,6 +8,11 @@ use Stars\Peace\Service\SheetService;
 use Stars\Peace\Service\TemplateService;
 use Illuminate\Http\Request;
 
+/**
+ * 导航菜单
+ * Class NavMenuController
+ * @package Stars\Peace\Controller
+ */
 class NavMenuController extends PeaceController
 {
     /**
@@ -19,7 +24,7 @@ class NavMenuController extends PeaceController
      */
    public function index(NavMenuService $navMenuService, NavService $navService,  $navId ){
 
-       $tree = $navMenuService->tree( $navId );
+       $tree = $navMenuService->tree( $navId ,true );
        $navInfo = $navService->info( $navId );
        return $this->view( 'nav.menu.index' , ['datas' => $tree ,'nav'=>$navInfo ] );
    }
@@ -103,7 +108,7 @@ class NavMenuController extends PeaceController
      * @param $navId
      * @param $menuId
      * @param int $bindId
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
    public function bind(NavMenuService $navMenuService ,NavService $navService, MenuBindService $menuBindService , SheetService $sheetService, $navId, $menuId, $bindId=0){
 
@@ -115,6 +120,7 @@ class NavMenuController extends PeaceController
            $assign['bind'] = $menuBindService->bindInfo( $menuId, $bindId );
             return $this->view('nav.menu.bind_edit', $assign ) ;
        }
+       $assign['sheets'] = $allSheets ? array_chunk($allSheets , 4) : [];
        return $this->view('nav.menu.bind' , $assign);
    }
 
