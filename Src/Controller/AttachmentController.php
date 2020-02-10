@@ -94,4 +94,14 @@ class AttachmentController extends PeaceController
         $datas = $attachmentService->pagination();
         return $this->view( "attachment.index" , ['datas'=>$datas ]);
     }
+
+    /**
+     * 文件管理
+     * @param Request $request
+     * @param AttachmentService $attachmentService
+     * @return array
+     */
+    public function manager( Request $request, AttachmentService $attachmentService ){
+        return json_encode($attachmentService->manager( $request )) ;
+    }
 }

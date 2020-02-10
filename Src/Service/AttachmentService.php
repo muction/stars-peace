@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Filesystem\Filesystem;
 use Stars\Peace\Entity\AttachmentEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Stars\Peace\Lib\Option;
@@ -31,7 +32,9 @@ class AttachmentService extends ServiceService
         $bindId=$request->input('bindId', 0 ) ;
         $uploader= $request->file($filePostName) ;
 
-        if (!$uploader->isValid() || !$request->hasFile($filePostName)) throw new \Exception("文件无效");
+        if (!$uploader->isValid() || !$request->hasFile($filePostName)){
+            throw new \Exception("文件无效");
+        }
 
         $saveFilePath = 'upload/'.date('Y/m/d');
         $saveAttachment = $this->attachmentStorageStruck(
@@ -166,6 +169,60 @@ class AttachmentService extends ServiceService
             return  [];
         }
 
+    }
+
+    /**
+     * 编辑器文件管理器
+     * @param Request $request
+     * @return array
+     */
+    public function manager( Request $request ){
+
+        $return =[
+            'moveup_dir_path'=>"" ,
+            'current_dir_path' =>"",
+            'current_url'=>"",
+            'total_count'=>0 ,
+            'file_list'=>[]
+        ];
+        $selectPathName = $request->input('path' );
+        $rootDir = storage_path('app/public/upload') ;
+        $currentDir = $rootDir .'/'. $selectPathName;
+        if(is_dir($currentDir)){
+            $return['current_dir_path'] = $selectPathName ? $selectPathName : "";
+            $return['current_url'] = $selectPathName ? asset( 'storage/upload/'. $selectPathName).'/' : "/";
+            $return['moveup_dir_path']=	$moveup_dir_path = preg_replace('/(.*?)[^\/]+\/$/', '$1', $selectPathName);
+
+            if ($handle = opendir($currentDir)) {
+                $i = 0;
+                $imgExt=['jpeg','jpg','png'];
+                while (false !== ($filename = readdir($handle))) {
+                    if ($filename{0} == '.') continue;
+                    $file = $currentDir . $filename;
+                    if (is_dir($file)) {
+                        $return['file_list'] [$i]['is_dir'] = true; //是否文件夹
+                        $return['file_list'] [$i]['has_file'] = (count(scandir($file)) > 2); //文件夹是否包含文件
+                        $return['file_list'] [$i]['filesize'] = 0; //文件大小
+                        $return['file_list'] [$i]['is_photo'] = false; //是否图片
+                        $return['file_list'] [$i]['filetype'] = ''; //文件类别，用扩展名判断
+                    } else {
+                        $return['file_list'] [$i]['is_dir'] = false;
+                        $return['file_list'] [$i]['has_file'] = false;
+                        $return['file_list'] [$i]['filesize'] = filesize($file);
+                        $return['file_list'] [$i]['dir_path'] = '';
+                        $file_ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        $return['file_list'] [$i]['is_photo'] = in_array($file_ext, $imgExt );
+                        $return['file_list'] [$i]['filetype'] = $file_ext;
+                    }
+                    $return['file_list'] [$i]['filename'] = $filename; //文件名，包含扩展名
+                    $return['file_list'] [$i]['datetime'] = date('Y-m-d H:i:s', filemtime($file)); //文件最后修改时间
+                    $i++;
+                }
+                closedir($handle);
+            }
+        }
+
+        return $return;
     }
 
 }
