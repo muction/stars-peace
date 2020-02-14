@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Stars\Peace\Foundation;
-
 
 use Stars\Peace\Contracts\Service;
 

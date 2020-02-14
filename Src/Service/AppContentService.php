@@ -1,6 +1,8 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Stars\Peace\Entity\MenuBindEntity;
@@ -39,7 +41,7 @@ class AppContentService
      * 根据绑定ID查询分页信息
      * @param $bindId
      * @param string $bindAlias
-     * @return array|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @return array|Model|Builder|object|null
      */
     public function findBindPaginateData( $bindId, $bindAlias='' ){
 
@@ -58,7 +60,7 @@ class AppContentService
      * @param $innerBindId
      * @param $innerInfoId
      * @param int $paginate
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @return Model|Builder|object|null
      */
     public function findMenuData( $bind ,$innerBindId=0 ,$innerInfoId=0 , $paginate=15 ){
 
@@ -130,7 +132,7 @@ class AppContentService
      * 获取多个信息
      * @param $tableName
      * @param $bind_id
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @return Model|Builder|object|null
      */
     public static function items( $tableName, $bind_id , $limit =10 , $select='*' , $orderRaw='`id` DESC'){
 
@@ -162,7 +164,7 @@ class AppContentService
      * @param $bind_id
      * @param string $select
      * @param string $orderRaw
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Query\Builder|object|null
+     * @return Model|Builder|object|null
      */
     public static function last( $tableName, $bind_id , $select='*' , $orderRaw='`id` DESC'){
 

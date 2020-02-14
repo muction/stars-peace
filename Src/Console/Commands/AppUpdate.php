@@ -1,9 +1,5 @@
 <?php
-
 namespace Stars\Peace\Console\Commands;
-
-use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem ;
 use Stars\Tools\Foundation\PatchApply;
 
 /**
@@ -45,8 +41,7 @@ class AppUpdate extends AbstractAppPatch
      *
      * @var string
      */
-    protected $description = 'App Client Update';
-
+    protected $description = '给当前App系统应用补丁包';
 
     /**
      * Execute the console command.
@@ -70,12 +65,12 @@ class AppUpdate extends AbstractAppPatch
                 $this->argument("patchFile")
             );
 
-            $msg =$result == true ? '成功' : '失败' ;
+            $msg = $result == true ? '成功' : '失败' ;
             $this->info("应用结果：{$msg}");
 
         }catch (\Exception $exception){
 
-            $this->warn( 'Apply Patch Exception :'. $exception->getMessage() .', Line'. $exception->getFile() .'-' .$exception->getLine() );
+            $this->warn( '应用补丁包异常 :'. $exception->getMessage() .', Line'. $exception->getFile() .'-' .$exception->getLine() );
         }
     }
 }

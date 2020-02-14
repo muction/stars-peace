@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Stars\Peace\Foundation;
-
 
 use Illuminate\Http\Request;
 use Stars\Peace\Contracts\ArticleHook;

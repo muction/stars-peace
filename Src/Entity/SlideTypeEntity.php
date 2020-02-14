@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Entity;
 
+use Illuminate\Database\Eloquent\Builder;
 use Stars\Peace\Foundation\EntityEntity;
 
 class SlideTypeEntity extends EntityEntity
@@ -56,7 +57,7 @@ class SlideTypeEntity extends EntityEntity
     }
 
     /**
-     * @return PermissionTypeEntity[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return PermissionTypeEntity[]|Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public static function allType(){
         return self::get();

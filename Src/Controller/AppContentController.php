@@ -117,7 +117,6 @@ abstract class AppContentController extends Controller
             $this->hookComplete();
         }
 
-
     }
 
     /**

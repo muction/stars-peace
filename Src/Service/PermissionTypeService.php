@@ -1,6 +1,8 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Stars\Rbac\Entity\PermissionTypeEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Http\Request;
@@ -21,7 +23,7 @@ class PermissionTypeService extends ServiceService
     }
 
     /**
-     * @return PermissionTypeEntity[]|\Illuminate\Database\Eloquent\Collection
+     * @return PermissionTypeEntity[]|Collection
      */
     public function all(){
 
@@ -46,7 +48,7 @@ class PermissionTypeService extends ServiceService
 
     /**
      * all type
-     * @return PermissionTypeEntity[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return PermissionTypeEntity[]|Builder[]|Collection
      */
     public function allTypePermissions(){
         return PermissionTypeEntity::allType();

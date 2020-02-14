@@ -1,7 +1,4 @@
 <?php
-
-
-
 Route::group(['prefix'=>"rotate" ,'middleware'=>['web'] , 'namespace'=> "Stars\Peace\Controller" ], function(){
 
     Route::group( ['prefix'=>'auth'  , 'namespace'=> "Auth" ] , function(){

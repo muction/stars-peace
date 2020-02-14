@@ -40,7 +40,14 @@ class SlideController extends PeaceController
         return $this->view( "slide.form"  , ['info'=>[] ,'typeInfo'=>$typeInfo ]);
     }
 
-
+    /**
+     * @param Request $request
+     * @param SlideService $slideService
+     * @param SlideTypeService $slideTypeService
+     * @param $typeId
+     * @param $infoId
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editPage(Request $request , SlideService $slideService, SlideTypeService $slideTypeService , $typeId , $infoId ){
 
         $info = $slideService ->info($infoId );

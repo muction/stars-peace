@@ -1,7 +1,6 @@
 <?php
-
 namespace Stars\Peace\Console\Commands;
-
+use Illuminate\Config\Repository;
 use Illuminate\Console\Command;
 use Stars\Tools\Foundation\PatchMake;
 use Stars\Tools\Lib\Patch\AppMakePatchOption;
@@ -32,11 +31,11 @@ class AppPack extends AbstractAppPatch
      *
      * @var string
      */
-    protected $description = 'Stars system for App Pack Update file';
+    protected $description = '为 StarsPeace 系统制作补丁文件';
 
     /**
      * 打包保存的地址
-     * @var \Illuminate\Config\Repository|mixed|string
+     * @var Repository|mixed|string
      */
     private $packSaveDir = "";
 
@@ -97,14 +96,12 @@ class AppPack extends AbstractAppPatch
             mkdir($this->packSaveDir , 0777 , true );
         }
 
-        switch ($this->type ){
-            case 1 :
-                 return $this->packZipFiles() ;
-                break;
-            case 2 :
-                 return $this->packByGitCommit() ;
-                break;
-            default:
+        if( $this->type == 1 ){
+            return $this->packZipFiles() ;
+        }elseif( $this->type == 2){
+            return $this->packByGitCommit() ;
+        }else{
+            return null;
         }
     }
 
@@ -132,8 +129,6 @@ class AppPack extends AbstractAppPatch
             $this->error("打包出现异常：{$exception->getMessage()}");
         }
     }
-
-
 
     /**
      * 给到git 提交的commid 自动打包所有文件
