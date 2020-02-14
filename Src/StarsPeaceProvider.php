@@ -9,7 +9,7 @@ class StarsPeaceProvider extends ServiceProvider
     /**
      * 当前版本号
      */
-    const STARS_PEACE_VERSION = '4.1.0';
+    const STARS_PEACE_VERSION = '4.1';
 
     /**
      * 系统别名【竹子】
