@@ -26,22 +26,23 @@
             padding: 0px;
             margin: 0px
         }
+
     </style>
 
     <script type="text/javascript">
+        var pageTitle = document.title;
 
         function pageProgress( status ){
+
             if( status == 'show'){
-                let random =  Math.random() * 10;
-                random= parseInt(random*10 );
-                if(random == 0){
-                    random = 70;
-                }
-                $('#show-progress').css({width:    random + "%"}).show();
+                document.title = pageTitle + '.';
             }else if( status =='hide'){
-                $('#show-progress').animate({width: "100%"} , function(){
-                    $('#show-progress').hide();
-                });
+
+                setTimeout(function(){
+                    document.title = pageTitle;
+
+                } ,950);
+
             }
         }
 
@@ -115,11 +116,6 @@
 
         <!--页面主要内容-->
         <main class="lyear-layout-content">
-            <div class="progress" style="height: 2px;margin-bottom: -1px">
-                <div class="progress-bar progress-bar-purple active" id="show-progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                    <span class="sr-only">75% Complete</span>
-                </div>
-            </div>
             <iframe src="{{ route('rotate.dashboard.index') }}" name="request-content" id="content-iframe" width="100%" height="100%"></iframe>
         </main>
         <!--End 页面主要内容-->
