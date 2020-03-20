@@ -66,6 +66,8 @@ class ArticleEntity extends EntityEntity
                          $query->orWhere( $__column , 'like' , "%{$searchOption['keyword']}%" );
                     }
                 }
+
+            })->where(function( $query ) use ($searchOption){
                 if( isset($searchOption['startTime']) && isset($searchOption['endTime']) && $searchOption['startTime'] && $searchOption['endTime'] ){
                     $query->whereBetween('created_at' , [$searchOption['startTime'].' 00:00:00' , $searchOption['endTime'].' 23:59:59']);
                 }

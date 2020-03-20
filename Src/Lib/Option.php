@@ -13,7 +13,7 @@ class Option
      */
 
     //常规上传
-    const ATTACHMENT_UPLOAD_CLIENT =  'normal';
+    const ATTACHMENT_UPLOAD_CLIENT =   'normal';
 
     //裁剪上传
     const ATTACHMENT_UPLOAD_CROPPER = 'cropper';
@@ -23,7 +23,7 @@ class Option
      */
 
     //文章分页
-    const ARTICLE_PAGE_SIZE =14 ;
+    const ARTICLE_PAGE_SIZE =17 ;
 
     //管理员分页
     const USER_PAGE_SIZE = 15;
