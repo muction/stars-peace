@@ -71,8 +71,8 @@ class SheetMake extends PeacePeace
            return null;
         }
 
-        $this->type = 'entity';
-        $this->entityValue =  str_replace(['Sheet'] ,'Entity', $this->entityValue);
+        $this->type = 'Entity';
+        $this->entityValue =  str_replace(['Sheet'] ,'', $this->entityValue);
 
         $templateContent = str_replace(
             ['__APPLYENTITY__' ],
