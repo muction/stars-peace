@@ -13,6 +13,21 @@
     <script type="text/javascript" src="{{ asset("static/stars/plugs/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js") }}"></script>
     <script type="text/javascript" src="{{ asset("static/stars/plugs/plupload/js/plupload.full.min.js") }}"></script>
 
+    <link rel="stylesheet" type="text/css" href="{{ asset("static/stars/plugs/codemirror/lib/codemirror.css") }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset("static/stars/plugs/codemirror/theme/mdn-like.css") }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset("static/stars/plugs/codemirror/theme/the-matrix.css") }}"/>
+    <script type="text/javascript" src="{{ asset("static/stars/plugs/codemirror/lib/codemirror.js") }}"></script>
+
+    <script type="text/javascript"
+            src="{{ asset("static/stars/plugs/codemirror/addon/selection/active-line.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ asset("static/stars/plugs/codemirror/addon/edit/matchbrackets.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("static/stars/plugs/codemirror/mode/stylus/stylus.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("static/stars/plugs/codemirror/mode/css/css.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ asset("static/stars/plugs/codemirror/mode/javascript/javascript.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("static/stars/plugs/codemirror/mode/php/php.js") }}"></script>
+
     <style type="text/css">
         .has-error .stars-plug{
             border-color: #f96868 !important;
@@ -41,13 +56,13 @@
         @endif
 
         <div class="form-group  @error($column['db_name'] ) has-error @enderror">
-            <label for="inputEmail3" class="col-sm-2 control-label">
+            <label for="inputEmail3" class="col-sm-1 control-label">
                 @if( isset($bindSheetInfo['options']['column_required']) && in_array($column['db_name'] , $bindSheetInfo['options']['column_required']) )
                     <span style="color: red">*</span>
                 @endif
                 {{$column['title']}}
             </label>
-            <div class="col-sm-10">
+            <div class="col-sm-11">
                 @php( $_columnDefaultValue= isset( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] )
            ? ( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_DEFAULT_VALUE] ) :'')
 
@@ -99,6 +114,10 @@
 
                     @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_MAP_BAIDU )
                     @include("StarsPeace::plugs.form.map.baidu")
+                    @break
+
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_CODE_MIRROR )
+                        @include("StarsPeace::plugs.form.code")
                     @break
 
                     @default
