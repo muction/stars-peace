@@ -100,7 +100,7 @@
         });
 
         var documentHeight = $('#box-height').height();
-        editor.setSize('auto', documentHeight)
+        editor.setSize('auto', documentHeight > 700 ? documentHeight : 700);
 
         //版本操作
         $(function () {
