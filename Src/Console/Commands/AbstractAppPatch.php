@@ -1,8 +1,5 @@
 <?php
-
-
 namespace Stars\Peace\Console\Commands;
-
 
 use Illuminate\Console\Command;
 
@@ -13,10 +10,17 @@ use Illuminate\Console\Command;
  */
 abstract class AbstractAppPatch extends Command
 {
+    /**
+     * 实现方法
+     */
     public function handle(){
         $this->working();
     }
 
+    /**
+     * 抽象方法
+     * @return mixed
+     */
     abstract function working();
 
     /**

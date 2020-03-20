@@ -1,9 +1,5 @@
 <?php
-
-
 namespace Stars\Peace\Foundation;
-
-
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 

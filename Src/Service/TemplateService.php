@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Stars\Peace\Entity\TemplateCodeEntity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class TemplateService extends ServiceService
      * @param string $fileMd5
      * @param array $menuInfo
      * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function templateInfo(Request $request ,int $navId,int $menuId , $fileMd5  )
     {
@@ -231,7 +232,7 @@ class TemplateService extends ServiceService
      * 同步磁盘模板文件内容到数据库
      * @param Request $request
      * @return bool
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function refreshTemplateContent2Database(){
 

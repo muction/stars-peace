@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Stars\Peace\Foundation;
 
 use Stars\Peace\Contracts\Sheet ;
@@ -11,7 +9,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 /**
  * 模型

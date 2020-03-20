@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Stars\Peace\Contracts;
 use Illuminate\Http\Request;
 use Stars\Peace\Entity\ArticleEntity;

@@ -75,6 +75,13 @@ class UserController extends PeaceController
         ) ;
     }
 
+    /**
+     * @param Request $request
+     * @param UserService $userService
+     * @param int $infoId
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function storage(Request $request, UserService $userService , $infoId =0){
         $isEditProfile = $request->get('isEditProfile') ;
         $validatorRule =[
@@ -83,8 +90,6 @@ class UserController extends PeaceController
             'password_confirmation' => 'required|same:password'
         ] ;
         if( $infoId ){
-
-
             if($isEditProfile){
                 $validatorRule=[
                     'password' => 'confirmed',
@@ -98,7 +103,6 @@ class UserController extends PeaceController
                     'password_confirmation' => 'same:password',
                 ] ;
             }
-
         }
         $this->validate( $request , $validatorRule );
         $withError=['messageError'=> '保存失败'];

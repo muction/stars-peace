@@ -10,7 +10,7 @@ class SheetInit extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'init:sheet {entityName} {isCore?}';
+    protected $signature = 'sheet:init {entityName} {isCore?}';
 
     /**
      * The console command description.

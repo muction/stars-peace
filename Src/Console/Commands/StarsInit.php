@@ -1,7 +1,5 @@
 <?php
-
 namespace Stars\Peace\Console\Commands;
-
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Stars\Peace\Foundation\SheetSheet;
@@ -9,8 +7,6 @@ use Stars\Peace\Entity\StarsInit as StarInitData;
 use Stars\Peace\Lib\Option;
 
 /**
- *
- *
  * 初始化一个干净的Stars系统
  *  1、创建所有Core 里的sheet模型
  *  2、写入系统初始化数据
@@ -139,7 +135,7 @@ class StarsInit extends PeacePeace
 
     public function replaceStubContent()
     {
-        // TODO: Implement replaceStubContent() method.
+        return "";
     }
 
 

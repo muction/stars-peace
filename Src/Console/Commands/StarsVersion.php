@@ -1,15 +1,10 @@
 <?php
-
 namespace Stars\Peace\Console\Commands;
-
 use Illuminate\Console\Command;
 use Stars\Peace\Foundation\SheetSheet;
 use Stars\Peace\Entity\StarsInit as StarInitData;
 use Stars\Peace\StarsPeaceProvider;
-
 /**
- *
- *
  * 检查星际CMS系统版本
  *  1、创建所有Core 里的sheet模型
  *  2、写入系统初始化数据
@@ -30,7 +25,7 @@ class StarsVersion extends PeacePeace
      *
      * @var string
      */
-    protected $description = 'get system version';
+    protected $description = 'Get system version';
 
     /**
      * 超级管理员登录名
@@ -73,6 +68,6 @@ class StarsVersion extends PeacePeace
 
     public function replaceStubContent()
     {
-        // TODO: Implement replaceStubContent() method.
+        return "";
     }
 }

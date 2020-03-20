@@ -15,8 +15,5 @@ class TestController extends PeaceController
 
     public function test(AttachmentService $attachmentService){
 
-        $attachmentService->crop();
-
-
     }
 }

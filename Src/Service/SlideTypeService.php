@@ -1,6 +1,8 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Stars\Peace\Entity\SlideTypeEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Http\Request;
@@ -21,7 +23,7 @@ class SlideTypeService extends ServiceService
     }
 
     /**
-     * @return SlideTypeEntity[]|\Illuminate\Database\Eloquent\Collection
+     * @return SlideTypeEntity[]|Collection
      */
     public function all(){
 
@@ -46,7 +48,7 @@ class SlideTypeService extends ServiceService
 
     /**
      * all type
-     * @return SlideTypeEntity[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     * @return SlideTypeEntity[]|Builder[]|Collection
      */
     public function allTypePermissions(){
         return SlideTypeEntity::allType();
