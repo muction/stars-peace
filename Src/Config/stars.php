@@ -33,7 +33,7 @@ return [
      * 文章钩子：钩子需实现 Stars\Peace\Contracts\ArticleHook; 接口
      */
     'hook'=>[
-
+        //'articleHook'=> App\Hook\Article::class
     ],
 
     /**
@@ -76,8 +76,6 @@ return [
         'paginate'=>[
             'default'=>20 ,
             'single.about.speech'=>15 ,
-            'paginate.join.society'=>1,
-            'paginate.news.paginate'=>3,
         ] ,
 
         //其他设置
