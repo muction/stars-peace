@@ -61,7 +61,7 @@
     <div class="lyear-login">
         <div class="login-center">
             <div class="login-header text-center">
-                <a href="index.html"> <img alt="light year admin" src="{{asset("static/stars/images/logo-sidebar.png")}}"> </a>
+                <a href="{{ route('rotate.auth.login.page') }}"> <img alt="light year admin" src="{{asset("static/stars/images/logo-sidebar.png")}}"> </a>
             </div>
             <form action="{{ route('rotate.auth.login.handle') }}" method="post">
                 @csrf
@@ -91,7 +91,7 @@
             </form>
             <hr>
             <footer class="col-sm-12 text-center">
-                <p class="m-b-0">Copyright © 2019 <a href="http://lyear.itshubao.com">IT书包</a>. All right reserved</p>
+
             </footer>
         </div>
     </div>
