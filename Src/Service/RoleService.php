@@ -48,7 +48,8 @@ class RoleService extends ServiceService
         $roleInfo= RoleEntity::info( $infoId );
         $roleInfo = $roleInfo? $roleInfo->toArray() : [];
         if($roleInfo){
-            $roleInfo['permissions'] = array_column($roleInfo['permissions']  ,'id'  );
+            $roleInfo['permissions'] = $roleInfo['permissions'] ? array_column($roleInfo['permissions']  ,'id'  ) : [];
+            $roleInfo['menus'] = $roleInfo['menus'] ? array_column($roleInfo['menus']  ,'id'  ) : [];
         }
 
         return $roleInfo;
@@ -62,6 +63,28 @@ class RoleService extends ServiceService
      */
     public function bindPermission( Request $request , $roleId ){
 
-        return RoleEntity::bindPermission( $roleId , $request->input('permissions') );
+        return RoleEntity::bindPermission( $roleId , $request->input('permissions') , $request->input('menus') );
+    }
+
+    /**
+     * 取得系统内所有文章管理导航的菜单
+     * @return array
+     */
+    public function allNavMenusTree( ){
+
+        $tree = [];
+        $navs = new NavService();
+        $navs = $navs->articleNav();
+        if( $navs ){
+            $navMenus = new NavMenuService();
+            foreach ($navs as $nav){
+                $tree[$nav->id ]= [];
+                $tree[$nav->id ]['nav_id'] = $nav->id;
+                $tree[$nav->id ]['nav_title'] = $nav->title;
+                $tree[$nav->id ]['menus'] = $navMenus->tree( $nav->id );
+            }
+        }
+
+        return $tree;
     }
 }

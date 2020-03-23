@@ -1,7 +1,7 @@
 <ul class="nav nav-drawer">
-    @component( "StarsPeace::component.sidebar" , ['sides'=>$sidebar] ) @endcomponent
+    @component( "StarsPeace::component.sidebar" , ['sides'=>$sidebar ,'hasSuppersRole'=>$hasSuppersRole] ) @endcomponent
 
-    @if( \Stars\Rbac\Entity\UserEntity::can('rotate.article.articles') ||  \Stars\Rbac\Entity\UserEntity::hasRole( 'root') )
+    @if($hasSuppersRole || \Stars\Rbac\Entity\UserEntity::can('rotate.article.articles') )
         @foreach($articleSides as $nav)
             <li class="nav-item nav-item-has-subnav">
                 <a href="javascript:void(0)">
@@ -9,7 +9,7 @@
                     <span>{{ $nav['title'] }}内容管理</span>
                 </a>
                 <ul class="nav nav-subnav">
-                    @component( "StarsPeace::component.article-sidebar" , ['sides'=>$nav['menus']] ) @endcomponent
+                    @component( "StarsPeace::component.article-sidebar" , ['sides'=>$nav['menus'] ,'roleNavMenus'=>$roleNavMenus ,'hasSuppersRole'=>$hasSuppersRole ] ) @endcomponent
                 </ul>
             </li>
         @endforeach

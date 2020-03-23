@@ -11,22 +11,14 @@
 
             <div class="form-group">
                 <label for="example-text-input">角色名称</label>
-                <input class="form-control" type="text" name="role-input" placeholder="角色名称">
+                <input class="form-control" type="text" name="role-input" value="{{$role['title']}}" readonly="readonly" placeholder="角色名称">
             </div>
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>
-                            <label class="lyear-checkbox checkbox-primary">
-                                <input name="checkbox" type="checkbox" id="check-all">
-                                <span> 全选</span>
-                            </label>
-                        </th>
-                    </tr>
-                    </thead>
+
                     <tbody>
 
+                    {{--   后台配置权限    --}}
                     @foreach( $allTypePermissions as $item )
                         <tr>
                             <td class="p-l-20">
@@ -46,6 +38,25 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    {{--  导航列表   --}}
+                    @if($allNavMenus)
+
+                        @foreach( $allNavMenus as $navMenu)
+                            <tr>
+                                <td class="p-l-20">
+                                    <label class="">
+                                        <span>频道授权：{{ $navMenu['nav_title'] }}</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-l-40">
+                                    @component('StarsPeace::component.role-bind-menu', ['datas'=> $navMenu['menus'] ,'roleNavMenus'=>$roleNavMenus  ])  @endcomponent
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
 
                     </tbody>
                 </table>
