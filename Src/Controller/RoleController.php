@@ -2,6 +2,7 @@
 
 namespace Stars\Peace\Controller;
 
+use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\PermissionService;
 use Stars\Peace\Service\PermissionTypeService;
 use Stars\Peace\Service\RoleService;
@@ -22,7 +23,7 @@ class RoleController extends PeaceController
      */
     public function index(RoleService $roleService){
         $roles = $roleService->index();
-        return $this->view( "role.index" , ['datas'=>$roles] );
+        return $this->view( "role.index" , ['datas'=>$roles ] );
     }
 
     /**
@@ -97,12 +98,20 @@ class RoleController extends PeaceController
      * @param $roleId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function bindRolePage( PermissionService $permissionService, PermissionTypeService $permissionTypeService, RoleService $roleService, $roleId ){
+    public function bindRolePage( PermissionService $permissionService, PermissionTypeService $permissionTypeService, RoleService $roleService , $roleId ){
 
         $role = $roleService->info( $roleId );
         $permissions = $permissionService->all();
+        $roleNavMenus = isset($role['menus']) ? $role['menus'] : [];
         $allTypePermissions = $permissionTypeService->allTypePermissions();
-        return $this->view("role.bind" , [ 'role'=>$role , 'permissions'=>$permissions ,'allTypePermissions'=>$allTypePermissions ]);
+        $allNavMenus = $roleService->allNavMenusTree();
+        return $this->view("role.bind" , [
+            'role'=>$role ,
+            'permissions'=>$permissions ,
+            'allTypePermissions'=>$allTypePermissions ,
+            'allNavMenus'=>$allNavMenus ,
+            'roleNavMenus'=>$roleNavMenus
+        ]);
     }
 
     /**

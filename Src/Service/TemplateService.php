@@ -24,16 +24,16 @@ class TemplateService extends ServiceService
      */
     public function themeTemplates( ){
 
-
-
         if(!$this->viewsPath ){
             return  [];
         }
         $themeFiles = [];
         $file =new Filesystem();
         $files= $file->allFiles( $this->viewsPath  ,true );
-        foreach ($files as $index=>$file) {
-            $themeFiles[] = $file->getRelativePathname();
+         foreach ($files as $index=>$file) {
+            if( $file->getExtension() =='php'){
+                $themeFiles[] = $file->getRelativePathname();
+            }
         }
 
         return $themeFiles;

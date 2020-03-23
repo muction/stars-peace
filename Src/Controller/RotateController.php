@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\NavService;
+use Stars\Peace\Service\RoleService;
 use Stars\Rbac\Entity\UserEntity;
 
 /**
@@ -15,7 +16,7 @@ use Stars\Rbac\Entity\UserEntity;
  */
 class RotateController extends PeaceController
 {
-   public function index(NavService $navService, NavMenuService $navMenuService){
+   public function index(NavService $navService, NavMenuService $navMenuService , RoleService $roleService){
 
        $trees = $navMenuService->tree(1);
 
@@ -35,10 +36,12 @@ class RotateController extends PeaceController
            }
 
            Cache::store('file' )->set($cacheSlideCacheKey ,$articleSides , 3600 );
-
        }
 
-
-       return $this->view( 'index' , ['sidebar' => $trees ,'articleSides'=>$articleSides] );
+       //实时获取当前角色所拥有的的文章管理权限
+       $roleNavMenus = UserEntity::loginUserInfo('menus');
+       $hasSuppersRole =  UserEntity::hasRole( 'root');
+       return $this->view( 'index' , ['sidebar' => $trees ,'articleSides'=>$articleSides ,'roleNavMenus'=>$roleNavMenus ,
+           'hasSuppersRole'=>$hasSuppersRole ] );
    }
 }
