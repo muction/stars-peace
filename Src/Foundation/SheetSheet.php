@@ -222,8 +222,13 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * 构造方法
      * SheetSheet constructor.
      */
-    public function __construct()
+    public function __construct( array $bindInfo =[] )
     {
+        /**
+         * 设置绑定信息
+         */
+        $this->setBindInfo( $bindInfo );
+
         /**
          * 设置基本信息
          */

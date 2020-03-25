@@ -99,16 +99,11 @@ class MenuBindService extends ServiceService
         $info = self::bindInfo( $menuId, $bindId  ) ;
         if(!$info)
             return [];
-        $info = $info->toArray();
-        $info['sheet']  = [];
-        $info['options'] = json_decode( $info['options'] , true );
+        $info->options = json_decode( $info->options , true );
         $sheet = new SheetService();
-        $sheet = $sheet->info( $info['sheet_name'] );
-        if($sheet){
-            $sheet->setBindInfo( $info  );
-            $info['sheet']  =  $sheet->detail()  ;
-        }
-        return $info;
+        $sheet = $sheet->info( $info->sheet_name ,$info->toArray());
+        $info->sheet  = $sheet ? $sheet->detail() :[];
+        return $info ? $info->toArray()  : [];
     }
 
     /**

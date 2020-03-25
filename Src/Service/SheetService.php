@@ -23,8 +23,11 @@ class SheetService extends ServiceService
      * @param $sheetName
      * @return |null
      */
-    public function info( $sheetName ){
+    public function info( $sheetName , array $bindInfo = [] ){
         $sheetNamespace = 'App\\Sheet\\'.$sheetName;
-        return  class_exists( $sheetNamespace ) ?  new $sheetNamespace() : null ;
+        if(class_exists( $sheetNamespace )){
+            return new $sheetNamespace( $bindInfo ) ;
+        }
+        return null ;
     }
 }
