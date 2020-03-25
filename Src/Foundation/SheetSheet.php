@@ -61,6 +61,11 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     private $columns = [] ;
 
+    /**
+     * 当前使用的绑定信息
+     * @var array
+     */
+    private $bindInfo = [];
 
     /**
      * 文本输入框插件
@@ -243,6 +248,25 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     abstract protected function sheetColumn();
 
     /**
+     * 设置绑定信息
+     * @param array $bindInfo
+     */
+    final public function setBindInfo(array $bindInfo ){
+
+        $this->bindInfo = $bindInfo ;
+    }
+
+    /**
+     * 只有当sheet真实应用到系统时才能有绑定信息
+     * 获取绑定信息
+     * @return array
+     */
+    final public function getBindInfo(){
+
+        return $this->bindInfo;
+    }
+
+    /**
      * 获取当前模型的详细信息
      * @return mixed
      */
@@ -254,7 +278,8 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
                 'sheetName' =>  $this->sheetName ,
                 'sheetClassName' => $this->sheetClassName ,
                 'version'=>$this->version ,
-                'author' =>$this->author
+                'author' =>$this->author ,
+                'bindInfo'=> $this->getBindInfo()
             ],
             'columns'=> $this->columns
         ];
