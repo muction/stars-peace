@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Rbac\Entity\RoleEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Http\Request;
@@ -76,12 +77,25 @@ class RoleService extends ServiceService
         $navs = new NavService();
         $navs = $navs->articleNav();
         if( $navs ){
-            $navMenus = new NavMenuService();
             foreach ($navs as $nav){
-                $tree[$nav->id ]= [];
-                $tree[$nav->id ]['nav_id'] = $nav->id;
-                $tree[$nav->id ]['nav_title'] = $nav->title;
-                $tree[$nav->id ]['menus'] = $navMenus->tree( $nav->id );
+                $menus=  NavMenuEntity::where('nav_id', $nav->id)
+                    ->select(['id','parent_id as pId','title as name'])
+                    ->with([])
+                    ->get();
+                if($menus){
+                    $tree[] = [
+                        'id'=>1110* $nav->id,
+                        'Pid'=>0,
+                        'name'=>$nav->title
+                    ];
+
+                    $items= $menus->toArray();
+                    foreach ($items as $in=>$it){
+                        $items[$in]['open'] = true;
+                    }
+
+                    $tree = array_merge( $tree , $items);
+                }
             }
         }
 

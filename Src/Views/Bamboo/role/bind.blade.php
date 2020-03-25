@@ -40,24 +40,30 @@
                     @endforeach
 
                     {{--  导航列表   --}}
-                    @if($allNavMenus)
+{{--                    @if($allNavMenus)--}}
 
-                        @foreach( $allNavMenus as $navMenu)
-                            <tr>
-                                <td class="p-l-20">
-                                    <label class="">
-                                        <span>频道授权：{{ $navMenu['nav_title'] }}</span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="p-l-40">
-                                    @component('StarsPeace::component.role-bind-menu', ['datas'=> $navMenu['menus'] ,'roleNavMenus'=>$roleNavMenus  ])  @endcomponent
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
+{{--                        {{ dd($allNavMenus) }}--}}
+{{--                        @foreach( $allNavMenus as $navMenu)--}}
+{{--                            <tr>--}}
+{{--                                <td class="p-l-20">--}}
+{{--                                    <label class="">--}}
+{{--                                        <span>频道授权：{{ $navMenu['nav_title'] }}</span>--}}
+{{--                                    </label>--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <td class="p-l-40">--}}
+{{--                                    @component('StarsPeace::component.role-bind-menu', ['datas'=> $navMenu['menus'] ,'roleNavMenus'=>$roleNavMenus ])  @endcomponent--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                        @endforeach--}}
+{{--                    @endif--}}
 
+                    <tr>
+                        <td>
+                            <ul id="treeDemo" style="height: auto" class="ztree"></ul>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -68,4 +74,7 @@
             </div>
         </div>
     </form>
+    <button type="button" id="test-btn">测试</button>
+
+    @include("StarsPeace::role.inc.bind")
 @endsection
