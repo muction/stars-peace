@@ -30,4 +30,17 @@ interface Sheet
      */
     public static function sheets(bool $isCore);
 
+    /**
+     * 设置绑定信息
+     * @param array $bindInfo
+     * @return mixed
+     */
+    public function setBindInfo( array $bindInfo );
+
+    /**
+     * 获取绑定信息
+     * @return mixed
+     */
+    public function getBindInfo();
+
 }
