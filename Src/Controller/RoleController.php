@@ -2,6 +2,8 @@
 
 namespace Stars\Peace\Controller;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Stars\Peace\Service\NavMenuService;
 use Stars\Peace\Service\PermissionService;
 use Stars\Peace\Service\PermissionTypeService;
@@ -51,7 +53,7 @@ class RoleController extends PeaceController
      * @param Request $request
      * @param RoleService $roleService
      * @param int $infoId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      * @throws \Illuminate\Validation\ValidationException
      */
     public function storage(Request $request , RoleService $roleService , $infoId=0 ){
@@ -78,7 +80,7 @@ class RoleController extends PeaceController
      * 删除
      * @param RoleService $roleService
      * @param $infoId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function remove( RoleService $roleService , $infoId ){
         $withError=['messageError'=> '保存失败'];
@@ -104,7 +106,10 @@ class RoleController extends PeaceController
         $permissions = $permissionService->all();
         $roleNavMenus = isset($role['menus']) ? $role['menus'] : [];
         $allTypePermissions = $permissionTypeService->allTypePermissions();
-        $allNavMenus = $roleService->allNavMenusTree();
+        $allNavMenus = $roleService->allNavMenusTree( $role );
+        //组装为json 树
+        $allNavMenus = $roleService->mergePermissionNavMenus($allTypePermissions->toArray(), $allNavMenus , $role);
+
         return $this->view("role.bind" , [
             'role'=>$role ,
             'permissions'=>$permissions ,
@@ -119,7 +124,7 @@ class RoleController extends PeaceController
      * @param PermissionService $permissionService
      * @param RoleService $roleService
      * @param $roleId
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return mixed
      */
     public function bindRoleStorage(Request $request, PermissionService $permissionService, RoleService $roleService, $roleId ){
 
@@ -128,8 +133,7 @@ class RoleController extends PeaceController
         if( $result){
             $withError = ['messageInfo'=> '保存成功'] ;
         }
-        return redirect( route('rotate.role.index') )->withErrors(
-            $withError
-        ) ;
+
+        return $this->responseSuccess( $withError );
     }
 }
