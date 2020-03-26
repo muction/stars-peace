@@ -69,4 +69,16 @@ interface SheetOption
      * @return mixed
      */
     public function optionValidator( $type );
+
+    /**
+     * 时间日期格式
+     * @return mixed
+     */
+    public function optionDateTimeFormat();
+
+    /**
+     * 日期格式
+     * @return mixed
+     */
+    public function optionDateFormat();
 }

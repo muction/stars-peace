@@ -219,6 +219,21 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     const OPTION_KEY_PUBLIC = 'public';
 
     /**
+     * 时间日期键值
+     */
+    const OPTION_KEY_DATE_FORMAT = 'dateformat';
+
+    /**
+     * 时间日期
+     */
+    const OPTION_DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
+
+    /**
+     * 日期
+     */
+    const OPTION_DATE_FORMAT = 'yyyy-MM-dd';
+
+    /**
      * 构造方法
      * SheetSheet constructor.
      */
@@ -426,6 +441,28 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     }
 
     /**
+     * 日期 年月日
+     * @return array|mixed
+     */
+    final public function optionDateFormat( )
+    {
+        return [self::OPTION_KEY_DATE_FORMAT => ['date'=>'Y-m-d','type'=>'date','page'=>self::OPTION_DATE_FORMAT] ];
+    }
+
+    /**
+     * 时间 日期
+     * @return array|mixed
+     */
+    final public function optionDateTimeFormat(  )
+    {
+        return [self::OPTION_KEY_DATE_FORMAT => ['date'=>'Y-m-d H:i:s' ,'type'=>'datetime' ,'page'=>self::OPTION_DATETIME_FORMAT ]  ];
+    }
+
+    public function optionPublicStatic()
+    {
+    }
+
+    /**
      * 增加一个文本输入框
      * @param $title
      * @param $dbName
@@ -484,6 +521,7 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     final public function addTimeWidget($title, $dbName, $option=[],$index=false )
     {
+        $option = array_merge( $this->optionDateTimeFormat() ,$option);
         $this->columns[$dbName] = [
             'title'  => $title ,
             'plug'   => self::SUPPORT_WIDGET_TIME  ,
