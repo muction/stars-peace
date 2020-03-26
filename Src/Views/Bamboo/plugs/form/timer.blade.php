@@ -7,7 +7,7 @@
        class="form-control input-sm timerSelect"
        readonly="readonly"
        name="{{ $column['db_name'] }}"
-       value="{{ old($column['db_name'] , isset($column['now_value']) ? $column['now_value'] : date( $__date )) }}"
+       value="{{ old($column['db_name'] , isset($column['now_value']) ? date( $__date , strtotime( $column['now_value'] )) : date( $__date )) }}"
 >
 <script type="text/javascript">
 
