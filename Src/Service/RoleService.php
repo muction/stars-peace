@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Service;
 
+use Stars\Peace\Entity\NavMenuEntity;
 use Stars\Rbac\Entity\RoleEntity;
 use Stars\Peace\Foundation\ServiceService;
 use Illuminate\Http\Request;
@@ -63,28 +64,94 @@ class RoleService extends ServiceService
      */
     public function bindPermission( Request $request , $roleId ){
 
-        return RoleEntity::bindPermission( $roleId , $request->input('permissions') , $request->input('menus') );
+        $permissions = [];
+        $menus = [];
+        foreach ( $request->input('items') as $item ){
+            if( $item['dataType'] == 'permissions' ){
+                $permissions[] = $item['id'];
+            }elseif ( $item['dataType'] == 'menus'){
+                $menus[] = $item['id'] ;
+            }
+        }
+
+        return RoleEntity::bindPermission( $roleId , $permissions , $menus );
     }
 
     /**
      * 取得系统内所有文章管理导航的菜单
      * @return array
      */
-    public function allNavMenusTree( ){
+    public function allNavMenusTree( array $role=[]){
 
         $tree = [];
         $navs = new NavService();
         $navs = $navs->articleNav();
         if( $navs ){
-            $navMenus = new NavMenuService();
-            foreach ($navs as $nav){
-                $tree[$nav->id ]= [];
-                $tree[$nav->id ]['nav_id'] = $nav->id;
-                $tree[$nav->id ]['nav_title'] = $nav->title;
-                $tree[$nav->id ]['menus'] = $navMenus->tree( $nav->id );
+            foreach ($navs as $index=> $nav){
+                $menus=  NavMenuEntity::where('nav_id', $nav->id)
+                    ->select(['id','parent_id as pId','title as name'])
+                    ->with([])
+                    ->get();
+                if($menus){
+                    $tree[ $index ]['nav'] = [
+                        'id'=>1110* $nav->id,
+                        'pId'=>0,
+                        'name'=>$nav->title
+                    ];
+
+                    $items= $menus->toArray();
+                    foreach ($items as $in=>$it){
+                        $hasChecked = isset( $role['menus']) && is_array( $role['menus']) ? in_array(
+                            $it['id'] , $role['menus']
+                        ) : false ;
+                        $items[$in]['open'] = true;
+                        $items[$in]['checked'] = $hasChecked;
+                        $items[$in]['dataType'] = "menus";
+                    }
+                    $tree[ $index]['menus'] = $items;
+                }
             }
         }
 
         return $tree;
+    }
+
+    /**
+     * @param array $allTypePermissions
+     * @param array $allNavMenus
+     * @param array $role
+     * @return array
+     */
+    public function mergePermissionNavMenus( array $allTypePermissions ,array $allNavMenus ,array $role){
+        //重新封装格式
+        $permissions=[];
+        foreach ($allTypePermissions as $index=>$item){
+            $permissions[$index]['nav'] = [
+                'id'=>$item['id'] ,
+                'pId'=> 22*$index ,
+                'name'=>$item['title']
+            ];
+            if( $item['permissions'] && is_array($item['permissions'])){
+
+                foreach ($item['permissions'] as $per ){
+                    $hasChecked = isset( $role['permissions']) && is_array( $role['permissions']) ? in_array(
+                        $per['id'] , $role['permissions']
+                    ) : false ;
+
+                    $permissions[$index]['menus'][] = [
+                        'id'=>$per['id'] ,
+                        'pId'=> 0 ,
+                        'name'=>$per['display_name'] ,
+                        'open'=> true ,
+                        'checked'=> $hasChecked,
+                        'dataType'=>'permissions'
+                    ];
+                }
+            }
+        }
+
+        $s = array_merge( $permissions , $allNavMenus );
+       return $s;
+        dd( $s ,$allTypePermissions );
     }
 }
