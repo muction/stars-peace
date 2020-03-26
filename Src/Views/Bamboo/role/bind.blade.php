@@ -11,7 +11,7 @@
 
         <div style="width: 100%;  ">
             @foreach( $allNavMenus as $index=>$navInfo )
-                <div class="card" style="width: 400px; @if($loop->first ) float:left;@endif margin-right: 10px">
+                <div class="card" >
                     <div class="card-header">
                         <h4>
                             {{ $navInfo['nav']['name'] }}

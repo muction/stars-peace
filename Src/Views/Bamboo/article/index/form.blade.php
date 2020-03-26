@@ -8,9 +8,9 @@
     <script type="text/javascript" src="{{asset("static/stars/plugs/kindeditor/lang/zh-CN.js")}}"></script>
     <link rel="stylesheet" type="text/css" href="{{asset("static/stars/plugs/kindeditor/themes/default/default.css")}}"/>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset("static/stars/plugs/datetimepicker/bootstrap-datetimepicker.css") }}"/>
-    <script type="text/javascript" src="{{ asset("static/stars/plugs/datetimepicker/bootstrap-datetimepicker.js") }}"></script>
-    <script type="text/javascript" src="{{ asset("static/stars/plugs/datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js") }}"></script>
+    <link href="{{ asset('static/stars/plugs/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{asset('static/stars/plugs/laydate/laydate.js')}}"></script>
+
     <script type="text/javascript" src="{{ asset("static/stars/plugs/plupload/js/plupload.full.min.js") }}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ asset("static/stars/plugs/codemirror/lib/codemirror.css") }}"/>
@@ -139,17 +139,8 @@
     <script type="text/javascript">
 
         $(function(){
-            $('.datetimepicker-input').datetimepicker({
-                language:  'zh-CN',
-                weekStart: 1,
-                todayBtn:  1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1,
-                format: 'yyyy-mm-dd hh:ii:ss'
-            });
+
+
 
             $('#articleSubmitFormBtn').click(function(){
                 try{
