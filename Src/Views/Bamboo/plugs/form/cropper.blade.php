@@ -11,6 +11,11 @@
         </div>
         <div class="panel-body">
             <div>
+                @if( isset( $__sheetCropperUploadFieldOption['notice']) && $__sheetCropperUploadFieldOption['notice'] )
+                    <p class="text-muted">
+                        {{$__sheetCropperUploadFieldOption['notice']}}
+                    </p>
+                @endif
                 <p class="text-muted">
                     支持文件大小: {{ isset($__sheetCropperUploadFieldOption['maxSize']) ? $__sheetCropperUploadFieldOption['maxSize'].'MB' : '未配置' }}
                 </p>
