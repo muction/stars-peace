@@ -394,15 +394,17 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * 上传文件配置
      * @param int $fileSize
      * @param array $fileType
+     * @param string $notice
      * @return array|mixed
      */
-    final public function optionUploadFile(int $fileSize, array $fileType)
+    final public function optionUploadFile(int $fileSize, array $fileType , $notice="" )
     {
 
         return [
             self::OPTION_KEY_UPLOAD=>[
                 'maxSize' => $fileSize,
-                'fileType'=>$fileType
+                'fileType'=>$fileType ,
+                'notice'=> $notice
             ]
         ];
     }
