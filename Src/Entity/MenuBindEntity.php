@@ -6,7 +6,7 @@ use Stars\Peace\Foundation\EntityEntity;
 class MenuBindEntity extends EntityEntity
 {
     protected $table= 'menu_binds';
-    protected $fillable = [ 'title' ,'menu_id' ,'sheet_name' ,'alias_name' ,'options' ,'order' ,'status' ];
+    protected $fillable = [ 'title' ,'menu_id' ,'sheet_name' ,'alias_name' ,'options' ,'order' ,'status' ,'table_name' ];
     /**
      * @param array $allBinds
      * @return mixed
