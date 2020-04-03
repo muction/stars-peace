@@ -74,24 +74,6 @@ if( !function_exists('navIsActive') ){
     }
 }
 
-/**
- * 过滤历史
- */
-if( !function_exists( 'makeHistory2Group' ) ){
-
-    function makeHistory2Group(array $datas ){
-        $return = [];
-        foreach ($datas as $item){
-            if($item['group_name']){
-                $return[$item['group_name']][] = $item;
-            }else{
-                $return[] = $item;
-            }
-        }
-
-        return array_values($return);
-    }
-}
 
 /**
  * 生产内容参数格式
@@ -202,3 +184,4 @@ if( !function_exists( "makeArticleUrl" )){
         return route( 'rotate.article.articles',  ['navId'=> $navId , 'menuId'=>$menuId ,'bindId'=>$bindId ] ) ;
     }
 }
+
