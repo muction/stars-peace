@@ -897,6 +897,9 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
 
         if($input){
             foreach ($input as $item){
+                if(!$item){
+                    continue;
+                }
                 foreach ($item as $key=>$option){
 
                     if($key != SheetSheet::OPTION_KEY_PUBLIC){
