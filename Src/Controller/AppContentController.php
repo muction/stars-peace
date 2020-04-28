@@ -146,9 +146,7 @@ abstract class AppContentController extends Controller
         $this->activeRouterName = \request()->route()->getName()  ;
         $this->inner = \request()->get('inner') ;
         $this->isAjaxRequest = \request()->ajax();
-
         $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner , $this->activeNavId) ;
-
         if(! $this->activeMenuInfo){
             throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" , 500);
         }
