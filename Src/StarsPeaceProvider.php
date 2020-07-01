@@ -9,12 +9,18 @@ class StarsPeaceProvider extends ServiceProvider
     /**
      * 当前版本号
      */
-    const STARS_PEACE_VERSION = '4.1';
+    const STARS_PEACE_VERSION = '4.2';
 
     /**
-     * 系统别名【竹子】
+     * 支持主题
      */
-    const STARS_PEACE_ALIAS_NAME = 'Bamboo';
+    private $supperThemeNames = ['Tabler', 'Bamboo'] ;
+
+    /**
+     * 使用主题名称
+     * @var string
+     */
+    private $theme = "Tabler";
 
     /**
      * 支持命令
@@ -51,6 +57,11 @@ class StarsPeaceProvider extends ServiceProvider
 
         if($this->app->runningInConsole()){
             $this->commands( $this->commands );
+        }
+
+        //指定主题
+        if(!in_array($this->theme, $this->supperThemeNames)){
+            $this->theme = $this->supperThemeNames[0];
         }
 
         $this->app->shouldSkipMiddleware();
@@ -93,6 +104,6 @@ class StarsPeaceProvider extends ServiceProvider
      * @return string
      */
     private function getViewPath(){
-        return __DIR__ .'/Views/'. self::STARS_PEACE_ALIAS_NAME ;
+        return __DIR__ .'/Views/'. $this->theme ;
     }
 }
