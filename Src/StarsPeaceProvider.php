@@ -14,13 +14,13 @@ class StarsPeaceProvider extends ServiceProvider
     /**
      * 支持主题
      */
-    private $supperThemeNames = ['Tabler', 'Bamboo'] ;
+    private $supperThemeNames = ['Bamboo'] ;
 
     /**
      * 使用主题名称
      * @var string
      */
-    private $theme = "Tabler";
+    private $theme = "Bamboo";
 
     /**
      * 支持命令

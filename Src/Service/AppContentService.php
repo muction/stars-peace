@@ -18,23 +18,19 @@ class AppContentService
      * @param array $inner
      * @return array
      */
-    public function menuDatas( $menuId , $inner=[] ){
+    public function menuDatas($menuId, $inner=[]){
 
         $menuData = [];
-        $bindInfos =$this->menuBindApps( $menuId );
-
+        $bindInfos = $this->menuBindApps($menuId);
         if( $bindInfos ){
-
             $paginateConfig = configApp( 'stars.paginate');
-            $innerBindId = isset( $inner['bindId']) ? $inner['bindId'] : 0;
-            $innerInfoId = isset( $inner['infoId']) ? $inner['infoId'] : 0;
-
+            $innerBindId = isset($inner['bindId']) ? $inner['bindId'] : 0;
+            $innerInfoId = isset($inner['infoId']) ? $inner['infoId'] : 0;
             foreach ($bindInfos as $bind){
                 $paginate = isset($paginateConfig[$bind['alias_name']]) ? $paginateConfig[$bind['alias_name']] : $paginateConfig['default'] ;
-                $menuData[$bind['alias_name']] =$this->findMenuData( $bind , $innerBindId , $innerInfoId , $paginate) ;
+                $menuData[$bind['alias_name']] =$this->findMenuData($bind, $innerBindId, $innerInfoId, $paginate) ;
             }
         }
-
         return $menuData ;
     }
 
@@ -44,13 +40,12 @@ class AppContentService
      * @param string $bindAlias
      * @return array|Model|Builder|object|null
      */
-    public function findBindPaginateData( $bindId, $bindAlias='' ){
-
-        $bindInfo =$this->bindInfo($bindId , $bindAlias);
+    public function findBindPaginateData($bindId, $bindAlias=''){
+        $bindInfo =$this->bindInfo($bindId, $bindAlias);
         if($bindInfo && $bindAlias== $bindInfo['alias_name']){
             $paginateConfig = configApp( 'stars.paginate');
             $paginate = isset($paginateConfig[$bindInfo['alias_name']]) ? $paginateConfig[$bindInfo['alias_name']] : $paginateConfig['default'] ;
-            return  $this->findMenuData( $bindInfo , 0 , 0, $paginate ) ;
+            return  $this->findMenuData($bindInfo , 0 , 0, $paginate) ;
         }
         return [];
     }
@@ -63,25 +58,25 @@ class AppContentService
      * @param int $paginate
      * @return Model|Builder|object|null
      */
-    public function findMenuData( $bind ,$innerBindId=0 ,$innerInfoId=0 , $paginate=15 ){
+    public function findMenuData($bind ,$innerBindId=0 , $innerInfoId=0 ,$paginate=15){
 
         $data = null ;
         $type = strstr( $bind['alias_name'] , '.' , true  );
-        $className = "App\Entity\\" . str_replace('Sheet','', $bind['sheet_name'] );
+        $className = "App\Entity\\" . str_replace('Sheet','', $bind['sheet_name']);
         $dataClass =  class_exists($className) ? $className : self::class;
 
         switch ($type){
             //单一，取最后一条
             case 'single' :
-                $data =  $dataClass::last( $bind['id'] );
+                $data =  $dataClass::last($bind['id']);
                 break;
             //列表，取所有数据
             case 'list' :
-                $data =  $dataClass::items( $bind['id'] , $paginate );
+                $data =  $dataClass::items($bind['id'], $paginate);
                 break;
             //分页，按分页获取
             case 'paginate' :
-                $paginate =  $dataClass::paginate( $bind['id'], $bind['alias_name'], $paginate);
+                $paginate =  $dataClass::paginate($bind['id'], $bind['alias_name'], $paginate);
                 $data['links'] = $paginate->links( configApp('stars.paginate.template') ) ;
                 $data['data'] = $paginate ;
                 break;
@@ -104,15 +99,12 @@ class AppContentService
      * @return array
      */
     public function menuBindApps( $menuId ){
-
         $return= DB::table('menu_binds')
             ->where('menu_id', $menuId)
             ->get();
-
         $return = $return ? array_map( function( $v ){
             return stdClass2Array($v);
         } , $return->toArray() ) : [];
-
         return $return ;
     }
 
@@ -126,7 +118,6 @@ class AppContentService
      * @return Model|Builder|object|null
      */
     public static function items( $bindId , $limit =10 , $select='*' , $orderRaw='`id` DESC'){
-
         return DB::table( self::bindSheetTableName( $bindId) )
             ->where('bind_id', $bindId )
             ->selectRaw( $select )
@@ -142,8 +133,7 @@ class AppContentService
      * @return \Illuminate\Support\Collection
      */
     public static function info( $bindId , $infoId ){
-
-        return DB::table( self::bindSheetTableName( $bindId) )
+        return DB::table(self::bindSheetTableName($bindId))
             ->where('bind_id', $bindId )
             ->find( $infoId );
     }
@@ -156,8 +146,7 @@ class AppContentService
      * @return Model|Builder|object|null
      */
     public static function last(  $bindId , $select='*' , $orderRaw='`id` DESC'){
-
-        return DB::table( self::bindSheetTableName( $bindId) )
+        return DB::table(self::bindSheetTableName($bindId))
             ->where('bind_id', $bindId )
             ->selectRaw( $select )
             ->orderByRaw($orderRaw)

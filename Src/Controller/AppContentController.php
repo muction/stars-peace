@@ -151,7 +151,7 @@ abstract class AppContentController extends Controller
             throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" , 500);
         }
 
-        //加载必须信息
+        //面包屑路径
         $this->crumbs = $this->navMenuService->crumbs( $this->activeMenuInfo['id'] );
 
         //TODO 优化点
@@ -205,7 +205,7 @@ abstract class AppContentController extends Controller
         }
 
         if($data && is_array($data)){
-            $this->assign = array_merge($this->assign , $data ) ;
+            $this->assign = array_merge($this->assign , $data) ;
         }
 
         //TODO 优化点
@@ -220,7 +220,7 @@ abstract class AppContentController extends Controller
                     $this->locale.'.'. $this->activeMenuInfo['template_name'] ;
         }
 
-        return view(  $this->templateName , $this->assign  );
+        return view($this->templateName, $this->assign);
     }
 
     /**
