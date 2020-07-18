@@ -3,6 +3,8 @@
     @php( $__sheetUploadFieldOption = isset($column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_UPLOAD_CLOUD ]) ? $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_UPLOAD_CLOUD ] : [] )
     <div class="panel panel-default stars-plug">
         <div class="panel-heading">
+            <input type="file" value="选择上传文件" multiple id="selectFile_{{$column['db_name']}}" style="display: none">
+
             <button type="button" class="btn btn-default btn-sm" id="pickfiles_{{$column['db_name']}}" href="javascript:;">
                 选择文件
             </button>
@@ -43,16 +45,11 @@
             </div>
         </div>
     </div>
-
-    <form id="form">
-        <input type="file" value="选择上传文件" multiple id="selectFile">
-    </form>
-
 </div>
 
 <script type="text/javascript" src="{{asset('static/stars/cos-js-sdk/cos-js-sdk-v5.js')}}"></script>
 <script type="text/javascript">
-
+    let _uploaderModuleName ="{{$column['db_name']}}";
     var tempUploadKey = @json($__sheetUploadFieldOption['tmpUploadKey']);
     $(function () {
         credentials = tempUploadKey.credentials;
@@ -68,10 +65,19 @@
                 });
             }
         });
+        var fileQueue = null;
+        $('#selectFile_' + _uploaderModuleName).on("change",function(e){
+            let files = e.target.files;
+            fileQueue = [].map.call(files, function (f,index) {
+                fileId = "index_" + index;
+                index = "file_list_index_" + index;
+                let html = '<div id="' + index + '">' +
+                    '<a href="javascript:void(0)" class="_remove_queue_file'+_uploaderModuleName+'" data-file_id="'+fileId+'' +
+                    '">移除</a>' +
+                    ' ' + f.name + ' (' + f.size + ') ' +
+                    '<b></b></div>' ;
+                $('#filelist_' + _uploaderModuleName).append( html ) ;
 
-        $('#selectFile').on("change",function(e){
-            var files = e.target.files;
-            var list = [].map.call(files, function (f) {
                 return {
                     Bucket: tempUploadKey.bucket,
                     Region: tempUploadKey.region,
@@ -79,101 +85,46 @@
                     Body: f,
                 };
             });
-
-            cos.uploadFiles({files: list});
-
-
         });
 
-    });
 
-    /*$(function () {
-        let _uploaderModuleName ="{{$column['db_name']}}";
-        let uploader = new plupload.Uploader({
-            runtimes    : 'html5,flash,silverlight,html4',
-            browse_button: "pickfiles_{{$column['db_name']}}",
-            url:    "{{route('rotate.attachment.upload', ['client'=>'uploader'])}}" ,
-            flash_swf_url: "{{asset("static/stars/plugs/plupload/js/Moxie.swf")}}",
-            silverlight_xap_url: "{{asset("static/stars/plugs/plupload/js/Moxie.xap")}}",
-            file_data_name : 'uploader',
-            filters: {
-                 max_file_size: '{{ isset($__sheetUploadFieldOption['maxSize']) ? $__sheetUploadFieldOption['maxSize'].'MB' : 0 }}',
-                 mime_types: [
-                     {title : "files", extensions : "{{  isset($__sheetUploadFieldOption['fileType']) ? implode(',' , $__sheetUploadFieldOption['fileType']) : '*'  }}"},
-                 ]
-             },
+        $("#pickfiles_" + _uploaderModuleName).click(function(){
+            $('#selectFile_' + _uploaderModuleName).click();
+        })
 
-            init: {
-                PostInit: function (up) { },
-                BeforeUpload: function(up, file) {
-                    //设置参数
-                    uploader.setOption("multipart_params", {
-                        menuId    : "{{$menuId}}",
-                        bindId : "{{$bindId}}",
-                        dbName : _uploaderModuleName ,
-                        _token : "{{csrf_token()}}"
-                    });
-                },
-
-                FilesAdded: function (up, files) {
-
-                    console.log(files)
-                    plupload.each(files, function (file) {
-                        let html = '<div id="' + file.id + '">' +
-                            '<a href="javascript:void(0)" class="_remove_queue_file'+_uploaderModuleName+'" data-file_id="'+file.id+'' +
-                            '">移除</a>' +
-                            ' ' + file.name + ' (' + plupload.formatSize(file.size) + ') ' +
-                            '<b></b></div>' ;
-                        $('#filelist_' + _uploaderModuleName).append( html ) ;
-                    });
-                },
-
-                UploadProgress: function (up, file) {
-                    document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
-                },
-
-                Error: function (up, err) {
-                    if( err.code==-600 ){
-                        alert("选取文件不合法，请仔细检查文件名，文件大小。");
-                    }else{
-                        console.log("\nError #" + err.code + ": " + err.message);
-                    }
-
-                },
-
-                FileUploaded:function(up ,file ,result){
+        $('#uploadfiles_' + _uploaderModuleName).click(function(){
+            console.log(cos.getTaskList());
+            cos.uploadFiles({
+                files: fileQueue,
+                SliceSize : 1024* 1024,
+                onProgress:function (info) {
                     res  = eval('(' + result.response + ')');
                     if(res.error==0){
                         let html = '<input id="result_hidden_'+ file.id +'" type="hidden" name="'+_uploaderModuleName+'[]" value="'+ res.body.id +'">';
                         $('#upload_result_' + _uploaderModuleName ).append( html );
                     }
-
                 },
-                UploadComplete:function(up, files){
-                },
-                QueueChanged:function(up ){
+                onFileFinish:function (err, data, options) {
+                    // res  = eval('(' + result.response + ')');
+                    // if(res.error==0){
+                    //     let html = '<input id="result_hidden_'+ file.id +'" type="hidden" name="'+_uploaderModuleName+'[]" value="'+ res.body.id +'">';
+                    //     $('#upload_result_' + _uploaderModuleName ).append( html );
+                    // }
                 }
-            }
+            },function(err, data){
+                console.log(err || data);
+            });
         });
-        uploader.init();
+    });
 
-        $(document.body).on('click', '._remove_queue_file'+_uploaderModuleName, function(){
-            if(window.confirm('确定要移除队列吗?')){
-                let fileId = $(this).data('file_id');
-                uploader.removeFile(fileId);
-                $('#'+fileId).remove();
-                $('#result_hidden_'+fileId).remove();
-            }
-        });
-
-        $('#uploadfiles_' + _uploaderModuleName).click(function(){
-            if(uploader.total.queued ==0){
-                alert("请选择文件");
-                return ;
-            }
-            uploader.start();
-        });
-    });*/
-
+    //移除队列
+    $(document.body).on('click', '._remove_queue_file'+_uploaderModuleName, function(){
+        if(window.confirm('确定要移除队列吗?')){
+            let fileId = $(this).data('file_id');
+            console.log(fileId) //index_file_list_index_0
+            $('#file_list_'+fileId).remove();
+            $('#result_hidden_'+fileId).remove();
+        }
+    });
 </script>
 
