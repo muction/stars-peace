@@ -51,7 +51,7 @@ if( !function_exists( 'routeApp' ) ){
  * 获取附件内容
  */
 if( !function_exists( 'image' ) ){
-    function image( $attachment){
+    function attachment( $attachment){
         return isset( $attachment['save_file_path'] )
             ? '/storage/'. $attachment['save_file_path'] .'/'.$attachment['save_file_name'] : '';
     }
@@ -185,3 +185,11 @@ if( !function_exists( "makeArticleUrl" )){
     }
 }
 
+/**
+ * 枢纽器是为了更加方便扩展应用
+ */
+if(!function_exists('appHub')){
+    function appHubClassName($controllerName){
+        return "\\App\\Http\\Hubs\\{$controllerName}";
+    }
+}

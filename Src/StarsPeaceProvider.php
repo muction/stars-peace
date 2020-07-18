@@ -93,6 +93,6 @@ class StarsPeaceProvider extends ServiceProvider
      * @return string
      */
     private function getViewPath(){
-        return __DIR__ .'/Views/'. self::STARS_PEACE_ALIAS_NAME ;
+        return [__DIR__ .'/Views/'. self::STARS_PEACE_ALIAS_NAME , resource_path('views')] ;
     }
 }

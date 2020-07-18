@@ -61,6 +61,16 @@ interface SheetWidget
     public function addUploadWidget( $title, $dbName, $dbLength ,$option, $index  );
 
     /**
+     * 上传到云存储
+     * @param $title
+     * @param $dbName
+     * @param $dbLength
+     * @param $option
+     * @return mixed
+     */
+    public function addUploadCloudWidget($title, $dbName, $dbLength ,$option);
+
+    /**
      * 增加一个裁剪组件
      * @param $title
      * @param $dbName

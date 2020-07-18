@@ -7,6 +7,17 @@ class MenuBindEntity extends EntityEntity
 {
     protected $table= 'menu_binds';
     protected $fillable = [ 'title' ,'menu_id' ,'sheet_name' ,'alias_name' ,'options' ,'order' ,'status' ,'table_name' ];
+
+    /**
+     * 菜单绑定默认为模型绑定类型
+     */
+    const MENU_BIND_TYPE_DEFAULT = 'sheet';
+
+    /**
+     * 定制化需求需要绑定App类型
+     */
+    const MENU_BIND_TYPE_APP = 'app';
+
     /**
      * @param array $allBinds
      * @return mixed

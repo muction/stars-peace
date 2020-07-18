@@ -10,7 +10,7 @@
             </a>
         </li>
 
-        @if( $bindId == $bindInfo['id'] )
+        @if( $bindSheetInfo['type'] == \Stars\Peace\Entity\MenuBindEntity::MENU_BIND_TYPE_DEFAULT && $bindId == $bindInfo['id'] )
             <li @if( $action == 'add' ) class="active" @endif >
                 <a href="{{ route('rotate.article.articles', ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindInfo['id'] ,'action'=>'add' ]) }}">
                     <i class="mdi mdi-pen"></i>新增

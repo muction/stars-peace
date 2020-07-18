@@ -2,6 +2,7 @@
 
 namespace Stars\Peace\Controller;
 
+use Stars\Peace\Entity\MenuBindEntity;
 use Stars\Peace\Service\ArticleService;
 use Stars\Peace\Service\MenuBindService;
 use Stars\Peace\Service\NavMenuService;
@@ -31,6 +32,7 @@ class ArticleController extends PeaceController
         $assign = [
             'menuBindInfo'=>[] ,
             'sides' =>[] ,
+            'datas' =>[] ,
             'bindSheetInfo' => [] ,
             'navId'=>$navId ,
             'menuId'=>$menuId ,
@@ -53,28 +55,40 @@ class ArticleController extends PeaceController
                 $articleService= $articleService->init( $assign['bindSheetInfo'] ) ;
          }
 
-        //ACTION 执行删除操作
-        if(in_array( $action, ['remove'] ) && $assign['infoId']){
-            $removeResult=$articleService->remove($bindId, $assign['infoId'] );
-            return redirect( route('rotate.article.articles',
-                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+        $assign['bindListColumns'] = $articleService->bindListColumns ;
+        $assign['sheetColumns'] = $articleService->sheetColumns ;
+
+        //如果是绑定的App 类型直接全部指向到App控制器即可，让其实现业务流程
+        if($assign['bindSheetInfo']['type'] == MenuBindEntity::MENU_BIND_TYPE_APP){
+            $hub = appHubClassName($assign['bindSheetInfo']['sheet_name']);
+            $hub = new $hub($request, $assign);
+            return $this->view( $hub->getTemplateName(), $hub->getAssign());
+        }else{
+            //ACTION 执行删除操作
+            if(in_array( $action, ['remove'] ) && $assign['infoId']){
+                $removeResult=$articleService->remove($bindId, $assign['infoId'] );
+                return redirect( route('rotate.article.articles',
+                    ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+            }
+
+            //ACTION 执行保存操作，新增或修改
+            if( $request->isMethod('POST')){
+                $validateRules = [];
+                $validateMessages = [];
+                $bindRequiredColumns = isset( $assign['bindSheetInfo']['options']['column_required']) ?
+                    $assign['bindSheetInfo']['options']['column_required'] : [] ;
+                foreach ( $bindRequiredColumns as $_index=> $_item ){
+                    $validateRules[ $_item ] = 'required';
+                    $validateMessages[ $_item.'.required' ] = '不能为空' ;
+                }
+                $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
+                $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
+                return redirect( route('rotate.article.articles',
+                    ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+            }
+
         }
 
-        //ACTION 执行保存操作，新增或修改
-        if( $request->isMethod('POST')){
-            $validateRules = [];
-            $validateMessages = [];
-            $bindRequiredColumns = isset( $assign['bindSheetInfo']['options']['column_required']) ?
-                $assign['bindSheetInfo']['options']['column_required'] : [] ;
-            foreach ( $bindRequiredColumns as $_index=> $_item ){
-                $validateRules[ $_item ] = 'required';
-                $validateMessages[ $_item.'.required' ] = '不能为空' ;
-            }
-            $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
-            $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
-            return redirect( route('rotate.article.articles',
-                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
-        }
 
         // 树行菜单
         $assign['sides'] = $navMenuService->articleTree( $navId );
@@ -84,8 +98,6 @@ class ArticleController extends PeaceController
         {
             // 分页获取数据
             $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );
-            $assign['bindListColumns'] = $articleService->bindListColumns ;
-            $assign['sheetColumns'] = $articleService->sheetColumns ;
             $templateName = "article.index.articles";
 
         }else if( in_array($action, ['add']) )
@@ -94,7 +106,6 @@ class ArticleController extends PeaceController
 
         }else if( in_array($action, [ 'edit']) )
         {
-
             $assign['bindSheetInfo'] = $articleService->mergeColumnNowValue(  $bindId , $assign['infoId'] );
             $templateName = "article.index.form";
 

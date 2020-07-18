@@ -81,4 +81,10 @@ interface SheetOption
      * @return mixed
      */
     public function optionDateFormat();
+
+    /**
+     * 上传到云存储
+     * @return mixed
+     */
+    public function optionUploadCloundStorage(CloudStorage $cloudStorage);
 }

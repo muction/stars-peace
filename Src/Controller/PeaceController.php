@@ -1,16 +1,24 @@
 <?php
 namespace Stars\Peace\Controller;
 
+use App\Http\Controllers\ResponseContent;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\ResponseTrait;
+use Illuminate\Routing\Controller as BaseController;
+
 
 /**
  * root 控制器
  * Class PeaceController
  * @package Stars\Peace\Controller
  */
-class PeaceController extends Controller
+class PeaceController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     protected $tableHead = [];
 
     /**

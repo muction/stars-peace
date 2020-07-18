@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Foundation;
 
+use Stars\Peace\Contracts\CloudStorage;
 use Stars\Peace\Contracts\Sheet ;
 use Stars\Peace\Contracts\SheetColumn;
 use Stars\Peace\Contracts\SheetWidget;
@@ -123,6 +124,11 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     const SUPPORT_WIDGET_UPLOAD = 'upload';
 
     /**
+     * 云存储
+     */
+    const SUPPORT_WIDGET_UPLOAD_CLOUD = 'upload_cloud';
+
+    /**
      * 数字数据框
      */
     const SUPPORT_WIDGET_NUMBER = 'number';
@@ -187,6 +193,11 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * 设置：上传key
      */
     const OPTION_KEY_UPLOAD = 'upload';
+
+    /**
+     * 上传到云存储
+     */
+    const OPTION_KEY_UPLOAD_CLOUD = 'cloud';
 
     /**
      * 设置加密方式
@@ -410,6 +421,20 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     }
 
     /**
+     * 上传到云存储
+     * @param CloudStorage $cloudStorage
+     * @return mixed|void
+     */
+    final public function optionUploadCloundStorage(CloudStorage $cloudStorage)
+    {
+        return [
+            self::OPTION_KEY_UPLOAD_CLOUD=>[
+                'tmpUploadKey' => $cloudStorage->getTempUploadKey()
+            ]
+        ];
+    }
+
+    /**
      * Hash加密
      * @return mixed|void
      */
@@ -592,7 +617,6 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     final public function addUploadWidget($title, $dbName, $dbLength, $option=[],$index=false)
     {
-
         $this->columns[$dbName] = [
             'title'  => $title ,
             'plug'   => self::SUPPORT_WIDGET_UPLOAD  ,
@@ -600,6 +624,25 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
             'db_name'=> $dbName,
             'db_length'  => $dbLength ,
             'db_index'   => $index,
+            'options'    => $option
+        ];
+    }
+
+    /**
+     * 上传到云存储
+     * @param $title
+     * @param $dbName
+     * @param $dbLength
+     * @param array $option
+     */
+    final public function addUploadCloudWidget($title, $dbName, $dbLength, $option=[]){
+        $this->columns[] = [
+            'title'  => $title ,
+            'plug'=>self::SUPPORT_WIDGET_UPLOAD_CLOUD,
+            'scene'  =>self::SCENE_APP ,
+            'db_name'=> $dbName,
+            'db_length'  => $dbLength ,
+            'db_index'   => false,
             'options'    => $option
         ];
     }
