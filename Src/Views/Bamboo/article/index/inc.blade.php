@@ -1,6 +1,7 @@
 <ul class="nav nav-tabs">
     @foreach( $menuBindInfo as $bindInfo )
-        <li @if( $bindId == $bindInfo['id'] && !$action ) class="active" @endif >
+
+        <li @if( $bindId == $bindInfo['id']) class="active" @endif >
             <a href="{{ route('rotate.article.articles', ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindInfo['id']]) }}">
                 {{ $bindInfo['title'] }}
             </a>
