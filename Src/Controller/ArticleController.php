@@ -62,6 +62,10 @@ class ArticleController extends PeaceController
         if($assign['bindSheetInfo']['type'] == MenuBindEntity::MENU_BIND_TYPE_APP){
             $hub = appHubClassName($assign['bindSheetInfo']['sheet_name']);
             $hub = new $hub($request, $assign);
+            $responseHub = $hub->router($request);
+            if(!$hub->getTemplateName()){
+                return $responseHub;
+            }
             return $this->view( $hub->getTemplateName(), $hub->getAssign());
         }else{
             //ACTION 执行删除操作

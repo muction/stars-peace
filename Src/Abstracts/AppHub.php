@@ -9,13 +9,12 @@ use Illuminate\Http\Request;
  */
 abstract class AppHub
 {
-    protected $viewPrefixName = 'Hub.';
+    protected $viewPrefixName = '';
     protected $templateName = "";
     protected $assign = [];
 
     public function __construct(Request $request, array $assign){
         $this->assign = $assign;
-        $this->router($request);
     }
 
     /**
