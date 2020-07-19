@@ -60,39 +60,40 @@ class ArticleController extends PeaceController
 
         //如果是绑定的App 类型直接全部指向到App控制器即可，让其实现业务流程
         if($assign['bindSheetInfo']['type'] == MenuBindEntity::MENU_BIND_TYPE_APP){
-            $hub = appHubClassName($assign['bindSheetInfo']['sheet_name']);
+            $hub = appHubClassName($assign['bindSheetInfo']['hub_name']);
             $hub = new $hub($request, $assign);
             $responseHub = $hub->router($request);
-            if(!$hub->getTemplateName()){
-                return $responseHub;
-            }
-            return $this->view( $hub->getTemplateName(), $hub->getAssign());
-        }else{
-            //ACTION 执行删除操作
-            if(in_array( $action, ['remove'] ) && $assign['infoId']){
-                $removeResult=$articleService->remove($bindId, $assign['infoId'] );
-                return redirect( route('rotate.article.articles',
-                    ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
-            }
-
-            //ACTION 执行保存操作，新增或修改
-            if( $request->isMethod('POST')){
-                $validateRules = [];
-                $validateMessages = [];
-                $bindRequiredColumns = isset( $assign['bindSheetInfo']['options']['column_required']) ?
-                    $assign['bindSheetInfo']['options']['column_required'] : [] ;
-                foreach ( $bindRequiredColumns as $_index=> $_item ){
-                    $validateRules[ $_item ] = 'required';
-                    $validateMessages[ $_item.'.required' ] = '不能为空' ;
+            if(!$hub->getIsUseModel()){
+                if(!$hub->getTemplateName()){
+                    return $responseHub;
                 }
-                $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
-                $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
-                return redirect( route('rotate.article.articles',
-                    ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+                return $this->view( $hub->getTemplateName(), $hub->getAssign());
             }
-
         }
 
+        //ACTION 执行删除操作
+        if(in_array( $action, ['remove'] ) && $assign['infoId']){
+
+            $removeResult=$articleService->remove($bindId, $assign['infoId'] );
+            return redirect( route('rotate.article.articles',
+                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+        }
+
+        //ACTION 执行保存操作，新增或修改
+        if( $request->isMethod('POST')){
+            $validateRules = [];
+            $validateMessages = [];
+            $bindRequiredColumns = isset( $assign['bindSheetInfo']['options']['column_required']) ?
+                $assign['bindSheetInfo']['options']['column_required'] : [] ;
+            foreach ( $bindRequiredColumns as $_index=> $_item ){
+                $validateRules[ $_item ] = 'required';
+                $validateMessages[ $_item.'.required' ] = '不能为空' ;
+            }
+            $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
+            $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
+            return redirect( route('rotate.article.articles',
+                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+        }
 
         // 树行菜单
         $assign['sides'] = $navMenuService->articleTree( $navId );
@@ -104,7 +105,7 @@ class ArticleController extends PeaceController
             $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );
             $templateName = "article.index.articles";
 
-        }else if( in_array($action, ['add']) )
+        }else if( in_array($action, ['add','create']) )
         {
             $templateName = "article.index.form";
 

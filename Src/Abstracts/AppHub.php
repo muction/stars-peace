@@ -12,7 +12,7 @@ abstract class AppHub
     protected $viewPrefixName = '';
     protected $templateName = "";
     protected $assign = [];
-
+    protected $useModel = false;
     public function __construct(Request $request, array $assign){
         $this->assign = $assign;
     }
@@ -48,6 +48,23 @@ abstract class AppHub
      */
     public function getTemplateName(){
         return $this->viewPrefixName.$this->templateName;
+    }
+
+    /**
+     * 时是否使用模型
+     * @return bool
+     */
+    public function getIsUseModel(){
+        return $this->useModel;
+    }
+
+    /**
+     * 设置时是否使用模型
+     * @param bool $isUseModel
+     * @return bool
+     */
+    public function setIsUseModel(bool $isUseModel){
+        return $this->useModel = $isUseModel;
     }
 
     /**

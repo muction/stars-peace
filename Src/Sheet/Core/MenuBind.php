@@ -29,6 +29,7 @@ class MenuBind extends SheetSheet
         $this->addIntColumn('菜单ID', 'menu_id', 11);
         $this->addVarCharColumn('绑定名称', 'title', 255);
         $this->addVarCharColumn('模型名', 'sheet_name', 255);
+        $this->addVarCharColumn('Hub名称', 'hub_name', 255);
         $this->addVarCharColumn('别名', 'alias_name', 255);
         $this->addVarCharColumn('数据表名称', 'table_name', 255);
         $this->addVarCharColumn('绑定设置', 'options', 512);
