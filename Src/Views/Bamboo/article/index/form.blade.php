@@ -47,7 +47,7 @@
 
 <form class="form-horizontal" id="articleSubmitForm" action="{{ route( 'rotate.article.articles.storage' , ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ,'action'=>$action ,'infoId'=>$infoId ] ) }}" method="post">
 
-    @csrf
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     @foreach( $bindSheetInfo['sheet']['columns'] as $column )
 

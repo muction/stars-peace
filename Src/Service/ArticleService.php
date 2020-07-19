@@ -117,8 +117,6 @@ class ArticleService extends ServiceService
 
             return $affect;
         }
-
-
         $storage  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
         if( $this->hook ){
             $hook = new ArticleHookFoundation( new $this->hook()  );
@@ -190,7 +188,7 @@ class ArticleService extends ServiceService
                     continue;
                 }
                 //加入附件内容
-                if($value && in_array($this->sheetInfo['sheet']['columns'][$column]['plug'] , [ SheetSheet::SUPPORT_WIDGET_UPLOAD , SheetSheet::SUPPORT_WIDGET_CROPPER ] ) ){
+                if($value && in_array($this->sheetInfo['sheet']['columns'][$column]['plug'] , [ SheetSheet::SUPPORT_WIDGET_UPLOAD , SheetSheet::SUPPORT_WIDGET_UPLOAD_CLOUD, SheetSheet::SUPPORT_WIDGET_CROPPER ] ) ){
                     $attachmentInfo = AttachmentEntity::files($bindId, explode(',' , $value ) );
                     $value = $attachmentInfo ? $attachmentInfo->toArray() : [];
                 }

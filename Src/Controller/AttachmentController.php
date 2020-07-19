@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class AttachmentController extends PeaceController
 {
 
-    private $allowClient = [ 'KindEditorImg' ,'KindEditor' ,'uploader' ];
+    private $allowClient = [ 'KindEditorImg' ,'KindEditor' ,'uploader' ,'cloud'];
 
     /**
      * 上传文件接口
@@ -103,5 +103,21 @@ class AttachmentController extends PeaceController
      */
     public function manager( Request $request, AttachmentService $attachmentService ){
         return json_encode($attachmentService->manager( $request )) ;
+    }
+
+    /**
+     * 云存储仅做数据库插入操作
+     * @param Request $request
+     * @param AttachmentService $attachmentService
+     * @param $client
+     */
+    public function cloud(Request $request, AttachmentService $attachmentService, $client){
+        if (!in_array( $client , $this->allowClient )){
+            throw new \Exception("未授权的客户端上传，{$client}");
+        }
+
+        return $this->responseSuccess(
+            $attachmentService->uploadCloud($request, $client)
+        );
     }
 }

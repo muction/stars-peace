@@ -52,6 +52,7 @@ trait TraitSheet
                         case self::SUPPORT_WIDGET_TEXTAREA:
                         case self::SUPPORT_WIDGET_TEXT:
                         case self::SUPPORT_WIDGET_UPLOAD:
+                        case self::SUPPORT_WIDGET_UPLOAD_CLOUD:
                         case self::SUPPORT_WIDGET_MAP_BAIDU:
                         case self::SUPPORT_COLUMN_VARCHAR:
                             $column = $table->string($item['db_name'], $item['db_length']) ;

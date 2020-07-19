@@ -11,6 +11,7 @@
             <button type="button" class="btn btn-default btn-sm" id="uploadfiles_{{$column['db_name']}}" href="javascript:;">
                 开始上传
             </button>
+            <span id="progress_show_{{$column['db_name']}}"></span>
         </div>
         <div class="panel-body">
             <div>
@@ -27,8 +28,8 @@
                 @if( isset($column['now_value']) && $column['now_value'])
                     @foreach( $column['now_value'] as $__nowFileValue )
 
-                        <div id="{{ md5($__nowFileValue['id']) }}">
-                            <a href="javascript:void(0)" class="_remove_queue_file{{ $column['db_name'] }}" data-file_id="{{ md5($__nowFileValue['id']) }}">移除</a>
+                        <div id="file_list_index_{{ md5($__nowFileValue['id']) }}">
+                            <a href="javascript:void(0)" class="_remove_queue_file{{ $column['db_name'] }}" data-file_id="index_{{ md5($__nowFileValue['id']) }}">移除</a>
                             {{ $__nowFileValue['original_name'] }}
                         </div>
 
@@ -39,7 +40,7 @@
             <div id="upload_result_{{$column['db_name']}}">
                 @if( isset($column['now_value']) && $column['now_value'])
                     @foreach( $column['now_value'] as $__nowValue )
-                        <input id="result_hidden_{{ md5($__nowValue['id']) }}" type="hidden" name="{{ $column['db_name'] }}[]" value="{{$__nowValue['id']}}">
+                        <input id="result_hidden_index_{{ md5($__nowValue['id']) }}" type="hidden" name="{{ $column['db_name'] }}[]" value="{{$__nowValue['id']}}">
                     @endforeach
                 @endif
             </div>
@@ -48,6 +49,7 @@
 </div>
 
 <script type="text/javascript" src="{{asset('static/stars/cos-js-sdk/cos-js-sdk-v5.js')}}"></script>
+<script type="text/javascript" src="{{asset('static/stars/js/jquery.md5.js')}}"></script>
 <script type="text/javascript">
     let _uploaderModuleName ="{{$column['db_name']}}";
     var tempUploadKey = @json($__sheetUploadFieldOption['tmpUploadKey']);
@@ -59,7 +61,6 @@
                     TmpSecretId: credentials.tmpSecretId,
                     TmpSecretKey: credentials.tmpSecretKey,
                     XCosSecurityToken: credentials.sessionToken,
-                    // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
                     StartTime: tempUploadKey.startTime, // 时间戳，单位秒，如：1580000000
                     ExpiredTime: tempUploadKey.expiredTime, // 时间戳，单位秒，如：1580000900
                 });
@@ -75,14 +76,15 @@
                     '<a href="javascript:void(0)" class="_remove_queue_file'+_uploaderModuleName+'" data-file_id="'+fileId+'' +
                     '">移除</a>' +
                     ' ' + f.name + ' (' + f.size + ') ' +
-                    '<b></b></div>' ;
+                    '<b id="process_'+fileId+'"></b></div>' ;
                 $('#filelist_' + _uploaderModuleName).append( html ) ;
-
+                var spl = f.name.split(".");
+                var fileType= spl[spl.length-1];
                 return {
                     Bucket: tempUploadKey.bucket,
                     Region: tempUploadKey.region,
-                    Key: tempUploadKey.uploadPath + f.name,
-                    Body: f,
+                    Key: tempUploadKey.uploadPath + $.md5(f.name) + '.' + fileType,
+                    Body: f
                 };
             });
         });
@@ -93,23 +95,39 @@
         })
 
         $('#uploadfiles_' + _uploaderModuleName).click(function(){
-            console.log(cos.getTaskList());
             cos.uploadFiles({
                 files: fileQueue,
                 SliceSize : 1024* 1024,
+                onTaskReady: function(taskId){
+                    console.log(taskId)
+                },
                 onProgress:function (info) {
-                    res  = eval('(' + result.response + ')');
-                    if(res.error==0){
-                        let html = '<input id="result_hidden_'+ file.id +'" type="hidden" name="'+_uploaderModuleName+'[]" value="'+ res.body.id +'">';
-                        $('#upload_result_' + _uploaderModuleName ).append( html );
-                    }
+                    var percent = parseInt(info.percent * 10000) / 100;
+                    var speed = parseInt(info.speed / 1024 / 1024 * 100) / 100;
+                    $('#progress_show_' + _uploaderModuleName).html('进度：' + percent + '%; 速度：' + speed + 'Mb/s;');
                 },
                 onFileFinish:function (err, data, options) {
-                    // res  = eval('(' + result.response + ')');
-                    // if(res.error==0){
-                    //     let html = '<input id="result_hidden_'+ file.id +'" type="hidden" name="'+_uploaderModuleName+'[]" value="'+ res.body.id +'">';
-                    //     $('#upload_result_' + _uploaderModuleName ).append( html );
-                    // }
+                    console.log('===',options ,data, '===')
+                    options['_token'] = "{{ csrf_token() }}";
+                    options['bind_id'] = "{{$bindId}}"
+                    $.ajax({
+                        url : "{{route('rotate.attachment.upload.clud', ['client'=>'cloud'])}}" ,
+                        type : "post",
+                        dataType:"json",
+                        data: options,
+                        error:function(err){
+                            console.log("请求保存时出错", err)
+                        },
+                        success:function(data){
+                            if(data.error == 0){
+                                data = data.body;
+                                let html = '<input id="result_hidden_index_'+ options.Index +'" type="hidden" name="'+_uploaderModuleName+'[]" value="'+ data.id +'">';
+                                $('#upload_result_' + _uploaderModuleName ).append( html );
+                            }else{
+                                console.log(data,'获取存储ID时错误');
+                            }
+                        }
+                    })
                 }
             },function(err, data){
                 console.log(err || data);
@@ -121,7 +139,6 @@
     $(document.body).on('click', '._remove_queue_file'+_uploaderModuleName, function(){
         if(window.confirm('确定要移除队列吗?')){
             let fileId = $(this).data('file_id');
-            console.log(fileId) //index_file_list_index_0
             $('#file_list_'+fileId).remove();
             $('#result_hidden_'+fileId).remove();
         }

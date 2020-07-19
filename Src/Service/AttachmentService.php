@@ -225,4 +225,34 @@ class AttachmentService extends ServiceService
         return $return;
     }
 
+    /**
+     * 记录云存储
+     * @param Request $request
+     * @param $client
+     * @return array|mixed
+     */
+    public function uploadCloud(Request $request , $client){
+        $fileAllName = $request->input('Key');
+        if(!$fileAllName){
+            return [];
+        }
+
+        $fileName = substr($fileAllName, strripos($fileAllName, '/') +1);
+        $fileType = substr($fileName, strripos($fileName, '.') +1);
+        $savePath = substr($fileAllName,0, strripos($fileAllName, '/'));
+        $str = $this->attachmentStorageStruck(
+            $request->input('bind_id'),
+            $fileName,
+            0,
+            $savePath,
+            $fileType,
+            '云存储',
+            $client,
+            $fileName
+        );
+        if($attach = AttachmentEntity::storage($str)){
+           return $attach;
+        }
+        return  [];
+    }
 }

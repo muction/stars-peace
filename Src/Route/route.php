@@ -113,6 +113,7 @@ Route::group(['prefix'=>"rotate" ,'middleware'=>['web'] , 'namespace'=> "Stars\P
 
         //文件上传
         Route::post('/attachments/upload/{client}' , 'AttachmentController@upload' )->name( 'rotate.attachment.upload' );
+        Route::post('/attachments/cloud/{client}' , 'AttachmentController@cloud' )->name( 'rotate.attachment.upload.clud' );
         Route::get('/attachments' , 'AttachmentController@index' )->name( 'rotate.attachment.index' );
         Route::get('/attachments/manager' , 'AttachmentController@manager' )->name( 'rotate.attachment.manager' );
         Route::get('/attachments/handle/cropper/{column}/{navId}/{menuId}/{bindId}/{attachmentId}' , 'AttachmentController@cropper' )->name( 'rotate.attachment.handle.cropper.page' );

@@ -410,7 +410,6 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      */
     final public function optionUploadFile(int $fileSize, array $fileType , $notice="" )
     {
-
         return [
             self::OPTION_KEY_UPLOAD=>[
                 'maxSize' => $fileSize,
@@ -425,11 +424,14 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * @param CloudStorage $cloudStorage
      * @return mixed|void
      */
-    final public function optionUploadCloundStorage(CloudStorage $cloudStorage)
+    final public function optionUploadCloundStorage(CloudStorage $cloudStorage,int $fileSize =10, array $fileType=[] , $notice="" )
     {
         return [
             self::OPTION_KEY_UPLOAD_CLOUD=>[
-                'tmpUploadKey' => $cloudStorage->getTempUploadKey()
+                'tmpUploadKey' => $cloudStorage->getTempUploadKey(),
+                'maxSize' => $fileSize,
+                'fileType'=>$fileType ,
+                'notice'=> $notice
             ]
         ];
     }
@@ -636,7 +638,7 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * @param array $option
      */
     final public function addUploadCloudWidget($title, $dbName, $dbLength, $option=[]){
-        $this->columns[] = [
+        $this->columns[$dbName] = [
             'title'  => $title ,
             'plug'=>self::SUPPORT_WIDGET_UPLOAD_CLOUD,
             'scene'  =>self::SCENE_APP ,
@@ -917,6 +919,7 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
             self::SUPPORT_WIDGET_EDITOR,
             self::SUPPORT_WIDGET_CROPPER,
             self::SUPPORT_WIDGET_UPLOAD,
+            self::SUPPORT_WIDGET_UPLOAD_CLOUD,
             self::SUPPORT_WIDGET_SELECT,
             self::SUPPORT_WIDGET_PASSWORD,
             self::SUPPORT_WIDGET_CODE_MIRROR ,
