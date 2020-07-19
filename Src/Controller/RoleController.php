@@ -109,7 +109,6 @@ class RoleController extends PeaceController
         $allNavMenus = $roleService->allNavMenusTree( $role );
         //组装为json 树
         $allNavMenus = $roleService->mergePermissionNavMenus($allTypePermissions->toArray(), $allNavMenus , $role);
-
         return $this->view("role.bind" , [
             'role'=>$role ,
             'permissions'=>$permissions ,

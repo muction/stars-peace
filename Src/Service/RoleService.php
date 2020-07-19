@@ -90,7 +90,7 @@ class RoleService extends ServiceService
             foreach ($navs as $index=> $nav){
                 $menus=  NavMenuEntity::where('nav_id', $nav->id)
                     ->select(['id','parent_id as pId','title as name'])
-                    ->with([])
+                    ->with(['binds'])
                     ->get();
                 if($menus){
                     $tree[ $index ]['nav'] = [
@@ -100,6 +100,7 @@ class RoleService extends ServiceService
                     ];
 
                     $items= $menus->toArray();
+                    $bindMenus = [];
                     foreach ($items as $in=>$it){
                         $hasChecked = isset( $role['menus']) && is_array( $role['menus']) ? in_array(
                             $it['id'] , $role['menus']
@@ -107,12 +108,25 @@ class RoleService extends ServiceService
                         $items[$in]['open'] = true;
                         $items[$in]['checked'] = $hasChecked;
                         $items[$in]['dataType'] = "menus";
+                        if($it['binds']){
+                            foreach ($it['binds'] as $bind){
+                                $bindMenus[] = [
+                                    'id'=>2100* $it['id'],
+                                    'pId'=>$it['id'],
+                                    'name'=>$bind['title'],
+                                    'checked'=>false,
+                                    'dataType'=>'menu'
+                                ];
+                            }
+                        }
                     }
-                    $tree[ $index]['menus'] = $items;
+
+
+                    $tree[ $index]['menus'] = array_merge($items, $bindMenus);
                 }
             }
         }
-
+        //dd($tree);
         return $tree;
     }
 
@@ -152,6 +166,5 @@ class RoleService extends ServiceService
 
         $s = array_merge( $permissions , $allNavMenus );
        return $s;
-        dd( $s ,$allTypePermissions );
     }
 }
