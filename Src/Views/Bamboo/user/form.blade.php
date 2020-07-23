@@ -11,6 +11,7 @@
         @csrf
         <input type="hidden" name="id" value="{{ old('id' ,isset($info['id'] ) ? $info['id'] : 0 )  }}">
 
+        @include("StarsPeace::user.inc.procenter")
 
         <div class="form-group  @error('username') has-error @enderror">
             <label for="username" class="col-sm-2 control-label">登录名 <span class="required">*</span></label>

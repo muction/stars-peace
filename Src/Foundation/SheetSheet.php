@@ -215,6 +215,11 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
     const OPTION_KEY_VALUE_TABLE = 'value_table';
 
     /**
+     * 设置：函数处理回调
+     */
+    const OPTION_KEY_VALUE_CALLBACK = 'value_callback';
+
+    /**
      * 设置：默认值
      */
     const OPTION_KEY_DEFAULT_VALUE = 'default';
@@ -399,6 +404,24 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
             return [self::OPTION_KEY_VALUE_TABLE=> [ 'column'=>['title'=>$titleField, 'value'=>$valueField ] , 'data'=>$data ]  ];
         }
         return [];
+    }
+
+    /**
+     * 回调函数
+     * @param $titleField
+     * @param $valueField
+     * @param $callUserFunArray
+     * @param array $params
+     * @return array[]
+     * @throws \Exception
+     */
+    final public function optionValueCallback($titleField, $valueField, $callUserFunArray, $children='nodes', $params =[]){
+        if(!function_exists($callUserFunArray)){
+            throw new \Exception("指定的自定义函数不存在 {$callUserFunArray}");
+        }
+        $data = call_user_func_array($callUserFunArray, $params);
+        return [self::OPTION_KEY_VALUE_CALLBACK=> [ 'column'=>['title'=>$titleField, 'value'=>$valueField ,'children'=>$children] , 'data'=>$data ]  ];
+
     }
 
     /**

@@ -31,7 +31,7 @@ class UserService extends ServiceService
 
 
         $roles = $request->input('role' , []);
-        $storage = $request->only(['username' ,'password' ,'email' ,'phone' ,'branch' ,'status']);
+        $storage = $request->only(['username' ,'password' ,'pro_id','center_id' ,'email' ,'phone' ,'branch' ,'status']);
 
         //有文件上传时进行上传
         if( $request->hasFile('portrait') ){

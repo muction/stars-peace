@@ -32,4 +32,28 @@
             </option>
         @endif
     @endif
+
+
+    @if ( isset( $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_VALUE_CALLBACK] ) )
+        @php( $__sheetValueCallBackValue= $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_VALUE_CALLBACK]['data'])
+        @php( $__sheetValueCallBackField= $column['options'][\Stars\Peace\Foundation\SheetSheet::OPTION_KEY_VALUE_CALLBACK]['column'])
+
+        @foreach($__sheetValueCallBackValue as $_index=>$_item)
+            @if(isset( $_item[$__sheetValueCallBackField['children']]) )
+                <optgroup label="{{$_item[$__sheetValueCallBackField['title']]}}">
+                    @foreach ($_item[$__sheetValueCallBackField['children']] as $_nodes_index=>$_nodes_item)
+                        <option value="{{ $_nodes_item[$__sheetValueCallBackField['value']] }}"
+                                @if(  $_nodes_item[$__sheetValueCallBackField['value']]  == $__selectActiveValue ) selected="selected" @endif>
+                            {{ $_nodes_item[$__sheetValueCallBackField['title'] ]}}
+                        </option>
+                    @endforeach
+                </optgroup>
+            @else
+                <option value="{{ $_item[$__sheetValueCallBackField['value']] }}"
+                        @if(  $_item[$__sheetValueCallBackField['value']]  == $__selectActiveValue ) selected="selected" @endif>
+                    {{ $_item[$__sheetValueCallBackField['title'] ]}}
+                </option>
+            @endif
+        @endforeach
+    @endif
 </select>

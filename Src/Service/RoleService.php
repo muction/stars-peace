@@ -108,17 +108,17 @@ class RoleService extends ServiceService
                         $items[$in]['open'] = true;
                         $items[$in]['checked'] = $hasChecked;
                         $items[$in]['dataType'] = "menus";
-                        if($it['binds']){
-                            foreach ($it['binds'] as $bind){
-                                $bindMenus[] = [
-                                    'id'=>2100* $it['id'],
-                                    'pId'=>$it['id'],
-                                    'name'=>$bind['title'],
-                                    'checked'=>false,
-                                    'dataType'=>'menu'
-                                ];
-                            }
-                        }
+//                        if($it['binds']){
+//                            foreach ($it['binds'] as $bind){
+//                                $bindMenus[] = [
+//                                    'id'=>2100* $it['id'],
+//                                    'pId'=>$it['id'],
+//                                    'name'=>$bind['title'],
+//                                    'checked'=>false,
+//                                    'dataType'=>'menu'
+//                                ];
+//                            }
+//                        }
                     }
 
 

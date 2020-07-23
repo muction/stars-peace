@@ -55,6 +55,7 @@
             @continue
         @endif
 
+
         <div class="form-group  @error($column['db_name'] ) has-error @enderror">
             <label for="inputEmail3" class="col-sm-1 control-label">
                 @if( isset($bindSheetInfo['options']['column_required']) && in_array($column['db_name'] , $bindSheetInfo['options']['column_required']) )

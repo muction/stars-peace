@@ -2,6 +2,8 @@
 
 namespace Stars\Peace\Controller;
 
+use App\Models\AppCommonCenter;
+use App\Models\AppCommonProvincial;
 use Illuminate\Support\Facades\Hash;
 use Stars\Peace\Service\RoleService;
 use Stars\Peace\Service\UserService;
@@ -32,7 +34,9 @@ class UserController extends PeaceController
     public function addPage( UserService $userService, RoleService $roleService ){
 
         $roles = $roleService->index();
-        return $this->view( "user.form" , ['roles'=> $roles] );
+        $proInfos = AppCommonProvincial::get();
+        $centerInfos = AppCommonCenter::get();
+        return $this->view( "user.form" , ['roles'=> $roles,'proInfos'=>$proInfos, 'centerInfos'=>$centerInfos] );
     }
 
     /**
@@ -45,8 +49,11 @@ class UserController extends PeaceController
     public function editPage(UserService $userService,  RoleService $roleService, $infoId ){
         $roles = $roleService->index();
         $info = $userService->info( $infoId );
-
-        return $this->view("user.form", ['info'=>$info ,'hasRoles'=> $info ? array_column( ($info->toArray())['roles'] , 'id' ) : [] , 'roles'=> $roles ] );
+        $proInfos = AppCommonProvincial::get();
+        $centerInfos = AppCommonCenter::get();
+        return $this->view("user.form",
+            ['info'=>$info ,'hasRoles'=> $info ? array_column( ($info->toArray())['roles'] , 'id' ) : [] , 'roles'=> $roles,
+                'proInfos'=>$proInfos, 'centerInfos'=>$centerInfos] );
     }
 
     /**

@@ -43,6 +43,16 @@ interface SheetOption
     public function optionValueTable( $tableName, $titleField, $valueField, $where, $order, $limit);
 
     /**
+     * 回调函数处理
+     * @param $titleField
+     * @param $valueField
+     * @param $callUserFunArray
+     * @param $param
+     * @return mixed
+     */
+    public function optionValueCallback($titleField, $valueField, $callUserFunArray, $param);
+
+    /**
      * 上传文件配置
      * @param int $fileSize
      * @param array $fileType

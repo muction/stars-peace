@@ -89,7 +89,7 @@ class ArticleController extends PeaceController
                 $validateRules[ $_item ] = 'required';
                 $validateMessages[ $_item.'.required' ] = '不能为空' ;
             }
-            $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
+            $res =  $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
             $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
             return redirect( route('rotate.article.articles',
                 ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
