@@ -1,6 +1,7 @@
 <?php
 namespace Stars\Peace\Foundation;
 
+use Stars\Peace\Contracts\CloudStorage;
 use Stars\Peace\Contracts\Sheet ;
 use Stars\Peace\Contracts\SheetColumn;
 use Stars\Peace\Contracts\SheetWidget;
@@ -187,6 +188,16 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
      * 设置：上传key
      */
     const OPTION_KEY_UPLOAD = 'upload';
+
+    /**
+     * 云存储
+     */
+    const SUPPORT_WIDGET_UPLOAD_CLOUD = 'upload_cloud';
+
+    /**
+     * 上传到云存储
+     */
+    const OPTION_KEY_UPLOAD_CLOUD = 'cloud';
 
     /**
      * 设置加密方式
@@ -858,6 +869,41 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
         ];
     }
 
+    /**
+     * 上传到云存储
+     * @param $title
+     * @param $dbName
+     * @param $dbLength
+     * @param array $option
+     */
+    final public function addUploadCloudWidget($title, $dbName, $dbLength, $option=[]){
+        $this->columns[$dbName] = [
+            'title'  => $title ,
+            'plug'=>self::SUPPORT_WIDGET_UPLOAD_CLOUD,
+            'scene'  =>self::SCENE_APP ,
+            'db_name'=> $dbName,
+            'db_length'  => $dbLength ,
+            'db_index'   => false,
+            'options'    => $option
+        ];
+    }
+
+    /**
+     * 上传到云存储
+     * @param CloudStorage $cloudStorage
+     * @return mixed|void
+     */
+    final public function optionUploadCloudStorage(CloudStorage $cloudStorage,int $fileSize =10, array $fileType=[] , $notice="" )
+    {
+        return [
+            self::OPTION_KEY_UPLOAD_CLOUD=>[
+                'tmpUploadKey' => $cloudStorage->getTempUploadKey(),
+                'maxSize' => $fileSize,
+                'fileType'=>$fileType ,
+                'notice'=> $notice
+            ]
+        ];
+    }
 
     /**
      * 当前系统支持的插件
@@ -882,6 +928,7 @@ abstract class SheetSheet implements Sheet,SheetOption,SheetWidget,SheetColumn
             self::SUPPORT_COLUMN_NUMBER,
             self::SUPPORT_COLUMN_TINYINT,
             self::SUPPORT_COLUMN_VARCHAR,
+            self::SUPPORT_WIDGET_UPLOAD_CLOUD,
         ];
     }
 

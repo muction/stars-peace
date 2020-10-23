@@ -96,6 +96,10 @@
                     @include("StarsPeace::plugs.form.upload")
                     @break
 
+                    @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_UPLOAD_CLOUD )
+                    @include("StarsPeace::plugs.form.cloud")
+                    @break
+
                     @case( \Stars\Peace\Foundation\SheetSheet::SUPPORT_WIDGET_NUMBER )
                     @include("StarsPeace::plugs.form.number")
                     @break
