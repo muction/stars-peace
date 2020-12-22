@@ -1,36 +1,25 @@
 <?php
 
-
 namespace Stars\Peace\Plugs\Cloud\Storage;
 
-
+/**
+ * ------------------------------------------------------
+ *  对象云存储 - 句柄操作
+ * ------------------------------------------------------
+ */
 interface CloudStorageInterface
 {
     /**
      * 获取操作对象
      * @return mixed
      */
-    public function getClient();
+    public function cloudInstance();
+
 
     /**
-     * 增加配置
-     * @param $key
-     * @param $value
+     * 生成上传key
      * @return mixed
      */
-    public function addOption($key, $value);
+    public function makeUploadKey($option);
 
-    /**
-     * 对象是否存在
-     * @param $object
-     * @return bool
-     */
-    public function hasObject($object);
-
-    /**
-     * 简单上传
-     * @param array $args
-     * @return mixed
-     */
-    public function putObject($args=[]);
 }
