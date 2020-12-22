@@ -69,11 +69,18 @@ class CosCloudStorage implements CloudStorageOptionInterface, CloudStorageBucket
      */
     public function simpleUpload($localFile, $saveFile, $bucket)
     {
-        return $this->cloudInstance->putObject([
-            'bucket'=>$bucket,
-            'key'=>$saveFile,
-            'Body'=>fopen($localFile, 'r')
-        ]);
+        try{
+            if ($f = fopen($localFile, 'rb')) {
+                return $this->cloudInstance->putObject([
+                    'Bucket' => $bucket,
+                    'Key' => $saveFile,
+                    'Body' => $f
+                ]);
+            }
+        }catch (\Exception $exception){
+            dump($exception->getMessage(), $exception->getFile());
+        }
+        return false;
     }
 
     /**
@@ -149,7 +156,7 @@ class CosCloudStorage implements CloudStorageOptionInterface, CloudStorageBucket
             'bucket' => $this->getOption('COS_BUCKET'), // 换成你的 bucket
             'region' => $this->getOption('COS_REGION'), // 换成 bucket 所在园区
             'durationSeconds' => intval($this->getOption('COS_DURATION_SECONDS')), // 密钥有效期
-            'allowPrefix' => $this->getOption('COS_ALLOW_PREFIX'), // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径，例子： a.jpg 或者 a/* 或者 * (使用通配符*存在重大安全风险, 请谨慎评估使用)
+            'allowPrefix' => $allowPrefix, // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径，例子： a.jpg 或者 a/* 或者 * (使用通配符*存在重大安全风险, 请谨慎评估使用)
             'allowActions' => $allowActions && is_array($allowActions) ? $allowActions : $this->defaultAllowAction()
         );
         return $sts->getTempKeys($config);
@@ -189,7 +196,7 @@ class CosCloudStorage implements CloudStorageOptionInterface, CloudStorageBucket
      */
     public function signObject($bucket, $object, $expiredTime)
     {
-        return $this->cloudInstance->getObjectUrl($bucket, $object, '+'.$expiredTime.' minutes');
+        return $this->cloudInstance->getObjectUrl($bucket, $object, '+' . $expiredTime . ' minutes');
     }
 
     /**
