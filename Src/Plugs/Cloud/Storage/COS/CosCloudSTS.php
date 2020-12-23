@@ -27,7 +27,6 @@ class CosCloudSTS implements CloudStorageSTSInterface
      */
     public function makeUploadKey(CloudStorageOptionInterface $cloudStorageOption)
     {
-        $sts = new Sts();
         $config = array(
             'url' => 'https://sts.tencentcloudapi.com/',
             'domain' => 'sts.tencentcloudapi.com',
@@ -40,7 +39,7 @@ class CosCloudSTS implements CloudStorageSTSInterface
             'allowPrefix' => $cloudStorageOption->getOption('COS_ALLOW_PREFIX'), // 这里改成允许的路径前缀，可以根据自己网站的用户登录态判断允许上传的具体路径，例子： a.jpg 或者 a/* 或者 * (使用通配符*存在重大安全风险, 请谨慎评估使用)
             'allowActions' => $cloudStorageOption->getOption('COS_ALLOW_ACTION')
         );
-
+        $sts = new Sts();
         return $sts->getTempKeys($config);
     }
 }
