@@ -20,7 +20,6 @@ class Oss
     private $endpoint;
     private $region;
     private $allAction;
-    private $allowPrefix;
     private $duration;
     private $option;
     private $sts;
@@ -32,7 +31,7 @@ class Oss
     /**
      * 阿里云存储操作对象
      */
-    public function __construct($ossAccessKeyId, $ossAssessSecretKey, $bucket, $endpoint, $region, $allowPrefix, $allAction, $duration, $ossRoleArn, $ossRoleSessionName)
+    public function __construct($ossAccessKeyId, $ossAssessSecretKey, $bucket, $endpoint, $region, $allAction, $duration, $ossRoleArn, $ossRoleSessionName)
     {
         $this->ossAccessKeyId = $ossAccessKeyId;
         $this->ossAssessSecretKey = $ossAssessSecretKey;
@@ -40,7 +39,6 @@ class Oss
         $this->endpoint = $endpoint;
         $this->region = $region;
         $this->allAction = $allAction;
-        $this->allowPrefix = $allowPrefix;
         $this->duration = $duration;
         $this->ossRoleArn = $ossRoleArn;
         $this->ossRoleSessionName = $ossRoleSessionName;
@@ -60,7 +58,6 @@ class Oss
         $this->option->addOption('OSS_ROLE_ARN', $this->ossRoleArn);
         $this->option->addOption('OSS_ROLE_SESSION_NAME', $this->ossRoleSessionName);
         $this->option->addOption('OSS_ALLOW_ACTION', $this->allAction);
-        $this->option->addOption('OSS_ALLOW_PREFIX', $this->allowPrefix);
         $oss = new OssCloudStorage($this->option);
         return $oss->cloudInstance($this->sts);
     }
