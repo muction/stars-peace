@@ -9,6 +9,13 @@ namespace Stars\Peace\Plugs\Cloud\Storage;
 interface CloudStorageObject
 {
     /**
+     * 传入配置项
+     * CloudStorageObject constructor.
+     * @param CloudStorageOptionInterface $cloudStorageOption
+     */
+    public function __construct(CloudStorageOptionInterface $cloudStorageOption);
+
+    /**
      * 单文件上传
      * @param $localFile
      * @param $saveFile
@@ -26,14 +33,6 @@ interface CloudStorageObject
      * @return mixed
      */
     public function sliceUpload($localFile, $saveFile, $bucket, $size=0.5);
-
-    /**
-     * 移除一个对象
-     * @param $object
-     * @param $bucket
-     * @return mixed
-     */
-    public function removeObject($object, $bucket);
 
     /**
      * 是否存在一个对象

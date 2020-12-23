@@ -10,11 +10,5 @@ namespace Stars\Peace\Plugs\Cloud\Storage;
  */
 interface CloudStorageBucketInterface
 {
-    /**
-     * 创建一个Bucket桶
-     * @param $bucketName
-     * @return mixed
-     */
-    public function createBucket($bucketName);
 
 }
