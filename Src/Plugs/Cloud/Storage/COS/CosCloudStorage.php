@@ -61,7 +61,7 @@ class CosCloudStorage implements CloudStorageBucketInterface, CloudStorageObject
     }
 
     /**
-     * TODO 分片上传
+     * 分片上传
      * @param $localFile
      * @param $saveFile
      * @param $bucket
@@ -105,7 +105,7 @@ class CosCloudStorage implements CloudStorageBucketInterface, CloudStorageObject
                 'Parts' => $parts
             ]);
 
-            return $saveFile;
+            return $completeMultipartUpload;
 
         } catch (\Exception $exception) {
             //上传异常，终止上传操作
