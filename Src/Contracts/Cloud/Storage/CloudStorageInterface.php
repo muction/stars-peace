@@ -1,6 +1,5 @@
 <?php
-
-namespace Stars\Peace\Plugs\Cloud\Storage;
+namespace Stars\Peace\Contracts\Cloud\Storage;
 
 /**
  * ------------------------------------------------------

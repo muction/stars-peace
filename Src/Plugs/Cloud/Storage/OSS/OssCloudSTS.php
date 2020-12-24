@@ -5,8 +5,9 @@
  * ------------------------------------------------------
  */
 namespace Stars\Peace\Plugs\Cloud\Storage\OSS;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageOptionInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageSTSInterface;
+
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageSTSInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageOptionInterface;
 use AlibabaCloud\Client\AlibabaCloud;
 /**
  * @link https://help.aliyun.com/document_detail/100624.html?spm=a2c4g.11186623.2.13.28d06775TEtqyQ#concept-xzh-nzk-2gb

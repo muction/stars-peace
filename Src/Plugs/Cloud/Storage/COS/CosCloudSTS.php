@@ -7,8 +7,8 @@
 
 namespace Stars\Peace\Plugs\Cloud\Storage\COS;
 use QCloud\COSSTS\Sts;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageOptionInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageSTSInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageSTSInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageOptionInterface;
 
 class CosCloudSTS implements CloudStorageSTSInterface
 {

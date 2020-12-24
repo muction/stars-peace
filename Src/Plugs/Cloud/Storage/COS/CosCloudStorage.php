@@ -2,13 +2,13 @@
 
 namespace Stars\Peace\Plugs\Cloud\Storage\COS;
 
-use Illuminate\Support\Facades\Log;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageBucketInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageInterface;
 use \Qcloud\Cos\Client;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageObject;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageOptionInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageSTSInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageBucketInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageObject;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageOptionInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageSTSInterface;
+
 
 /**
  * ------------------------------------------------------

@@ -4,9 +4,8 @@
  *
  * ------------------------------------------------------
  */
-
 namespace Stars\Peace\Plugs\Cloud\Storage\OSS;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageOptionInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageOptionInterface;
 
 class OssCloudOption implements CloudStorageOptionInterface
 {
