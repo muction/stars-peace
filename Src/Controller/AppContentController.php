@@ -1,4 +1,5 @@
 <?php
+
 namespace Stars\Peace\Controller;
 
 use Exception;
@@ -106,7 +107,7 @@ abstract class AppContentController extends Controller
     public function __construct()
     {
 
-        if(! \app()->runningInConsole() ){
+        if (!\app()->runningInConsole()) {
             //行为前钩子
             $this->hookStart();
 
@@ -122,60 +123,63 @@ abstract class AppContentController extends Controller
     /**
      * 开始
      */
-    public function hookStart(){
+    public function hookStart()
+    {
 
     }
 
     /**
      * 完成
      */
-    public function hookComplete(){
+    public function hookComplete()
+    {
 
     }
 
     /**
      * 初始化App所需数据
      */
-    private function initAppData(){
+    private function initAppData()
+    {
 
         //服务者设定
-        $this->activeNavId = config('stars.nav.'. App::getLocale()  ) ;
+        $this->activeNavId = config('stars.nav.' . App::getLocale());
         $this->appContentService = new AppContentService();
         $this->navMenuService = new NavMenuService();
-        $this->locale = checkSiteUrlLangEnv() ;
-        $this->activeRouterName = \request()->route()->getName()  ;
-        $this->inner = \request()->get('inner') ;
+        $this->locale = checkSiteUrlLangEnv();
+        $this->activeRouterName = \request()->route()->getName();
+        $this->inner = \request()->get('inner');
         $this->isAjaxRequest = \request()->ajax();
-        $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo( $this->activeRouterName , $this->inner , $this->activeNavId) ;
-        if(! $this->activeMenuInfo){
-            throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}" , 500);
+        $this->activeMenuInfo = $this->appContentService->formatActiveMenuInfo($this->activeRouterName, $this->inner, $this->activeNavId);
+        if (!$this->activeMenuInfo) {
+            throw new \Exception("当前路由未匹配到菜单信息: {$this->activeRouterName}", 500);
         }
 
         //面包屑路径
-        $this->crumbs = $this->navMenuService->crumbs( $this->activeMenuInfo['id'] );
+        $this->crumbs = $this->navMenuService->crumbs($this->activeMenuInfo['id']);
 
         //TODO 优化点
-        if(!$this->isAjaxRequest ){
+        if (!$this->isAjaxRequest) {
             //导航数据，缓存有效期见 stars.cache.navMenu
-            $cacheNavMenusKey = $this->locale.'_navMenus' ;
-            $this->navMenus  = Cache::get( $cacheNavMenusKey ) ;
+            $cacheNavMenusKey = $this->locale . '_navMenus';
+            $this->navMenus = Cache::get($cacheNavMenusKey);
 
-            if(!$this->navMenus ){
+            if (!$this->navMenus) {
                 $peaceNavMenuService = new NavMenuService();
-                $this->navMenus = $peaceNavMenuService->articleTree( $this->activeNavId , 1);
-                Cache::put( $cacheNavMenusKey , $this->navMenus  , configApp('stars.cache.navMenu' , 60) );
+                $this->navMenus = $peaceNavMenuService->articleTree($this->activeNavId, 1);
+                Cache::put($cacheNavMenusKey, $this->navMenus, configApp('stars.cache.navMenu', 60));
             }
 
             //获取页面所有数据
-            $appContentService = new AppContentService() ;
-            $bindData = $appContentService->menuDatas( $this->activeMenuInfo['id'] , (isset($this->activeMenuInfo['inner']) ? $this->activeMenuInfo['inner'] : []) );
-            $this->appendBindData( $bindData );
+            $appContentService = new AppContentService();
+            $bindData = $appContentService->menuDatas($this->activeMenuInfo['id'], (isset($this->activeMenuInfo['inner']) ? $this->activeMenuInfo['inner'] : []));
+            $this->appendBindData($bindData);
 
-            $this->assign['baseInfo']=[
-                'activeMenuInfo' => $this->activeMenuInfo ,
-                'navMenus' => $this->navMenus ,
+            $this->assign['baseInfo'] = [
+                'activeMenuInfo' => $this->activeMenuInfo,
+                'navMenus' => $this->navMenus,
                 'crumbs' => $this->crumbs
-            ] ;
+            ];
         }
 
     }
@@ -187,37 +191,38 @@ abstract class AppContentController extends Controller
      * @param array $data
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function view( $template ="", array $data=[] ){
+    public function view($template = "", array $data = [])
+    {
 
         $this->templateName = $template;
 
         //如果设置了SEO处理则使用配置时的SEO配置内容
-        if( config('stars.page.seo') ){
+        if (config('stars.page.seo')) {
             $seoClassService = config('stars.page.seo');
-            $pageSeoInstance = new $seoClassService( $this->bindData , $this->activeMenuInfo );
-            $this->assign = array_merge($this->assign , [
-               'pageSeo'=>[
-                   'title'=> $pageSeoInstance->title() ,
-                   'keywords'=> $pageSeoInstance->keywords() ,
-                   'description'=> $pageSeoInstance->description() ,
-               ]
+            $pageSeoInstance = new $seoClassService($this->bindData, $this->activeMenuInfo);
+            $this->assign = array_merge($this->assign, [
+                'pageSeo' => [
+                    'title' => $pageSeoInstance->title(),
+                    'keywords' => $pageSeoInstance->keywords(),
+                    'description' => $pageSeoInstance->description(),
+                ]
             ]);
         }
 
-        if($data && is_array($data)){
-            $this->assign = array_merge($this->assign , $data) ;
+        if ($data && is_array($data)) {
+            $this->assign = array_merge($this->assign, $data);
         }
 
         //TODO 优化点
-        if( $this->isAjaxRequest ){
-            return $this->ajaxHandle() ;
+        if ($this->isAjaxRequest) {
+            return $this->ajaxHandle();
         }
 
-        if(!$template){
+        if (!$template) {
             $this->templateName =
-                isset( $this->activeMenuInfo['inner']['templateName'] ) ?
-                $this->locale.'.'. $this->activeMenuInfo['template_name'] .'.'.$this->activeMenuInfo['inner']['templateName'] :
-                    $this->locale.'.'. $this->activeMenuInfo['template_name'] ;
+                isset($this->activeMenuInfo['inner']['templateName']) ?
+                    $this->locale . '.' . $this->activeMenuInfo['template_name'] . '.' . $this->activeMenuInfo['inner']['templateName'] :
+                    $this->locale . '.' . $this->activeMenuInfo['template_name'];
         }
 
         return view($this->templateName, $this->assign);
@@ -227,24 +232,26 @@ abstract class AppContentController extends Controller
      * ajax 请求时处理
      * 如果有扩展需求，覆盖此方法即可
      */
-    public function ajaxHandle(){
+    public function ajaxHandle()
+    {
 
-        return $this->ajaxFindBindData() ;
+        return $this->ajaxFindBindData();
     }
 
     /**
      * 获取绑定数据
      */
-    final protected function ajaxFindBindData(){
+    final protected function ajaxFindBindData()
+    {
 
         $appContentService = new AppContentService();
-        $bindId=  \request('bindId', 0);
-        $bindAlias= \request('bindAlias') ;
-        if($bindId && $bindAlias){
-            $bindData[str_replace('.','_', $bindAlias )] = $appContentService->findBindPaginateData($bindId , $bindAlias);
-            $this->appendBindData( $bindData );
+        $bindId = \request('bindId', 0);
+        $bindAlias = \request('bindAlias');
+        if ($bindId && $bindAlias) {
+            $bindData[str_replace('.', '_', $bindAlias)] = $appContentService->findBindPaginateData($bindId, $bindAlias);
+            $this->appendBindData($bindData);
         }
-        return $this->responseSuccess( $this->assign );
+        return $this->responseSuccess($this->assign);
     }
 
     /**
@@ -252,9 +259,10 @@ abstract class AppContentController extends Controller
      * @param array $data
      * @return array
      */
-    public function responseSuccess( $data =[]  ){
+    public function responseSuccess($data = [])
+    {
 
-        return $this->responseStructure( 200 ,0 , "操作成功" , $data );
+        return $this->responseStructure(200, 0, "操作成功", $data);
     }
 
     /**
@@ -263,8 +271,9 @@ abstract class AppContentController extends Controller
      * @param int $errorCode
      * @return array
      */
-    public function responseError( $data = [] , $errorCode=0 ){
-        return $this->responseStructure( 200 ,$errorCode , "操作失败" , $data );
+    public function responseError($data = [], $errorCode = 0)
+    {
+        return $this->responseStructure(200, $errorCode, "操作失败", $data);
 
     }
 
@@ -276,12 +285,13 @@ abstract class AppContentController extends Controller
      * @param $body
      * @return array
      */
-    private function responseStructure( $statusCode, $errorCode , $msg, $body ){
+    private function responseStructure($statusCode, $errorCode, $msg, $body)
+    {
         return [
-            'status'=>$statusCode ,
-            'error'=> $errorCode,
-            'msg' => $msg ,
-            'body'=> $body
+            'status' => $statusCode,
+            'error' => $errorCode,
+            'msg' => $msg,
+            'body' => $body
         ];
     }
 
@@ -289,7 +299,8 @@ abstract class AppContentController extends Controller
      * 合并模板变量
      * @return array
      */
-    protected function mergerAssignData(){
+    protected function mergerAssignData()
+    {
         $this->assign['bindData'] = $this->bindData;
         return $this->assign;
     }
@@ -299,9 +310,10 @@ abstract class AppContentController extends Controller
      * @param array $data
      * @return array
      */
-    protected function appendBindData(array $data ){
+    protected function appendBindData(array $data)
+    {
 
-        $this->bindData = array_merge( $this->bindData , $data );
+        $this->bindData = array_merge($this->bindData, $data);
         $this->mergerAssignData();
         return $this->bindData;
     }
