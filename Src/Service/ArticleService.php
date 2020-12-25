@@ -87,6 +87,7 @@ class ArticleService extends ServiceService
     }
 
     /**
+     * 存储操作
      * @param Request $request
      * @param array $assign
      * @param int $infoId
@@ -97,7 +98,9 @@ class ArticleService extends ServiceService
     {
 
         if( !$this->sheetTableName )
+        {
             throw new \Exception( "您的SHEET配置出现严重问题，请联系管理员!" );
+        }
 
         $storage = $request->only( array_keys( $this->sheetInfo['sheet']['columns'] ) );
 
@@ -111,6 +114,7 @@ class ArticleService extends ServiceService
         if($infoId > 0){
             $affect= $article->edit($this->sheetTableName, $assign['bindId'], $infoId, $storage );
             if( $this->hook ){
+                //文章钩子
                 $hook = new ArticleHookFoundation( new $this->hook() );
                 $hook->saved( $request , $this->sheetTableName, $assign['bindId'], $affect, $infoId  );
             }
@@ -121,6 +125,7 @@ class ArticleService extends ServiceService
 
         $storage  =  $article->storage( $this->sheetTableName, $assign['bindId'] , $storage );
         if( $this->hook ){
+            //文章钩子
             $hook = new ArticleHookFoundation( new $this->hook()  );
             $hook->saved(  $request , $this->sheetTableName, $assign['bindId'], $storage );
         }
