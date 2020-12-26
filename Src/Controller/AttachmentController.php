@@ -81,7 +81,7 @@ class AttachmentController extends PeaceController
      * @return array
      */
     public function shear( AttachmentService $attachmentService, Request $request){
-        $result = $attachmentService->shear( $request ,$attachmentService );
+        $result = $attachmentService->shear( $request);
         return $this->responseSuccess($result );
     }
 
