@@ -10,11 +10,12 @@ namespace Stars\Peace\Plugs\Cloud\Storage\OSS;
 use OSS\Core\OssException;
 use OSS\Core\OssUtil;
 use OSS\OssClient;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageBucketInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageObject;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageOptionInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageSTSInterface;
-use Stars\Peace\Plugs\Cloud\Storage\CloudStorageInterface;
+
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageBucketInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageObject;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageOptionInterface;
+use Stars\Peace\Contracts\Cloud\Storage\CloudStorageSTSInterface;
 
 class OssCloudStorage implements CloudStorageBucketInterface, CloudStorageObject, CloudStorageInterface
 {

@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Route;
+
 Route::group(['prefix'=>"rotate" ,'middleware'=>['web'] , 'namespace'=> "Stars\Peace\Controller" ], function(){
 
     Route::group( ['prefix'=>'auth'  , 'namespace'=> "Auth" ] , function(){

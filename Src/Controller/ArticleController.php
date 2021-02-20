@@ -26,82 +26,82 @@ class ArticleController extends PeaceController
      * @return mixed
      * @throws \Exception
      */
-    public function menus(Request $request, NavMenuService $navMenuService, MenuBindService $menuBindService, ArticleService $articleService, $navId , $menuId=0, $bindId=0 , $action='' ){
+    public function menus(Request $request, NavMenuService $navMenuService, MenuBindService $menuBindService, ArticleService $articleService, $navId, $menuId = 0, $bindId = 0, $action = '')
+    {
 
         $assign = [
-            'menuBindInfo'=>[] ,
-            'sides' =>[] ,
-            'bindSheetInfo' => [] ,
-            'navId'=>$navId ,
-            'menuId'=>$menuId ,
-            'bindId'=>$bindId ,
-            'action'=>$action ,
-            'infoId'=> $request->input('infoId') ,
-            'keyword' => $request->input('keyword') ,
-            'startTime' => $request->input('start_time') ,
-            'endTime' => $request->input('end_time') ,
+            'menuBindInfo' => [],
+            'sides' => [],
+            'bindSheetInfo' => [],
+            'navId' => $navId,
+            'menuId' => $menuId,
+            'bindId' => $bindId,
+            'action' => $action,
+            'infoId' => $request->input('infoId'),
+            'keyword' => $request->input('keyword'),
+            'startTime' => $request->input('start_time'),
+            'endTime' => $request->input('end_time'),
         ];
 
-        if($menuId){
-            $assign['menuBindInfo'] = $menuBindService->bindAllInfo( $menuId );
-            $assign['menuInfo'] = $navMenuService->info($menuId );
-            if ($assign['menuBindInfo'])
+        if ($menuId) {
+            $assign['menuBindInfo'] = $menuBindService->bindAllInfo($menuId);
+            $assign['menuInfo'] = $navMenuService->info($menuId);
+            if ($assign['menuBindInfo']) {
                 $assign['bindId'] = $bindId ? $bindId : $assign['menuBindInfo'][0]['id'];
-                $assign['bindSheetInfo'] = $menuBindService->bindSheetInfo( $menuId, $assign['bindId'] );
-                if(!$assign['bindSheetInfo'])
+                $assign['bindSheetInfo'] = $menuBindService->bindSheetInfo($menuId, $assign['bindId']);
+                if (!$assign['bindSheetInfo']) {
                     throw new \Exception("没有找到 {$assign['menuInfo']['title']} 菜单绑定数据~");
-                $articleService= $articleService->init( $assign['bindSheetInfo'] ) ;
-         }
+                }
+                $articleService = $articleService->init($assign['bindSheetInfo']);
+            }
+        }
 
         //ACTION 执行删除操作
-        if(in_array( $action, ['remove'] ) && $assign['infoId']){
-            $removeResult=$articleService->remove($bindId, $assign['infoId'] );
-            return redirect( route('rotate.article.articles',
-                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+        if (in_array($action, ['remove']) && $assign['infoId']) {
+            $articleService->remove($bindId, $assign['infoId']);
+            return redirect(route('rotate.article.articles',
+                ['navId' => $navId, 'menuId' => $menuId, 'bindId' => $bindId]));
         }
 
         //ACTION 执行保存操作，新增或修改
-        if( $request->isMethod('POST')){
+        if ($request->isMethod('POST')) {
             $validateRules = [];
             $validateMessages = [];
-            $bindRequiredColumns = isset( $assign['bindSheetInfo']['options']['column_required']) ?
-                $assign['bindSheetInfo']['options']['column_required'] : [] ;
-            foreach ( $bindRequiredColumns as $_index=> $_item ){
-                $validateRules[ $_item ] = 'required';
-                $validateMessages[ $_item.'.required' ] = '不能为空' ;
+            $bindRequiredColumns = isset($assign['bindSheetInfo']['options']['column_required']) ?
+                $assign['bindSheetInfo']['options']['column_required'] : [];
+            foreach ($bindRequiredColumns as $_index => $_item) {
+                $validateRules[$_item] = 'required';
+                $validateMessages[$_item . '.required'] = '不能为空';
             }
-            $validateRules ? $this->validate( $request , $validateRules, $validateMessages ) : '' ;
-            $result= $articleService->storage(  $request, $assign , $assign['infoId'] );
-            return redirect( route('rotate.article.articles',
-                ['navId'=>$navId ,'menuId'=>$menuId ,'bindId'=>$bindId ]) );
+            $validateRules ? $this->validate($request, $validateRules, $validateMessages) : '';
+            $articleService->storage($request, $assign, $assign['infoId']);
+            return redirect(route('rotate.article.articles',
+                ['navId' => $navId, 'menuId' => $menuId, 'bindId' => $bindId]));
         }
 
         // 树行菜单
-        $assign['sides'] = $navMenuService->articleTree( $navId );
+        $assign['sides'] = $navMenuService->articleTree($navId);
 
         //定义模板
-        if( !$action )
-        {
+        if (!$action) {
             // 分页获取数据
-            $assign['datas'] = $articleService->pagation( $bindId , $assign, $articleService->bindListSearchColumns );
-            $assign['bindListColumns'] = $articleService->bindListColumns ;
-            $assign['sheetColumns'] = $articleService->sheetColumns ;
+            $assign['datas'] = $articleService->pagation($bindId, $assign, $articleService->bindListSearchColumns);
+            $assign['bindListColumns'] = $articleService->bindListColumns;
+            $assign['sheetColumns'] = $articleService->sheetColumns;
             $templateName = "article.index.articles";
 
-        }else if( in_array($action, ['add']) )
-        {
+        } else if (in_array($action, ['add'])) {
             $templateName = "article.index.form";
 
-        }else if( in_array($action, [ 'edit']) )
-        {
+        } else if (in_array($action, ['edit'])) {
 
-            $assign['bindSheetInfo'] = $articleService->mergeColumnNowValue(  $bindId , $assign['infoId'] );
+            $assign['bindSheetInfo'] = $articleService->mergeColumnNowValue($bindId, $assign['infoId']);
             $templateName = "article.index.form";
 
-        }else{
+        } else {
             $templateName = "";
         }
-        return $this->view( $templateName , $assign );
+        return $this->view($templateName, $assign);
 
     }
 }
