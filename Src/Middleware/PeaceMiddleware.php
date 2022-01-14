@@ -4,10 +4,12 @@ namespace Stars\Peace\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Stars\Peace\Entity\LogEntity;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use function AlibabaCloud\Client\json;
 
 class PeaceMiddleware
 {
@@ -36,6 +38,9 @@ class PeaceMiddleware
         if( !Auth::check() ){
             return redirect( route('rotate.auth.login.page') );
         }
+
+        //记录请求日志
+        LogEntity::middleLog( $request->route()->getName(),  json_encode($request->all(), JSON_UNESCAPED_UNICODE) );
 
         return $next($request);
     }

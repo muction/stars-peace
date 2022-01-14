@@ -10,7 +10,7 @@ trait TraitSheet
      * @return bool
      * @throws \Exception
      */
-    final public function initialize()
+    final public function initialize(): bool
     {
         try {
            // dd( $this->columns );
@@ -23,7 +23,7 @@ trait TraitSheet
 
                 //字段
                 $table->increments('id')->comment("自增ID");
-
+                $table->integer('bind_id', false, true )->default(0)->comment("绑定ID");
                 foreach ($columns as $item){
                     switch ($item['plug']){
 
@@ -33,7 +33,7 @@ trait TraitSheet
                             $column = $table->char($item['db_name'] , $item['db_length']);
                             break;
 
-                        //整形
+                        //整型
                         case self::SUPPORT_WIDGET_NUMBER:
                         case self::SUPPORT_WIDGET_SELECT:
                         case self::SUPPORT_WIDGET_CROPPER:
@@ -41,7 +41,7 @@ trait TraitSheet
                            $column = $table->integer($item['db_name'] ,false,true ) ;
                             break;
 
-                        //小整形
+                        //小整型
                         case self::SUPPORT_COLUMN_TINYINT:
                             $column = $table->tinyInteger( $item['db_name'] );
                             break;
@@ -79,9 +79,9 @@ trait TraitSheet
 
                     //是否需要字段支持索引
                     if($item['db_index'] === true ){
-
-                        $column ->index($item['db_name'], $item['db_name'].'_index');
+                        $column ->index( $item['db_name'].'_index');
                     }
+
                     //是否有默认值
                     if(isset($item['options'][self::OPTION_KEY_DEFAULT_VALUE]) && $item['options'][self::OPTION_KEY_DEFAULT_VALUE]){
                         $column->default( $item['options'][self::OPTION_KEY_DEFAULT_VALUE] );
@@ -90,14 +90,22 @@ trait TraitSheet
                     }
                 }
 
+                // 软删除
+                $table->tinyInteger('is_delete',false, true)->default(0)->comment('软删除，1已删除 0未删除');
+
+                // 操作者ID
+                $table->integer('create_user_id', false , true)->default(0)->comment("创建者ID");
+                $table->integer('update_user_id', false , true)->default(0)->comment("编辑者ID");
+                $table->integer('delete_user_id', false , true)->default(0)->comment("删除者ID");
+
+                // 删除信息时间
+                $table->dateTime( 'deleted_at' )->nullable()->comment('删除时间');
 
                 $table->timestamps();
                 //设置引擎级字符集
                 $table->engine = 'InnoDB';
                 $table->charset = 'utf8mb4';
                 $table->collation = 'utf8mb4_unicode_ci';
-               /* $table->charset = 'utf8';
-                $table->collation = 'utf8_general_ci';*/
 
             });
 
@@ -112,7 +120,7 @@ trait TraitSheet
      * 公共的
      * @return array
      */
-    public function optionPublicStatic()
+    public function optionPublicStatic(): array
     {
         return [
             self::OPTION_KEY_PUBLIC => [

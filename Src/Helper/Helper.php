@@ -185,3 +185,22 @@ if( !function_exists( "makeArticleUrl" )){
     }
 }
 
+/**
+ * gzcompress 压缩数据
+ * @param string $data
+ * @return string
+ */
+function gzcompressBase64(string $data)
+{
+    return base64_encode(gzcompress($data));
+}
+
+/**
+ * 解压缩数据
+ * @param string $gzcompress
+ * @return false|string
+ */
+function ungzcompressBase64(string $gzcompress)
+{
+    return gzuncompress(base64_decode($gzcompress));
+}

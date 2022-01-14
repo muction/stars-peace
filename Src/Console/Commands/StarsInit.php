@@ -20,7 +20,7 @@ class StarsInit extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'stars:init';
+    protected $signature = 'stars:init {step?}';
 
     /**
      * The console command description.
@@ -63,14 +63,18 @@ class StarsInit extends PeacePeace
      */
     public function handleCommand()
     {
-        while ( !($this->initRootPassword && $this->initRootName) )
-        {
-            if(!$this->initRootName){
-                $this->initRootName = $this->ask("Please input Root User Name ");
-            }
+        $step = $this->argument('step');
 
-            if(!$this->initRootPassword){
-                $this->initRootPassword = $this->ask("Please input Root User Password");
+        if( !$step ){
+            while ( !($this->initRootPassword && $this->initRootName) )
+            {
+                if(!$this->initRootName){
+                    $this->initRootName = $this->ask("Please input Root User Name ");
+                }
+
+                if(!$this->initRootPassword){
+                    $this->initRootPassword = $this->ask("Please input Root User Password");
+                }
             }
         }
 
