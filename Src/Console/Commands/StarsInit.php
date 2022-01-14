@@ -20,14 +20,14 @@ class StarsInit extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'Stars:init';
+    protected $signature = 'stars:init';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Initialize Stars System';
+    protected $description = '初始化Stars系统';
 
     /**
      * 超级管理员登录名

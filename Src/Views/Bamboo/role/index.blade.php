@@ -35,8 +35,8 @@
                            title="编辑" data-toggle="tooltip">
                             <i class="mdi mdi-pencil"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger act-stars-remove" href="{{ route( 'rotate.role.remove' , ['infoId'=>$item['id'] ]) }}" title="删除" data-toggle="tooltip">
-                            <i class="mdi mdi-window-close"></i>
+                        <a class="btn btn-xs btn-default act-stars-remove" href="{{ route( 'rotate.role.remove' , ['infoId'=>$item['id'] ]) }}" title="删除" data-toggle="tooltip">
+                            <i class="mdi mdi-delete-forever"></i>
                         </a>
                     </div>
                 </td>

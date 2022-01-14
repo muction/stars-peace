@@ -18,14 +18,14 @@ class StarsVersion extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'Stars:version';
+    protected $signature = 'stars:version';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Get system version';
+    protected $description = '获取系统版本号';
 
     /**
      * 超级管理员登录名

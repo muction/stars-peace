@@ -15,47 +15,6 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4>系统概览</h4>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <colgroup>
-                                <col width="13%"/>
-                                <col width="37%"/>
-                                <col width="13%"/>
-                                <col width="37%"/>
-                            </colgroup>
-
-                            <tbody>
-
-                            <tr>
-                                <td>系统账号</td>
-                                <td>{{ $adminTotal }} 个</td>
-                            </tr>
-
-                            <tr>
-                                <td>附件数量</td>
-                                <td>{{ $attachmentTotal }} 个</td>
-                            </tr>
-                            <tr>
-                                <td>工作目录</td>
-                                <td>{{ request()->server('DOCUMENT_ROOT') }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
                     <h4>软件环境</h4>
                 </div>
                 <div class="card-body">
@@ -85,7 +44,7 @@
 
                             <tr>
                                 <td>服务器IP</td>
-                                <td>{{ Sysinfo::ip() }}</td>
+                                <td> *** </td>
                                 <td>最大上传文件大小</td>
                                 <td>{{ Sysinfo::upload_max_filesize() }}</td>
                             </tr>

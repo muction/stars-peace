@@ -9,8 +9,8 @@ use Stars\Tools\Lib\Patch\MakePatch;
 /**
  * 为了上线后部署及更新方便，开发了更新打包命令
  *
- *  1、php artisan app:pack [file1,file2,file3....] | [git:commitId]
- *  2、php artisan app:pack
+ *  1、php artisan stars:app_pack [file1,file2,file3....] | [git:commitId]
+ *  2、php artisan stars:app_pack
  *
  *  所有打包操作都是以 appPath 为根基地址操作的
  *
@@ -24,7 +24,7 @@ class AppPack extends AbstractAppPatch
      *
      * @var string
      */
-    protected $signature = 'app:pack';
+    protected $signature = 'stars:app_pack';
 
     /**
      * The console command description.
@@ -107,10 +107,10 @@ class AppPack extends AbstractAppPatch
 
     /**
      * 给到一些文件进行zip打包
-     * @param array $files
      * @return bool
      */
-    private function packZipFiles( ){
+    private function packZipFiles( ): bool
+    {
 
         try{
             $files = "";
