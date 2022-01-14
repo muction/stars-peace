@@ -34,7 +34,7 @@ class AppUpdate extends AbstractAppPatch
      *
      * @var string
      */
-    protected $signature = 'app:update {patchFile}';
+    protected $signature = 'stars:app_update {patchFile}';
 
     /**
      * The console command description.

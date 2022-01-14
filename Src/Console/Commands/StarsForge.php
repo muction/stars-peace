@@ -2,6 +2,7 @@
 
 namespace Stars\Peace\Console\Commands;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Stars\Peace\Entity\ArticleEntity;
 use Stars\Peace\Foundation\SheetSheet;
@@ -22,14 +23,14 @@ class StarsForge extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'Stars:forge';
+    protected $signature = 'stars:forge';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Stars forge some test datas';
+    protected $description = '给 stars系统绑定模生成测试数据';
 
     /**
      * 定义参数名称
@@ -62,9 +63,8 @@ class StarsForge extends PeacePeace
     /**
      * Execute the console command.
      *
-     * @return mixed
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \Exception
+     * @return false|void
+     * @throws Exception
      */
     public function handleCommand()
     {
@@ -123,7 +123,7 @@ class StarsForge extends PeacePeace
     /**
      * 替换模板内容
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     protected function replaceStubContent()
     {
@@ -248,13 +248,13 @@ class StarsForge extends PeacePeace
             $menuBindService = new MenuBindService() ;
             $bindInfo = $menuBindService->bindInfo( $menuId, $bindId ) ;
             if(!$bindInfo){
-                throw new \Exception( "绑定信息没有找到" );
+                throw new Exception( "绑定信息没有找到" );
             }
 
             $sheetService = new SheetService();
             $sheetInfo = $sheetService->info( $bindInfo['sheet_name'] );
             if(!$sheetInfo){
-                throw new \Exception( 'sheet信息没有找到');
+                throw new Exception( 'sheet信息没有找到');
             }
 
             $sheetInfo = $sheetInfo->detail();
@@ -311,7 +311,7 @@ class StarsForge extends PeacePeace
 
             return true;
 
-        }catch (\Exception $exception){
+        }catch (Exception $exception){
 
             return $exception->getMessage() ;
         }

@@ -10,14 +10,14 @@ class SheetMake extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'make:sheet {entityName} {isCore?}';
+    protected $signature = 'stars:make_sheet {entityName} {isCore?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new stars sheet file';
+    protected $description = '创建一个新的Sheet配置模板';
 
     /**
      * 定义参数名称

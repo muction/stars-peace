@@ -10,14 +10,14 @@ class SheetInit extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'sheet:init {entityName} {isCore?}';
+    protected $signature = 'stars:init_sheet {entityName} {isCore?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Initialize a Sheet File';
+    protected $description = '初始化一个 sheet模板配置';
 
     /**
      * 定义参数名称

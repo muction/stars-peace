@@ -3,6 +3,9 @@
 namespace Stars\Peace\Console\Commands;
 
 
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
 class EntityMake extends PeacePeace
 {
     /**
@@ -10,14 +13,14 @@ class EntityMake extends PeacePeace
      *
      * @var string
      */
-    protected $signature = 'make:entity {entityName}';
+    protected $signature = 'stars:make_entity {entityName}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new stars core entity file for private';
+    protected $description = '创建一个Stars实体模型文件';
 
     /**
      * 定义参数名称
@@ -39,9 +42,9 @@ class EntityMake extends PeacePeace
     /**
      * Execute the console command.
      *
-     * @return mixed
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \Exception
+     * @return void
+     * @throws FileNotFoundException
+     * @throws Exception
      */
     public function handleCommand()
     {
@@ -51,8 +54,8 @@ class EntityMake extends PeacePeace
 
     /**
      * 替换模板内容
-     * @return mixed
-     * @throws \Exception
+     * @return array|string|string[]
+     * @throws Exception
      */
     protected function replaceStubContent()
     {
