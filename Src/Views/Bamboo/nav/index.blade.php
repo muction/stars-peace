@@ -21,7 +21,6 @@
         <tbody>
         @foreach( $datas as $key=>$item)
             <tr>
-
                 <td>
                     <div class="btn-group">
                         <a class="btn btn-xs btn-default" href="{{ route( 'rotate.menu.index' , ['navId'=>$item['id'] ]) }}"
@@ -35,11 +34,9 @@
                            title="编辑" data-toggle="tooltip">
                             <i class="mdi mdi-pencil"></i>
                         </a>
-                        <a class="btn btn-xs btn-danger act-stars-remove" href="{{ route('rotate.nav.remove' , ['navId'=>$item['id'] ]) }}" title="删除" data-toggle="tooltip">
-                            <i class="mdi mdi-window-close"></i>
+                        <a class="btn btn-xs btn-default act-stars-remove" href="{{ route('rotate.nav.remove' , ['navId'=>$item['id'] ]) }}" title="删除" data-toggle="tooltip">
+                            <i class="mdi mdi-delete-forever"></i>
                         </a>
-
-
                     </div>
                 </td>
                 <td>{{ $item['title'] }}</td>

@@ -105,7 +105,6 @@
 
                     <ul class="topbar-right">
                         @include("StarsPeace::inc.profile")
-                        @include("StarsPeace::inc.theme")
                     </ul>
 
                 </div>
