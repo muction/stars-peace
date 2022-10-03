@@ -292,6 +292,8 @@ class StarsForge extends PeacePeace
                         $value = 1;
                     }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_WIDGET_RADIOS ){
                         $value = 1;
+                    }else if( $columnInfo['plug'] == SheetSheet::SUPPORT_COLUMN_INT ){
+                        $value = rand(0,100);
                     }else{
                         $value = '';
                     }
