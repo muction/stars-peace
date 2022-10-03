@@ -74,6 +74,18 @@ if( !function_exists('navIsActive') ){
     }
 }
 
+/**
+ * 是否路由名称相同
+ */
+if( !function_exists('navIsActiveV2') ){
+    function navIsActiveV2( $targetRouteName ='' ,$activeValue ='on' ){
+        if( $targetRouteName ){
+            $nowRouteName= request()->route()->getName();
+            return $targetRouteName === $nowRouteName;
+        }
+        return '';
+    }
+}
 
 /**
  * 生产内容参数格式
