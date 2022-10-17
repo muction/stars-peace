@@ -20,6 +20,7 @@ class ApplyContentEntity extends Model
     protected static function last($bindId)
     {
         return self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->orderByDesc('order')
             ->orderBy('id')
             ->first();
@@ -34,6 +35,7 @@ class ApplyContentEntity extends Model
     protected static function info($bindId, $infoId)
     {
         $info = self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->where('id', '=', $infoId)
             ->first();
         if ($info) {
@@ -50,6 +52,7 @@ class ApplyContentEntity extends Model
     protected static function items($bindId)
     {
         return self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->orderByDesc('order')
             ->orderBy('id')
             ->get();
@@ -67,6 +70,7 @@ class ApplyContentEntity extends Model
     {
 
         return self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->orderByDesc('order')
             ->orderBy('id')
             ->paginate($pageSize);
@@ -82,6 +86,7 @@ class ApplyContentEntity extends Model
     protected static function previous(int $bindId, int $infoId, string $sortColumn = 'id')
     {
         return self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->where('id', '<', $infoId)
             ->orderBy($sortColumn, 'ASC')
             ->orderBy('id', 'ASC')
@@ -98,6 +103,7 @@ class ApplyContentEntity extends Model
     protected static function next(int $bindId, int $infoId, string $sortColumn = 'id')
     {
         return self::where('bind_id', '=', $bindId)
+              ->where('is_delete',0)
             ->where('id', '>', $infoId)
             ->orderBy($sortColumn, 'ASC')
             ->orderBy('id', 'ASC')
