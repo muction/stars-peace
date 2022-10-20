@@ -88,8 +88,8 @@ class ApplyContentEntity extends Model
         return self::where('bind_id', '=', $bindId)
               ->where('is_delete',0)
             ->where('id', '<', $infoId)
-            ->orderBy($sortColumn, 'ASC')
-            ->orderBy('id', 'ASC')
+            ->orderBy($sortColumn, 'Desc')
+            ->orderBy('id', 'Desc')
             ->first();
     }
 
