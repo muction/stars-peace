@@ -18,7 +18,7 @@ class ArticleEntity extends EntityEntity
      */
     private static function infoCreateCommon(): array
     {
-        return ['create_user_id' => Auth::id() ,'is_delete' => StarsConstant::IS_DELETE_FALSE ];
+        return ['create_user_id' => Auth::id(), 'is_delete' => StarsConstant::IS_DELETE_FALSE];
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticleEntity extends EntityEntity
      */
     private static function infoDeleteCommon(): array
     {
-        return ['delete_user_id' => Auth::id() ,'deleted_at' => date('Y-m-d H:i:s')];
+        return ['delete_user_id' => Auth::id(), 'deleted_at' => date('Y-m-d H:i:s')];
     }
 
     /**
@@ -48,7 +48,7 @@ class ArticleEntity extends EntityEntity
      */
     public function storage(string $sheetTableName, int $bindId, array $storage)
     {
-        LogEntity::insertActionLog($bindId ,'用户新增信息' ,$sheetTableName );
+        LogEntity::insertActionLog($bindId, '用户新增信息', $sheetTableName);
         $this->setTable($sheetTableName);
         return $this->create(array_merge($storage, ['bind_id' => $bindId], self::infoCreateCommon()));
     }
@@ -62,7 +62,7 @@ class ArticleEntity extends EntityEntity
      */
     public function edit(string $sheetTableName, int $bindId, int $id, array $storage)
     {
-        LogEntity::editActionLog($bindId ,'用户编辑信息' ,$sheetTableName );
+        LogEntity::editActionLog($bindId, '用户编辑信息', $sheetTableName);
         $info = $this->info($sheetTableName, $id, $bindId);
         $info->update(array_merge($storage, self::infoModifyCommon()));
         return $info;
@@ -77,10 +77,10 @@ class ArticleEntity extends EntityEntity
      */
     public function remove(string $sheetTableName, int $id, int $bindId)
     {
-        LogEntity::deleteActionLog($bindId ,'用户删除信息' ,$sheetTableName );
+        LogEntity::deleteActionLog($bindId, '用户删除信息', $sheetTableName);
         $this->setTable($sheetTableName);
         return $this->where('id', $id)->where('bind_id', $bindId)
-            ->update(array_merge(['is_delete'=> StarsConstant::IS_DELETE_TRUE], self::infoDeleteCommon()));
+            ->update(array_merge(['is_delete' => StarsConstant::IS_DELETE_TRUE], self::infoDeleteCommon()));
     }
 
     /**
@@ -94,7 +94,7 @@ class ArticleEntity extends EntityEntity
      */
     public function pageList(string $sheetTableName, $searchOption, $bindListSearchColumns, $bindId, int $size = 15)
     {
-        LogEntity::selectActionLog($bindId ,'用户查询信息' ,$sheetTableName );
+        LogEntity::selectActionLog($bindId, '用户查询信息', $sheetTableName);
         $index = $this->setTable($sheetTableName)->where('bind_id', $bindId)->where('is_delete', StarsConstant::IS_DELETE_FALSE);
         if ($searchOption) {
             $index = $index->where(function ($query) use ($searchOption, $bindListSearchColumns) {
@@ -104,6 +104,12 @@ class ArticleEntity extends EntityEntity
                     }
                 }
 
+            })->where(function ($query) {
+                $_select_table_column = request()->input('_select_table_column');
+                $_select_table_value_ = request()->input('_select_table_value_');
+                if ($_select_table_value_ && $_select_table_column) {
+                    $query->where($_select_table_column, $_select_table_value_);
+                }
             })->where(function ($query) use ($searchOption) {
                 if (isset($searchOption['startTime']) && isset($searchOption['endTime']) && $searchOption['startTime'] && $searchOption['endTime']) {
                     $query->whereBetween('created_at', [$searchOption['startTime'] . ' 00:00:00', $searchOption['endTime'] . ' 23:59:59']);
