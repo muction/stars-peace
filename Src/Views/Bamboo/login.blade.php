@@ -19,35 +19,36 @@
 
     <style>
         body{
-            background: url("{{asset('static/stars/images/login_bg.jpg')}}") top center;
+           background: url("{{asset(config('stars.app.login_img', 'static/stars/images/login_bg.jpg'))}}") top center;
         }
         .lyear-wrapper {
             position: relative;
-            /*background: #056EC8;*/
         }
+
         .lyear-login {
             display: flex !important;
             min-height: 100vh;
             align-items: center !important;
-            float: right;
-            margin-right: 50px;
-            /*justify-content: right !important;*/
+            justify-content: center !important;
         }
+
         .login-center {
-            background: #f7f7f7;
-            min-width: 48.25rem;
+            background: #fff;
+            min-width: 38.25rem;
             padding: 2.14286em 3.57143em;
-            border-radius: 8px;
+            border-radius: 5px;
             margin: 2.85714em 0;
-            box-shadow: 1px 1px 5px #333333;
         }
+
         .login-header {
             margin-bottom: 1.5rem !important;
         }
+
         .login-center .has-feedback.feedback-left .form-control {
             padding-left: 38px;
             padding-right: 12px;
         }
+
         .login-center .has-feedback.feedback-left .form-control-feedback {
             left: 0;
             right: auto;
@@ -57,11 +58,9 @@
             z-index: 4;
             color: #dcdcdc;
         }
+
         .login-center .has-feedback.feedback-left.row .form-control-feedback {
             left: 15px;
-        }
-        .login-center .login-input{
-            height: 40px;
         }
     </style>
 </head>
@@ -71,7 +70,7 @@
     <div class="lyear-login">
         <div class="login-center">
             <div class="login-header text-center">
-                <H4>后台管理系统</H4>
+                <H4>{{config('stars.app.login_title', '后台管理系统')}}</H4>
             </div>
             <form action="{{ route('rotate.auth.login.handle') }}" method="post">
                 @csrf
