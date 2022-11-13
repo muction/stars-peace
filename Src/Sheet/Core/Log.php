@@ -29,7 +29,6 @@ class Log extends SheetSheet
         $this->addVarCharColumn('日志概述','title', 255);
         $this->addVarCharColumn('日志详情','content',512);
          $this->addVarCharColumn('日志简介','remark',512);
-           $this->addIntColumn('创建者', 'create_user_id', 11);
     }
 
 }
