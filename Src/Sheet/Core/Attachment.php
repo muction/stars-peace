@@ -25,7 +25,6 @@ class Attachment extends SheetSheet
      */
     protected function sheetColumn()
     {
-        $this->addIntColumn('绑定ID', 'bind_id', 11);
         $this->addVarCharColumn('原始文件名','original_name',255);
         $this->addIntColumn('文件大小', 'size', 11);
         $this->addCharColumn('md5','md5',32);
